@@ -46,6 +46,16 @@ Dev threshold curve:
 | 0.8 | 66.7% | 3.4% | 51.4% | 58.0% |
 | 0.9 | 55.6% | 1.4% | 67.9% | 61.1% |
 
+## Digitalisation after blind human review (test split)
+
+Reviewer: team member (MA student, political science), blind (no model or PolitMonitor label, shuffled), rule fixed before review (D55). Answered 49 of 90; excluded [65590] (seen outside the blind setting, D58). The reviewer's label replaces PolitMonitor's for reviewed affairs; each confusion cell's rate is scaled to its size in the test split and to the population (D56).
+
+| Reading | Precision | 95% CI | Recall | 95% CI | Answers TP / FN / FP / TN | Reviewer-yes rate TP / FN / FP / TN |
+|---|---|---|---|---|---|---|
+| before review (PolitMonitor as gold) | 69.5% | 53.0%–91.0% | 54.5% | 44.8%–63.8% | — | — |
+| strict | 82.6% | 47.9%–100.0% | 37.3% | 15.7%–79.5% | 4 / 18 / 4 / 22 | 75% / 56% / 100% / 5% |
+| broad | 100.0% | 100.0%–100.0% | 17.6% | 10.1%–40.7% | 4 / 18 / 4 / 22 | 100% / 72% / 100% / 18% |
+
 ## Standard mode — Curia Vista subject areas (federal, since 2018)
 
 Model `apertus-v1-5-70b`, prompt_version `062b5a8c6489`, runs `20261018T161603708568Z, 20261018T161841410788Z`. Every label with verified evidence counts; stratified sample (≥ 15 affairs per area).

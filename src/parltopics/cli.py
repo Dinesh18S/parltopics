@@ -520,6 +520,67 @@ def eval_crosslang(
     typer.echo(metrics_report.crosslang_markdown(out))
 
 
+@eval_app.command("adjudication")
+def eval_adjudication(
+    answers: Path = Path("data/gold/adjudication.xlsx"),
+    key: Path = Path("results/adjudication_key.csv"),
+    exclude_affair: list[int] = typer.Option([65590], help="affairs seen outside the blind setting (D58)"),
+    n_boot: int = 2000,
+    seed: int = 42,
+) -> None:
+    """After-review metrics from the reviewer's sheet (D55 rule, D56 readings, D58 exclusions)."""
+    import openpyxl
+
+    from parltopics.evaluate.adjudication import after_review
+
+    ws = openpyxl.load_workbook(answers, data_only=True)["Review"]
+    head = [c.value for c in ws[1]]
+    sheet = pd.DataFrame([r[:len(head)] for r in ws.iter_rows(min_row=2, values_only=True) if r and r[1]], columns=head)
+    rows = pd.read_csv(key).merge(sheet, left_on="review_no", right_on="Review No.")
+    if (rows["affair_id"] != rows["Affair ID"]).any():
+        raise typer.BadParameter("sheet rows do not match the key (different sheet version)")
+    norm = lambda v: "" if pd.isna(v) else str(v).strip().lower()
+    rows["digital"], rows["goal"] = rows["Digitale Technik drin?"].map(norm), rows["Ziel oder Nebensache?"].map(norm)
+    rows["note"] = rows["Note"].map(norm)
+    rows["cell"] = rows.apply(lambda r: ("TP" if r.politmonitor == 1 else "TN") if r.group == "agree"
+                              else ("FP" if r.group == "model_yes_pm_no" else "FN"), axis=1)
+    answered = rows[rows.digital != ""]
+    excluded = answered[answered.affair_id.isin(exclude_affair) | answered.note.str.contains("bekannt")]
+    usable = answered.drop(excluded.index)
+    readings = {
+        "strict": lambda r: 1 if r.digital == "ja" and r.goal == "ziel" else 0 if r.digital == "nein" or r.goal == "nebensache" else None,
+        "broad": lambda r: 1 if r.digital == "ja" else 0 if r.digital == "nein" else None,
+    }
+    metrics = json.loads((RESULTS_DIR / "metrics.json").read_text())
+    digi = metrics["digitalisation_federal_2018"]
+    t = digi["test"]["at_chosen_threshold"]
+    sizes = {"TP": t["tp"], "FN": t["fn"], "FP": t["fp"], "TN": t["tn"]}
+    out = {"answers_file": str(answers), "rule": "D55", "rows": len(rows), "answered": len(answered),
+           "excluded": {"affair_ids": excluded.affair_id.tolist(), "reason": "seen outside blind setting / marked bekannt"},
+           "before": {"precision": t["precision_corrected"], "precision_ci95": t["precision_corrected_ci95"],
+                      "recall": t["recall"], "recall_ci95": t["recall_ci95"]}, "readings": {}}
+    for name, fn in readings.items():
+        lab = usable.assign(y=usable.apply(fn, axis=1))
+        decided = lab[lab.y.notna()]
+        ans = {c: decided[decided.cell == c].y.astype(int).tolist() for c in ("TP", "FN", "FP", "TN")}
+        if not all(ans.values()):
+            typer.echo(f"{name}: a cell has no decided answers — cannot estimate")
+            continue
+        res = after_review(sizes, ans, digi["population"]["prevalence"], n_boot, seed)
+        res["unsure"] = int(lab.y.isna().sum())
+        res["model_found_pm_missed_confirmed"] = decided[(decided.cell == "FP") & (decided.y == 1)][["affair_id", "Title"]].to_dict("records")
+        res["real_misses"] = decided[(decided.cell == "FN") & (decided.y == 1)][["affair_id", "Title"]].to_dict("records")
+        out["readings"][name] = res
+        typer.echo(f"[{name}] precision {res['precision']:.1%} ({res['precision_ci95'][0]:.1%}–{res['precision_ci95'][1]:.1%})  "
+                   f"recall {res['recall']:.1%} ({res['recall_ci95'][0]:.1%}–{res['recall_ci95'][1]:.1%})  "
+                   f"answered per cell {res['answered']}  reviewer-yes rate "
+                   + ", ".join(f"{c} {v:.0%}" for c, v in res["reviewer_yes_rate"].items()) + f"  unsure {res['unsure']}")
+    typer.echo(f"before review: precision {t['precision_corrected']:.1%} recall {t['recall']:.1%}; "
+               f"answered {len(answered)}/{len(rows)}, excluded {excluded.affair_id.tolist()}")
+    metrics_report.update_metrics_json(RESULTS_DIR / "metrics.json", "adjudication", out)
+    write_metrics_md()
+
+
 @eval_app.command("cost")
 def eval_cost(
     run_ids: list[str],

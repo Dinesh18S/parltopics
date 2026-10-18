@@ -1347,5 +1347,225 @@
       "fr": 0.56,
       "it": 0.6
     }
+  },
+  "adjudication": {
+    "answers_file": "data/gold/adjudication.xlsx",
+    "rule": "D55",
+    "rows": 90,
+    "answered": 49,
+    "excluded": {
+      "affair_ids": [
+        65590
+      ],
+      "reason": "seen outside blind setting / marked bekannt"
+    },
+    "before": {
+      "precision": 0.6946152483776897,
+      "precision_ci95": [
+        0.5295869136077594,
+        0.9101698573915196
+      ],
+      "recall": 0.5445544554455446,
+      "recall_ci95": [
+        0.44757998013930217,
+        0.6382639226071297
+      ]
+    },
+    "readings": {
+      "strict": {
+        "precision": 0.8263461879055777,
+        "precision_ci95": [
+          0.4790385637167328,
+          1.0
+        ],
+        "recall": 0.3725731734151716,
+        "recall_ci95": [
+          0.15728634820502413,
+          0.7947859400094475
+        ],
+        "reviewer_yes_rate": {
+          "TP": 0.75,
+          "FN": 0.5555555555555556,
+          "FP": 1.0,
+          "TN": 0.045454545454545456
+        },
+        "answered": {
+          "TP": 4,
+          "FN": 18,
+          "FP": 4,
+          "TN": 22
+        },
+        "cell_sizes": {
+          "TP": 55,
+          "FN": 46,
+          "FP": 5,
+          "TN": 385
+        },
+        "unsure": 0,
+        "model_found_pm_missed_confirmed": [
+          {
+            "affair_id": 287810,
+            "Title": "Erweiterte Kontrolle personenbezogener Daten und sozialer Medien im Esta-Verfahren. Praktische und rechtliche Konsequenzen für Schweizer Staatsangehörige"
+          },
+          {
+            "affair_id": 201868,
+            "Title": "Internationale Zusammenarbeit von Strafbehörden im Kampf gegen Cyberkriminalität"
+          },
+          {
+            "affair_id": 153262,
+            "Title": "Gesetzliche Vertretung von Dienstleistern in der Schweiz"
+          },
+          {
+            "affair_id": 161710,
+            "Title": "Einführung DigiFLUX - Wie wird die Verordnung (SR 919.117.71) bezüglich Flächenangabe (Anhang 3b - 5.4) genau umgesetzt?"
+          }
+        ],
+        "real_misses": [
+          {
+            "affair_id": 155776,
+            "Title": "Covid-19. Eine Grundlage, um in der Bundesverwaltung die Verbreitung von Homeoffice zu beschleunigen?"
+          },
+          {
+            "affair_id": 235223,
+            "Title": "Sind Sicherheitsmerkmale und -vorrichtungen nach dem SMVS für das Monitoring von Arzneimitteln ungeeignet?"
+          },
+          {
+            "affair_id": 71058,
+            "Title": "Kann die Post einen Beitrag zur digitalen Inklusion leisten?"
+          },
+          {
+            "affair_id": 153348,
+            "Title": "Online-Handel prüfen, überwachen und einschränken?"
+          },
+          {
+            "affair_id": 154848,
+            "Title": "Sexuelle Gewalt an Kindern im Internet. Was macht das Bundesamt für Polizei?"
+          },
+          {
+            "affair_id": 202440,
+            "Title": "Inkassounternehmen. Für eine bessere Information der Konsumentinnen und Konsumenten"
+          },
+          {
+            "affair_id": 201674,
+            "Title": "Revision des Nachrichtendienstgesetzes. Arztgeheimnis und Berufsgeheimnis sind in Gefahr!"
+          },
+          {
+            "affair_id": 68419,
+            "Title": "Förderung von Audiowerken als Schweizer Kulturgut"
+          },
+          {
+            "affair_id": 288093,
+            "Title": "Produktesicherheit. Förderung eines freien Wettbewerbs zwischen schweizerischen und ausländischen Online-Händlern"
+          },
+          {
+            "affair_id": 69534,
+            "Title": "Eine schweizerische Halbleiterstrategie (Swiss Chip Strategy)"
+          }
+        ]
+      },
+      "broad": {
+        "precision": 1.0,
+        "precision_ci95": [
+          1.0,
+          1.0
+        ],
+        "recall": 0.17559379065800648,
+        "recall_ci95": [
+          0.10062312207879975,
+          0.40714171284516404
+        ],
+        "reviewer_yes_rate": {
+          "TP": 1.0,
+          "FN": 0.7222222222222222,
+          "FP": 1.0,
+          "TN": 0.18181818181818182
+        },
+        "answered": {
+          "TP": 4,
+          "FN": 18,
+          "FP": 4,
+          "TN": 22
+        },
+        "cell_sizes": {
+          "TP": 55,
+          "FN": 46,
+          "FP": 5,
+          "TN": 385
+        },
+        "unsure": 0,
+        "model_found_pm_missed_confirmed": [
+          {
+            "affair_id": 287810,
+            "Title": "Erweiterte Kontrolle personenbezogener Daten und sozialer Medien im Esta-Verfahren. Praktische und rechtliche Konsequenzen für Schweizer Staatsangehörige"
+          },
+          {
+            "affair_id": 201868,
+            "Title": "Internationale Zusammenarbeit von Strafbehörden im Kampf gegen Cyberkriminalität"
+          },
+          {
+            "affair_id": 153262,
+            "Title": "Gesetzliche Vertretung von Dienstleistern in der Schweiz"
+          },
+          {
+            "affair_id": 161710,
+            "Title": "Einführung DigiFLUX - Wie wird die Verordnung (SR 919.117.71) bezüglich Flächenangabe (Anhang 3b - 5.4) genau umgesetzt?"
+          }
+        ],
+        "real_misses": [
+          {
+            "affair_id": 155776,
+            "Title": "Covid-19. Eine Grundlage, um in der Bundesverwaltung die Verbreitung von Homeoffice zu beschleunigen?"
+          },
+          {
+            "affair_id": 235223,
+            "Title": "Sind Sicherheitsmerkmale und -vorrichtungen nach dem SMVS für das Monitoring von Arzneimitteln ungeeignet?"
+          },
+          {
+            "affair_id": 213693,
+            "Title": "Plattformunternehmen und Gig Economy. Bessere Absicherung von selbstständig Erwerbstätigen"
+          },
+          {
+            "affair_id": 71058,
+            "Title": "Kann die Post einen Beitrag zur digitalen Inklusion leisten?"
+          },
+          {
+            "affair_id": 153348,
+            "Title": "Online-Handel prüfen, überwachen und einschränken?"
+          },
+          {
+            "affair_id": 154848,
+            "Title": "Sexuelle Gewalt an Kindern im Internet. Was macht das Bundesamt für Polizei?"
+          },
+          {
+            "affair_id": 202440,
+            "Title": "Inkassounternehmen. Für eine bessere Information der Konsumentinnen und Konsumenten"
+          },
+          {
+            "affair_id": 201674,
+            "Title": "Revision des Nachrichtendienstgesetzes. Arztgeheimnis und Berufsgeheimnis sind in Gefahr!"
+          },
+          {
+            "affair_id": 213749,
+            "Title": "Explosion der Gesundheitskosten. Wann kommen endlich wirksame Massnahmen gegen die Verschwendung von Prämiengeldern und zur Dämpfung der Kosten?"
+          },
+          {
+            "affair_id": 65002,
+            "Title": "E-Parlament als eine mögliche Antwort auf Notsituationen wie infolge des Coronavirus"
+          },
+          {
+            "affair_id": 68419,
+            "Title": "Förderung von Audiowerken als Schweizer Kulturgut"
+          },
+          {
+            "affair_id": 288093,
+            "Title": "Produktesicherheit. Förderung eines freien Wettbewerbs zwischen schweizerischen und ausländischen Online-Händlern"
+          },
+          {
+            "affair_id": 69534,
+            "Title": "Eine schweizerische Halbleiterstrategie (Swiss Chip Strategy)"
+          }
+        ]
+      }
+    }
   }
 }

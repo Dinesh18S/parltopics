@@ -552,6 +552,7 @@ async function loadMetrics() {
   const t = d.test.at_chosen_threshold, b = d.baselines_full_slice, q = d.test.quality;
   const cvt = (m.curia_vista_standard || {}).test;
   const xl = m.cross_language, ct = ((m.cost_time || {}).runs || [])[0];
+  const adj = ((m.adjudication || {}).readings || {}).strict;
   const pending = (what) => `<span class="pending">pending — ${what}</span>`;
   grid.innerHTML = `
     <div class="card wide">
@@ -567,7 +568,7 @@ async function loadMetrics() {
           ${bar("ParlTopics", t.recall, t.recall_ci95)}
           ${bar(`Curia Vista “${b.curia_vista_area.area_names.join(" / ")}”`, b.curia_vista_area.recall, null, true)}
           ${bar("Keyword search", b.keyword_search_core.recall, null, true)}
-          <div class="cap" style="margin-top:10px">Baselines are exact counts on all ${d.population.n.toLocaleString("en")} affairs. After blind human review: ${pending("review sheet with the team's political-science reviewer")}.</div>
+          <div class="cap" style="margin-top:10px">Baselines are exact counts on all ${d.population.n.toLocaleString("en")} affairs. After blind human review: ${adj ? `precision ${pct(adj.precision)} (${ci(adj.precision_ci95)}), recall ${pct(adj.recall)} (${ci(adj.recall_ci95)}) — strict rule, ${adj.answered.TP + adj.answered.FN + adj.answered.FP + adj.answered.TN} reviewed affairs, wide intervals` : pending("review sheet with the team's political-science reviewer")}.</div>
         </div>
         <div style="flex:0 0 360px">
           <div class="meta-k">Precision–recall curve (test)</div>
