@@ -162,4 +162,5 @@ Codes in the prompt are short local ids (`C01…C22`, `CV01…CV28`) mapped back
 | adhoc_v3 | 2026-10-18 | system rule: "confidence = how likely it is that the affair is about this topic (0 = certainly not, 1 = certainly)" | first loop (dev): 14/20 pos, 20/20 neg |
 | adhoc_v4 | 2026-10-18 | system rule: include/exclude lists are part of the definition (D42); evidence retry file (D43) | S6 dev (113): 30/45 pos, 2/64 FP |
 | adhoc_v5 | 2026-10-18 | include-list rule strengthened: "check the list first, don't reject because the general sentence seems not to fit" (D42) | S6 dev (113): 33/45 pos, 2/64 FP; enlarged dev (400): R 55.6 % / P_corr 67.9 % at t = 0.9 — **final**; test once (D46) |
+| adhoc_v6 | 2026-10-18 | user message restates the topic name + the question after the affair text (D61 drift) | enlarged dev (400): R 51.1 % / P_corr 66.0 % at t = 0.9 (F1 0.576 < v5 0.611) → **not adopted** (D66); drift checks pass (199828 no_match) |
 | standard_v1 | 2026-10-18 | Initial | — |

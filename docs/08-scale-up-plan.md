@@ -31,6 +31,7 @@ Gateway throughput (adhoc_v5, Bern sample, 0 errors): 182 affairs/min at concurr
 - Dev only first (S6 dev split + `make check-topics` + the 199828 probe). Adopt only if dev is at least as good and the
   drift is gone. Then re-run the S6 **test** once as a new, separately logged evaluation (pre-register before running).
 - All large runs use the final prompt.
+- **Result (D66): not adopted.** Dev F1 0.576 < 0.611 (v5); drift checks pass. adhoc_v5 stays final; no new test run.
 
 ### Phase 1 — pipeline (≈ 1.5 h, the core)
 | Command | Does |

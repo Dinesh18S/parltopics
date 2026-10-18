@@ -378,6 +378,7 @@ def check_topic(
     definition: str = "",
     max_matches: int = typer.Option(..., help="fail if more affairs than this are shown as matches"),
     pool: Path = Path("data/samples/demo_pool.csv"),
+    prompt_version: str = "adhoc_v5",
 ) -> None:
     """Classify the demo pool with a custom topic exactly as the UI does; list shown matches; fail above the limit."""
     from parltopics.api import SearchIn, TopicIn, build_topic, match_threshold
@@ -386,7 +387,7 @@ def check_topic(
     settings = get_settings()
     store = Store(settings.db_path)
     topic, ref = build_topic(SearchIn(topic=TopicIn(name=name, definition=definition)))
-    prompt = load_prompt("adhoc_v5")
+    prompt = load_prompt(prompt_version)
     run = start_run(RESULTS_DIR, prompt, topic, Path(ref), settings, sample_file=str(pool), notes=f"check topic {name}")
     store.add_run(run, topic)
     rows = pd.read_csv(pool, dtype={"lang": str}, keep_default_na=False).to_dict("records")

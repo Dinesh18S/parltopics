@@ -43,3 +43,10 @@ def test_prompt_sha_is_stable_and_versioned():
     a, b = load_prompt("adhoc_v4"), load_prompt("adhoc_v4")
     assert a.sha == b.sha and len(a.sha) == 64
     assert a.version == "adhoc_v4"
+
+
+def test_adhoc_v6_restates_topic_and_question_after_the_text():
+    _, user = render_adhoc(load_prompt("adhoc_v6"), _topic(), "AFFAIR BODY", "de")
+    after = user.split("AFFAIR BODY", 1)[1]
+    assert 'is the topic "Topic X", as defined above, a MAIN subject' in after
+    assert 'not "Topic X" - then answer "no_match"' in after

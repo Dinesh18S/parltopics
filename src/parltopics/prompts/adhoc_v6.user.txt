@@ -1,0 +1,13 @@
+TOPIC: {name}
+DEFINITION: {definition}
+{rules}
+AFFAIR (language: {lang}):
+<<<
+{text}
+>>>
+
+Question: is the topic "{name}", as defined above, a MAIN subject of this affair?
+Judge only this topic. An affair can have a clear main subject that is not "{name}" - then answer "no_match".
+
+Return JSON: {{"label": "match"|"no_match"|"abstain", "confidence": number 0-1,
+"evidence": string, "rationale": string}}
