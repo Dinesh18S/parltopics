@@ -4,6 +4,7 @@ ingest → fetch and assemble every affair once (data-quality report); index →
 topic or scheme, resumable per prompt_version; update → ingest again, classify only what is new (or failed)."""
 
 import statistics
+import threading
 import time
 from collections import Counter
 from collections.abc import Callable
@@ -132,10 +133,10 @@ class Progress:
 
 def index(settings: Settings, store: Store, results_dir: Path, body_key: str, target: str,
           template: str | None = None, only: set[int] | None = None, passes: int = 2,
-          report: Callable[[str], None] | None = None) -> dict:
+          report: Callable[[str], None] | None = None, cancel: threading.Event | None = None) -> dict:
     """Classify every ingested affair of the body that has no complete result for this prompt_version yet.
     A second pass retries transient failures. Re-running continues where the last run stopped.
-    The model sees the text stored at ingest (no re-fetch)."""
+    The model sees the text stored at ingest (no re-fetch). Setting `cancel` stops after the calls in flight."""
     prompt, obj, version = target_version(settings, target, template)
     ref = collection_ref(body_key)
     items = [i for i in store.items(body_key) if i["status"] == "ok" and (only is None or i["affair_id"] in only)]
@@ -156,9 +157,9 @@ def index(settings: Settings, store: Store, results_dir: Path, body_key: str, ta
         store.add_run(run, obj)
         if target.startswith(SCHEME_PREFIX):
             classify_one = scheme_classifier(settings, target[len(SCHEME_PREFIX):], prompt, run.run_id)
-            records = iter_records(settings, store, run, rows, classify_one, stored_source=stored)
+            records = iter_records(settings, store, run, rows, classify_one, cancel, stored_source=stored)
         else:
-            records = iter_classify(settings, store, results_dir, run, obj, prompt, rows, stored_source=stored)
+            records = iter_classify(settings, store, results_dir, run, obj, prompt, rows, cancel, stored_source=stored)
         progress = Progress(len(rows), report)
         for record in records:
             progress.add(record)
@@ -166,6 +167,8 @@ def index(settings: Settings, store: Store, results_dir: Path, body_key: str, ta
         run_ids.append(run.run_id)
         if report:
             report(f"pass {attempt} run {run.run_id}: {progress.line()}")
+        if cancel is not None and cancel.is_set():
+            break
     done = store.done_affairs(ref, version) & ids
     return {"body_key": body_key, "target": target, "prompt_template": prompt.version, "prompt_version": version,
             "runs": run_ids, "affairs": len(ids), "done": len(done), "not_done": len(ids - done)}

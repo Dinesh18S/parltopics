@@ -41,6 +41,8 @@
     </div>
 
     <div class="row" id="queryRow">
+      <label class="filter"><span class="cz">Collection</span><select id="fColl" aria-label="Collection"><option value="">Demo pool</option></select></label>
+      <div class="vsep"></div>
       <span class="cap std-only hidden" style="font-weight:600">Scheme</span>
       <div class="seg std-only hidden" role="group" aria-label="Classification scheme" id="schemeSeg"></div>
       <span class="cap std-only hidden">Full taxonomy · up to 3 per affair · labels in DE/FR (APS has no IT labels)</span>
@@ -68,15 +70,22 @@
       <label class="filter"><span class="cz">Level</span><select id="fLevel"><option value="">Federal · Cantonal · Municipal</option><option>Federal</option><option>Cantonal</option><option>Municipal</option></select></label>
       <label class="filter"><span class="cz">Language</span><select id="fLang"><option value="">DE · FR · IT</option><option value="de">DE</option><option value="fr">FR</option><option value="it">IT</option></select></label>
       <label class="filter"><span class="cz">Date</span><select id="fDate"><option value="">2018 → today</option></select></label>
+      <div class="vsep"></div>
+      <div class="seg" role="group" aria-label="Task" id="taskSeg">
+        <button type="button" class="on" data-task="all" aria-pressed="true">Find all</button>
+        <button type="button" data-task="new" aria-pressed="false">What's new</button>
+        <button type="button" data-task="queue" aria-pressed="false">Review queue</button>
+      </div>
       <div class="spacer"></div>
+      <label class="filter"><span class="cz">Export</span><select id="fExport" aria-label="Export"><option value="">Excel…</option><option value="shown">Suggested</option><option value="confirmed">Confirmed</option><option value="all">All rows</option></select></label>
       <button class="toggle" type="button" id="kwToggle" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span id="kwLabel">Keyword absent OFF</span></button>
     </div>
 
     <div class="progress hidden" id="progress" role="status" aria-live="polite">
       <span class="spin" aria-hidden="true"></span>
-      <div>Classifying pool for <strong id="progTopic"></strong></div>
+      <div><span id="progWhat">Classifying pool for</span> <strong id="progTopic"></strong></div>
       <div class="bar"><i id="progBar"></i></div>
-      <div class="mono"><strong id="progDone">0</strong> / <span id="progTotal">0</span> classified</div>
+      <div class="mono"><strong id="progDone">0</strong> / <span id="progTotal">0</span> classified<span id="progEta"></span></div>
       <button class="btn" type="button" id="cancelBtn">Cancel</button>
     </div>
 

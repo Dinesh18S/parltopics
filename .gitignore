@@ -48,3 +48,4 @@ designs/
 
 # Collection exports (may contain many rows; regenerate with `parltopics export`)
 data/exports/
+data/topics_custom/

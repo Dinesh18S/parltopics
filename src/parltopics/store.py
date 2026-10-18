@@ -309,9 +309,12 @@ class Store:
 
     def collection_results(self, collection: str, prompt_version: str) -> list[dict]:
         """Per affair, the predictions of the run that counts for it (see _BEST_RUN_SQL), with metadata + review."""
+        select = ITEMS_SELECT.replace(" FROM predictions p ", ", c.first_seen_at FROM predictions p ", 1)
         rows = self.db.execute(
-            _BEST_RUN_SQL + " " + ITEMS_SELECT +
-            "JOIN best b ON b.affair_id = p.affair_id AND b.run_id = p.run_id ORDER BY p.affair_id, p.id",
+            _BEST_RUN_SQL + " " + select +
+            "JOIN best b ON b.affair_id = p.affair_id AND b.run_id = p.run_id "
+            "LEFT JOIN collection_items c ON c.affair_id = p.affair_id AND c.body_key = p.body_key "
+            "ORDER BY p.affair_id, p.id",
             (collection, prompt_version))
         return [_row(r) for r in rows]
 

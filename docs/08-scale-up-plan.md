@@ -54,6 +54,7 @@ Tests for: resumability (no duplicate work), idempotency, update picks only new 
 - Custom topic on a full collection: show estimate first ("Bern: 5,249 affairs ≈ 20 min"), then run (resumable).
 - 20-minute user test: the partner does the 3 tasks as a DVS user; time them; fix friction.
 - Offline mode: keep the demo pool cache + compact result files (no full texts in git, 10 MB file limit).
+**Result (D68):** collection switch, What's new / Find all / Review queue, estimate → job → progress → cancel/continue, Excel export; verified in Chrome on a DB copy. Open: offline collection files (after Phase 2), user test with the partner.
 
 ### Phase 4 — evaluation on full populations (≈ 1 h)
 - Bern and federal: exact precision/recall vs PolitMonitor next to the baselines (Curia Vista area, core keywords).

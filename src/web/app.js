@@ -11,7 +11,10 @@ const S = {
   filters: { parl: "", level: "", lang: "", year: "" }, kwOnly: false, show: { rejected: false, below: false },
   selected: -1, detailId: null, pending: [], definitionUsed: "", hasKeywords: false, pool: [],
   mode: "adhoc", scheme: "aps", labelNames: {}, loadSeq: 0,
+  collection: "", collections: [], coll: null, task: "all", prevVisit: null, job: null, confirmJob: null, jobBody: null,
 };
+const enc = encodeURIComponent;
+const DAY_MS = 86400000;
 const ADHOC_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Label", "Confidence", "Evidence", "Review"];
 const STD_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Labels (confidence)", "Evidence (top label)", "Review"];
 
@@ -31,6 +34,8 @@ async function loadState() {
   $("classifyBtn").disabled = !live;
   $("sampleChip").classList.toggle("hidden", live);
   if (!S.pool.length) S.pool = await api("/api/pool");
+  S.collections = await api("/api/collections");
+  renderCollections();
   $("classifyBtn").title = live ? "Classify the demo pool (Enter)" : "Model endpoint unreachable";
   renderPresets();
   renderSchemes();
@@ -41,8 +46,114 @@ async function loadState() {
 function renderPresets() {
   const first = S.app.presets.filter((p) => p.id === S.app.default_preset);
   const ordered = [...first, ...S.app.presets.filter((p) => p.id !== S.app.default_preset)];
+  const own = S.collection ? (currentCollection().targets || []).filter((t) => t.kind === "adhoc" && !t.target.startsWith("topics/")) : [];
   $("presetChips").innerHTML = ordered.map((p) =>
-    `<button type="button" class="chip${p.id === S.presetId ? " on" : ""}" data-preset="${esc(p.id)}">${esc(p.name)}</button>`).join("");
+    `<button type="button" class="chip${p.id === S.presetId ? " on" : ""}" data-preset="${esc(p.id)}">${esc(p.name)}</button>`).join("") +
+    own.map((t) => `<button type="button" class="chip${S.coll && S.coll.target === t.target ? " on" : ""}" data-target="${esc(t.target)}" title="Your topic, indexed on this collection">${esc(t.name)}</button>`).join("");
+}
+
+// ---------- collections (whole parliaments) ----------
+const currentCollection = () => S.collections.find((c) => c.body_key === S.collection) || { targets: [] };
+
+function renderCollections() {
+  const el = $("fColl"); const cur = S.collection;
+  el.innerHTML = `<option value="">Demo pool · ${S.app.pool.n} affairs</option>` + S.collections.map((c) =>
+    `<option value="${esc(c.body_key)}">${esc(c.body_key)} · ${esc(c.level)} · ${c.n.toLocaleString("en")} affairs</option>`).join("");
+  el.value = cur;
+}
+
+function lastVisit(body) {
+  // previous visit of this collection, for "What's new"; per browser only, page works without it
+  try {
+    const key = `parltopics.lastVisit.${body}`;
+    const prev = localStorage.getItem(key);
+    localStorage.setItem(key, new Date().toISOString());
+    return prev;
+  } catch (e) { return null; }
+}
+
+function selectCollection(body) {
+  if (S.live || S.job) { $("fColl").value = S.collection; return; }
+  Object.assign(S, { collection: body, coll: null, confirmJob: null, items: [], runId: null, selected: -1 });
+  S.prevVisit = body ? lastVisit(body) : null;
+  closeDetail();
+  $("classifyBtn").title = body ? `Index ${body} for this topic (Enter)` : "Classify the demo pool (Enter)";
+  renderPresets();
+  if (S.mode === "standard") return selectScheme(S.scheme);
+  selectPreset(S.presetId || (S.app.presets.find((p) => p.id === S.app.default_preset) || S.app.presets[0] || {}).id);
+}
+
+function targetBody(target) {
+  if (target.startsWith("scheme:")) return { scheme: target.slice(7) };
+  if (target.startsWith("topics/")) return { preset_id: target.slice(7).replace(/\.yaml$/, "") };
+  return null;
+}
+
+async function loadCollection(target, body) {
+  const seq = ++S.loadSeq;
+  const t = (currentCollection().targets || []).find((x) => x.target === target);
+  if (!t || !t.done) {
+    const req = body || targetBody(target);
+    const est = t || await api(`/api/collections/${enc(S.collection)}/estimate`, { method: "POST", body: JSON.stringify(req) });
+    if (seq !== S.loadSeq) return;
+    Object.assign(S, { items: [], runId: null, coll: est, topicName: est.name, selected: -1, confirmJob: { body: req, est } });
+    return render();
+  }
+  const d = await api(`/api/collections/${enc(S.collection)}/results?target=${enc(target)}`);
+  if (seq !== S.loadSeq) return;
+  Object.assign(S, { items: d.items, runId: null, coll: d, topicName: d.name, selected: -1, pending: [], confirmJob: null });
+  if (body) S.confirmJob = d.pending ? { body, est: d, partial: true } : null;
+  renderPresets(); fillFilterOptions(); render();
+}
+
+async function classifyCollection() {
+  if (S.app.mode !== "live" || S.job) return;
+  const body = S.mode === "standard" ? { scheme: S.scheme } : presetUnchanged() ? { preset_id: S.presetId } : { topic: topicFromForm() };
+  if (body.topic && !body.topic.name) { $("topicName").focus(); return; }
+  if (body.topic) { S.presetId = null; renderPresets(); }
+  try {
+    const est = await api(`/api/collections/${enc(S.collection)}/estimate`, { method: "POST", body: JSON.stringify(body) });
+    S.definitionUsed = body.topic ? (body.topic.definition || `Affairs whose main subject is ${body.topic.name}.`) : S.definitionUsed;
+    return loadCollection(est.target, body);
+  } catch (e) { alertStrip(`Could not estimate: ${e.message}`); }
+}
+
+async function startJob() {
+  const { body } = S.confirmJob;
+  S.confirmJob = null; S.jobBody = body;
+  try {
+    S.job = await api(`/api/collections/${enc(S.collection)}/jobs`, { method: "POST", body: JSON.stringify(body) });
+    render(); pollJob();
+  } catch (e) { alertStrip(`Could not start indexing: ${e.message}`); }
+}
+
+function pollJob() {
+  const j = S.job;
+  if (!j) return;
+  $("progress").classList.remove("hidden");
+  $("progWhat").textContent = `Indexing ${j.body_key} for`;
+  $("progTopic").textContent = j.name;
+  $("progDone").textContent = j.done.toLocaleString("en");
+  $("progTotal").textContent = j.total.toLocaleString("en");
+  $("progBar").style.width = `${(100 * j.done) / (j.total || 1)}%`;
+  $("progEta").textContent = j.eta_min != null ? ` · ≈ ${j.eta_min} min left${j.rate_now ? ` · ${j.rate_now} affairs/min` : ""} · you can stop and continue later` : "";
+  if (j.status === "running") {
+    setTimeout(async () => {
+      try { S.job = await api(`/api/jobs/${j.job_id}`); } catch (e) { S.job = { ...j, status: "failed", error: e.message }; }
+      pollJob();
+    }, 3000);
+    return;
+  }
+  finishJob(j);
+}
+
+async function finishJob(j) {
+  $("progress").classList.add("hidden"); $("progEta").textContent = "";
+  S.job = null;
+  S.collections = await api("/api/collections");
+  if (j.body_key !== S.collection) return render();
+  await loadCollection(j.target, j.status === "done" ? null : S.jobBody);
+  if (j.status === "failed") alertStrip(`Indexing stopped: ${j.error}. Finished affairs are kept; start again to continue.`);
 }
 
 function selectPreset(id) {
@@ -56,6 +167,7 @@ function selectPreset(id) {
   renderPresets();
   S.definitionUsed = p.definition.trim();
   S.hasKeywords = Object.keys(p.keywords || {}).length > 0;
+  if (S.collection) return loadCollection(`topics/${id}.yaml`);
   if (p.run) loadRun(p.run.run_id);
   else { S.loadSeq += 1; S.items = []; S.runId = null; S.topicName = p.name; render(); }
 }
@@ -86,6 +198,7 @@ function presetUnchanged() {
 }
 
 async function classify() {
+  if (S.collection) return classifyCollection();
   if (S.app.mode !== "live" || S.live) return;
   const body = S.mode === "standard" ? { scheme: S.scheme } : presetUnchanged() ? { preset_id: S.presetId } : { topic: topicFromForm() };
   if (body.topic) {
@@ -98,6 +211,7 @@ async function classify() {
   closeDetail();
   $("classifyBtn").disabled = true; $("classifyBtn").firstChild.textContent = "Classifying… ";
   $("progress").classList.remove("hidden");
+  $("progWhat").textContent = "Classifying pool for";
   $("progTopic").textContent = body.scheme ? schemeName(body.scheme) : body.topic ? body.topic.name : $("topicName").value;
   render();
   try {
@@ -145,10 +259,14 @@ const level = (i) => LEVEL[i.body_type] || "Municipal";
 const reviewState = (i) => i.review_decision === "confirm" || (i.review_decision === "correct" && i.review_label === "match") ? "confirmed"
   : i.review_decision ? "rejected" : "";
 
+const newSince = () => S.prevVisit || new Date(Date.now() - 30 * DAY_MS).toISOString().slice(0, 10);
+const isNew = (i) => (S.prevVisit ? (i.first_seen_at || "") > S.prevVisit : (i.begin_date || "") >= newSince());
+
 function passesFilters(i) {
   const f = S.filters;
   return (!f.parl || i.body_key === f.parl) && (!f.level || level(i) === f.level) && (!f.lang || i.lang === f.lang) &&
-    (!f.year || (i.begin_date || "") >= f.year) && (!S.kwOnly || !S.hasKeywords || i.keyword_absent === true);
+    (!f.year || (i.begin_date || "") >= f.year) && (!S.kwOnly || !S.hasKeywords || i.keyword_absent === true) &&
+    (S.task !== "new" || isNew(i));
 }
 
 function groups() {
@@ -161,10 +279,34 @@ function groups() {
   };
 }
 
+const byConfidence = (a, b) => (b.confidence ?? 0) - (a.confidence ?? 0);
+
 function visibleRows() {
-  if (S.mode === "standard") return stdGroups().shown;
+  if (S.mode === "standard") {
+    const shownGroups = stdGroups().shown;
+    return S.task === "queue" ? shownGroups.filter((g) => g.labels.every((l) => !reviewState(l))).sort(byConfidence) : shownGroups;
+  }
   const g = groups();
+  if (S.task === "queue") return g.suggested.filter((i) => !reviewState(i)).sort(byConfidence);
   return [...g.suggested, ...(S.show.below ? g.below : []), ...(S.show.rejected ? g.rejected : [])];
+}
+
+function scopeHtml() {
+  const c = S.coll;
+  const pool = S.collection && c
+    ? `Collection <b>${esc(S.collection)}</b>: <b>${c.n.toLocaleString("en")}</b> affairs${c.pending ? ` · <b>${c.done.toLocaleString("en")}</b> classified so far` : ""}`
+    : `Pool: <b>${S.pool.length || S.app.pool.n}</b> affairs`;
+  const task = S.task === "new" ? ` · What's new: ${S.prevVisit ? `added since your last visit (${esc(S.prevVisit.slice(0, 16).replace("T", " "))} UTC)` : `dated in the last 30 days (first visit)`}`
+    : S.task === "queue" ? " · Review queue: unreviewed suggestions, highest confidence first · <b>C</b> confirm · <b>R</b> reject" : "";
+  return `<span class="cap">${pool}${task}</span>`;
+}
+
+function confirmJobHtml() {
+  const { est, partial } = S.confirmJob;
+  const live = S.app.mode === "live";
+  return `<h2>${partial ? `${esc(est.name)}: ${est.done.toLocaleString("en")} of ${est.total.toLocaleString("en")} affairs classified` : `${esc(est.name)} is not indexed on ${esc(S.collection)} yet`}</h2>
+    <p>${est.pending.toLocaleString("en")} affairs to classify ≈ <b>${est.minutes} min</b> (${est.rate_measured ? "measured" : "assumed until a first run is measured:"} ≈ ${est.rate_per_min} affairs/min). Results appear when it is done; you can stop and continue later — finished affairs are never classified twice.</p>
+    ${live ? `<button class="btn btn-primary" type="button" data-act="job-start">${partial ? "Continue" : "Index now"}</button>` : `<p class="cap">The model endpoint is unreachable, so nothing can be indexed now.</p>`}`;
 }
 
 const placeholderRows = () => (S.live ? S.pending.filter(passesFilters) : []);
@@ -194,12 +336,26 @@ function render() {
     <button type="button" class="linkbtn" data-show="rejected" aria-pressed="${S.show.rejected}"><b>${g.rejected.length}</b> rejected (evidence not found)</button><span>·</span>
     <button type="button" class="linkbtn" data-show="below" aria-pressed="${S.show.below}"><b>${g.below.length}</b> below threshold ${S.app.match_threshold.toFixed(2)}</button>
     <span class="spacer"></span>
-    <span class="cap">Pool: <b>${S.pool.length || S.app.pool.n}</b> affairs${kw}</span>
+    ${scopeHtml()}<span class="cap">${kw}</span>
     ${S.definitionUsed ? `<div class="defused">Definition used: <i>${esc(S.definitionUsed)}</i></div>` : ""}` : "";
   $("strip").classList.toggle("hidden", !S.items.length && !S.live);
   $("rows").innerHTML = rows.map((i, n) => rowHtml(i, n)).join("") + placeholderRows().map(placeholderHtml).join("");
   const empty = $("emptyState");
-  if (!S.items.length && !S.live) {
+  if (S.confirmJob && !S.job && (!rows.length || S.confirmJob.partial)) {
+    empty.innerHTML = confirmJobHtml();
+    empty.classList.remove("hidden");
+    return;
+  }
+  if (S.job && !S.items.length) {
+    empty.innerHTML = `<h2>Indexing ${esc(S.collection)}…</h2><p>Progress is shown above. Results appear here when it is done.</p>`;
+    empty.classList.remove("hidden");
+    return;
+  }
+  if (S.task === "queue" && !rows.length && S.items.length) {
+    empty.innerHTML = `<h2>Review queue is empty</h2><p>Every suggestion in this view has a review. Switch to <b>Find all</b> to see them.</p>`;
+  } else if (S.task === "new" && !rows.length && S.items.length) {
+    empty.innerHTML = `<h2>Nothing new</h2><p>No suggested affairs ${S.prevVisit ? "were added since your last visit" : "are dated in the last 30 days"}.</p>`;
+  } else if (!S.items.length && !S.live) {
     empty.innerHTML = S.app.mode === "live"
       ? `<h2>Type a topic, or pick a preset</h2><p>Give a topic a name and a one-line definition, then press <b>Classify</b>. The model reads every affair in the demo pool (${S.app.pool.n} affairs, DE/FR/IT, federal and cantonal) and suggests matches with a verified quote.</p>`
       : `<h2>No cached results for this topic</h2><p>The model endpoint is unreachable, so only stored runs can be shown. Pick a preset with cached results.</p>`;
@@ -356,7 +512,12 @@ async function review(pid, decision, correctedLabel) {
   const last = res.reviews[res.reviews.length - 1];
   const item = S.items.find((i) => i.prediction_id === pid);
   if (item) Object.assign(item, { review_decision: last.decision, review_label: last.corrected_label });
+  const queueNext = S.task === "queue" && S.mode !== "standard" && S.detailId === pid;
   render();
+  if (queueNext) {
+    const next = visibleRows()[Math.max(0, Math.min(S.selected, visibleRows().length - 1))];
+    return next ? openDetail(next.prediction_id) : closeDetail();
+  }
   if (S.mode === "standard" && S.detailId) openStandardDetail(S.detailId);
   else if (S.detailId === pid) openDetail(pid);
 }
@@ -404,6 +565,7 @@ async function selectScheme(id) {
   if (seq !== S.loadSeq || S.scheme !== id) return;
   const sc = (S.app.schemes || []).find((x) => x.id === id);
   S.topicName = schemeName(id); S.definitionUsed = ""; S.hasKeywords = false;
+  if (S.collection) return loadCollection(`scheme:${id}`);
   if (sc && sc.run) return loadRun(sc.run.run_id);
   S.loadSeq += 1; S.items = []; S.runId = null; render();
 }
@@ -464,15 +626,20 @@ function renderStandard() {
     <span><b>${g.shown.reduce((n, x) => n + x.labels.filter((l) => l.label !== "NONE_OTHER").length, 0)}</b> labels</span><span>·</span>
     <span><b>${g.none}</b> none / other</span><span>·</span>
     <span><b>${g.failed}</b> labels rejected (evidence not found)</span>
-    <span class="spacer"></span><span class="cap">Pool: <b>${S.pool.length || S.app.pool.n}</b> affairs · scheme ${esc(schemeName(S.scheme))}${fallbackNote}</span>` : "";
+    <span class="spacer"></span>${scopeHtml()}<span class="cap"> · scheme ${esc(schemeName(S.scheme))}${fallbackNote}</span>` : "";
   $("strip").classList.toggle("hidden", !S.items.length && !S.live);
-  $("rows").innerHTML = g.shown.map((x, n) => `<tr tabindex="0" data-pid="${x.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}">
+  const empty = $("emptyState");
+  if (S.confirmJob && !S.job && (!g.shown.length || S.confirmJob.partial)) {
+    $("rows").innerHTML = "";
+    empty.innerHTML = confirmJobHtml();
+    return empty.classList.remove("hidden");
+  }
+  $("rows").innerHTML = visibleRows().map((x, n) => `<tr tabindex="0" data-pid="${x.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}">
     <td>${esc(x.body_key)}</td><td class="mono muted">${esc(x.number)}</td><td class="muted nowrap">${esc(x.begin_date)}</td>
     <td><span class="lang">${esc((x.lang || "").toUpperCase())}</span></td><td class="tbltitle" lang="${esc(x.lang)}">${esc(x.title)}</td>
     <td><div class="labels">${paths(x).map((p) => p.none ? `<span class="path none">None / other</span>`
       : `<span class="path">${p.chap ? `<span class="chap">${esc(p.chap)}</span>` : ""}${p.chap && p.topic ? `<span class="arr">→</span>` : ""}${p.topic ? `<span class="topic">${esc(p.topic)}</span>` : ""}<span class="cf">${(p.conf ?? 0).toFixed(2)}</span></span>`).join("")}</div></td>
     <td class="evcell">${quote(x)}</td><td>${stdReview(x)}</td></tr>`).join("") + placeholderRows().map(placeholderHtml).join("");
-  const empty = $("emptyState");
   if (!S.items.length && !S.live) empty.innerHTML = `<h2>No results for ${esc(schemeName(S.scheme))} yet</h2><p>${S.app.mode === "live" ? "Press <b>Classify</b> to label the demo pool with this scheme." : "The model endpoint is unreachable and no cached run exists for this scheme."}</p>`;
   empty.classList.toggle("hidden", !!g.shown.length || S.live);
 }
@@ -603,6 +770,13 @@ document.addEventListener("click", (e) => {
   const t = e.target.closest("button, tr[data-pid], #scrim, select");
   if (!t) return;
   if (t.dataset.preset) return selectPreset(t.dataset.preset);
+  if (t.dataset.target) { S.presetId = null; return loadCollection(t.dataset.target); }
+  if (t.dataset.task) {
+    S.task = t.dataset.task; S.selected = -1;
+    document.querySelectorAll("[data-task]").forEach((x) => { x.classList.toggle("on", x === t); x.setAttribute("aria-pressed", String(x === t)); });
+    return render();
+  }
+  if (t.dataset.act === "job-start") return startJob();
   if (t.dataset.show) { S.show[t.dataset.show] = !S.show[t.dataset.show]; return render(); }
   if (t.dataset.view) {
     document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x === t));
@@ -626,6 +800,7 @@ document.addEventListener("click", (e) => {
   if (t.dataset.act === "reject") return review(S.detailId, "reject");
   if (t.id === "defToggle") { const open = $("defBox").classList.toggle("hidden"); t.setAttribute("aria-expanded", String(!open)); return; }
   if (t.id === "classifyBtn") return classify();
+  if (t.id === "cancelBtn" && S.job) return api(`/api/jobs/${S.job.job_id}/cancel`, { method: "POST" }).catch((err) => alertStrip(err.message));
   if (t.id === "cancelBtn" && S.controller) return S.controller.abort();
   if (t.id === "retryBtn") return loadState();
   if (t.id === "kwToggle") {
@@ -637,6 +812,13 @@ document.addEventListener("click", (e) => {
 document.addEventListener("change", (e) => {
   const t = e.target;
   if (t.dataset.act === "correct" && t.value) return review(S.detailId, "correct", t.value);
+  if (t.id === "fColl") return selectCollection(t.value);
+  if (t.id === "fExport" && t.value) {
+    const only = t.value; t.value = "";
+    if (S.collection && S.coll) return void (location.href = `/api/collections/${enc(S.collection)}/export.xlsx?target=${enc(S.coll.target)}&only=${only}`);
+    if (S.runId) return void (location.href = `/api/export.csv?run_id=${enc(S.runId)}`);
+    return alertStrip("Nothing to export yet.");
+  }
   const map = { fParl: "parl", fLevel: "level", fLang: "lang", fDate: "year" };
   if (map[t.id]) { S.filters[map[t.id]] = t.value; S.selected = -1; render(); }
 });

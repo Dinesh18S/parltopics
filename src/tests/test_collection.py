@@ -1,3 +1,4 @@
+from pathlib import Path
 from types import SimpleNamespace
 
 import openai
@@ -140,3 +141,15 @@ def test_export_rows_flag_shown_matches(env):
     [row] = collection.export_rows(env.store, "GE", version, 0.9)
     assert row["shown_as_match"] and row["evidence_verified"] and row["review"] == ""
     assert not collection.export_rows(env.store, "GE", version, 0.99)[0]["shown_as_match"]
+
+
+def test_custom_ui_topic_maps_to_one_file_so_it_resumes(tmp_path, monkeypatch):
+    from parltopics import api_collections
+    from parltopics.topics import Topic, load_topic
+
+    monkeypatch.setattr(api_collections, "CUSTOM_TOPICS_DIR", tmp_path)
+    topic = Topic(name="Wolf", definition="Affairs about wolves.", include=["culling"])
+    first = api_collections._custom_target(topic)
+    assert api_collections._custom_target(Topic(**topic.model_dump())) == first
+    assert api_collections._custom_target(topic.model_copy(update={"definition": "Wolves."})) != first
+    assert load_topic(Path(first)) == topic

@@ -364,6 +364,11 @@ def metrics() -> JSONResponse:
     return JSONResponse(json.loads(path.read_text()))
 
 
+from parltopics.api_collections import router as collections_router  # noqa: E402 (needs SearchIn above)
+
+app.include_router(collections_router)
+
+
 @app.get("/")
 def index() -> FileResponse:
     return FileResponse(WEB_DIR / "index.html")
