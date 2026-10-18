@@ -33,6 +33,7 @@ class Prediction(BaseModel):
     verify_ok: bool
     verify_method: str
     verify_score: float
+    inconsistent: bool
     model: str
     source_sha256: str
     latency_ms: int
@@ -51,7 +52,7 @@ def classify_adhoc(
     call: LLMCall = llm.complete_json(system, user, AdhocOutput)
     out = call.parsed or {}
     status, confidence = call.status, out.get("confidence")
-    verify_ok, verify_method, verify_score = False, "not_run", 0.0
+    verify_ok, verify_method, verify_score, inconsistent = False, "not_run", 0.0, False
     if call.status == "ok":
         check = check_prediction(
             out["label"], out["confidence"], out["evidence"], source.text, source.title,
@@ -59,6 +60,7 @@ def classify_adhoc(
         )
         status, confidence = check.status, check.confidence
         verify_ok, verify_method, verify_score = check.verify_ok, check.verify_method, check.score
+        inconsistent = check.inconsistent
     return Prediction(
         run_id=run_id,
         affair_id=source.affair_id,
@@ -72,6 +74,7 @@ def classify_adhoc(
         verify_ok=verify_ok,
         verify_method=verify_method,
         verify_score=verify_score,
+        inconsistent=inconsistent,
         model=call.model,
         source_sha256=source.sha256,
         latency_ms=call.latency_ms,

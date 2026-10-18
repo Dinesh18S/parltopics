@@ -10,4 +10,6 @@ Rules:
   text that best shows the topic. Copy it exactly, character for character, in the original
   language. Do not translate, shorten with "...", or paraphrase.
 - If the text is too short or unclear to decide, answer "abstain".
+- confidence = how likely it is that the affair is about this topic (0 = certainly not,
+  1 = certainly).
 - Respond with one JSON object only, matching the schema. No other text.

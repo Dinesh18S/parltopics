@@ -95,7 +95,7 @@ results/          # committed: metrics.json + per-run summaries (not raw outputs
 | File | Built by | Contents |
 |---|---|---|
 | `samples/first_loop.csv` | Dinesh | 20 PolitMonitor positives (7 DE / 7 FR / 6 IT, ≥ 2018) + 20 negatives from the same parliaments; all dev (D25) |
-| `samples/first_loop_truncated.csv` | Dinesh | the 15 first-loop affairs truncated at 12k chars, for the 40k re-run (D27) |
+| `samples/first_loop_truncated.csv` | build | the 15 first-loop affairs truncated at 12k chars, for the 40k re-run (D27) |
 | `samples/digi_federal_2018.csv` | Dinesh | Like-for-like sample: CHE, `begin_date ≥ 2018-01-01`, stratified pos/neg, with the population counts needed for prevalence correction |
 | `samples/curia_vista.csv` | Dinesh | Stratified sample over the 28 areas |
 | `samples/crosslang.csv` | Dinesh | Federal affairs with text in all of DE, FR, IT |

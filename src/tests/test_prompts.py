@@ -12,7 +12,7 @@ def _topic(**kw) -> Topic:
 
 
 def test_templates_contain_no_topic_words():
-    prompt = load_prompt("adhoc_v2")
+    prompt = load_prompt("adhoc_v3")
     for path in TOPICS_DIR.glob("*.yaml"):
         name = load_topic(path).name.lower()
         assert name not in prompt.system.lower()
@@ -20,7 +20,7 @@ def test_templates_contain_no_topic_words():
 
 
 def test_render_inserts_topic_affair_and_language():
-    system, user = render_adhoc(load_prompt("adhoc_v2"), _topic(), "TITLE: Some affair {with braces}", "fr")
+    system, user = render_adhoc(load_prompt("adhoc_v3"), _topic(), "TITLE: Some affair {with braces}", "fr")
     assert "TOPIC: Topic X" in user
     assert "DEFINITION: Affairs about X." in user
     assert "AFFAIR (language: fr):" in user
@@ -29,9 +29,9 @@ def test_render_inserts_topic_affair_and_language():
 
 
 def test_include_exclude_lines_only_when_set():
-    _, user = render_adhoc(load_prompt("adhoc_v2"), _topic(), "text", "de")
+    _, user = render_adhoc(load_prompt("adhoc_v3"), _topic(), "text", "de")
     assert "COUNTS AS THIS TOPIC" not in user and "DOES NOT COUNT" not in user
-    _, user = render_adhoc(load_prompt("adhoc_v2"), _topic(include=["A", "B"], exclude=["C"]), "text", "de")
+    _, user = render_adhoc(load_prompt("adhoc_v3"), _topic(include=["A", "B"], exclude=["C"]), "text", "de")
     assert "COUNTS AS THIS TOPIC:\n- A\n- B\nDOES NOT COUNT:\n- C\n" in user
 
 
@@ -40,6 +40,6 @@ def test_topic_accepts_string_or_empty_rules():
 
 
 def test_prompt_sha_is_stable_and_versioned():
-    a, b = load_prompt("adhoc_v2"), load_prompt("adhoc_v2")
+    a, b = load_prompt("adhoc_v3"), load_prompt("adhoc_v3")
     assert a.sha == b.sha and len(a.sha) == 64
-    assert a.version == "adhoc_v2"
+    assert a.version == "adhoc_v3"

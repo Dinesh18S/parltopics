@@ -67,7 +67,7 @@ Reviving the 1996–2014 descriptors (mention only). Full per-canton / per-topic
 ## 7. Success criteria (Sunday)
 
 1. Digitalisation, federal since 2018: precision clearly above the 41% *Medien und Kommunikation* baseline at comparable or better recall, with a confidence interval, before and after adjudication.
-2. At least 3 demo affairs where "Digitalisierung"/"numérique"/"digitale" never appears, correctly found, each confirmed in the PolitMonitor list.
+2. At least 3 demo affairs where none of the words *Digitalisierung, digital…* (DE), *numérique, numérisation, digital…* (FR), *digitale, digitalizzazione, digital…* (IT) appears (`keyword_absent`, core keywords of `topics/digitalisation.yaml`), correctly found, each confirmed in the PolitMonitor list.
 3. A second topic runs live in the UI without code changes.
 4. Curia Vista multi-label results (at-least-one-correct, micro-F1) and an APS sample check on ~50 hand-labelled affairs.
 5. Cross-language agreement rate on the same federal affairs in DE/FR/IT.

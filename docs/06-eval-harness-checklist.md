@@ -18,7 +18,7 @@ Goal: numbers a judge can reproduce and a Swiss-politics expert can't easily pok
 
 - [ ] 20 PolitMonitor positives, mixed DE/FR/IT and affair types → expect mostly `match`
 - [ ] 20 in-scope non-tagged affairs → expect mostly `no_match`
-- [ ] Table: id, lang, gold, label, confidence, evidence_ok, keyword_absent, latency (+ truncation report: per truncated affair, the cut section and characters lost)
+- [ ] Table: id, lang, gold, label, confidence, evidence_ok, keyword_absent, tech_vocab_absent, inconsistent, latency (+ truncation report: per truncated affair, the cut section and characters lost)
 - [ ] Evidence-verified rate ≥ 90% on matches, else fix prompt/verify before scaling
 - [ ] Eyeball every error with the partner (10 min) → first prompt revision
 
@@ -39,7 +39,7 @@ Population = federal affairs (`body_key=CHE`), `begin_date ≥ 2018-01-01`, insi
 - [ ] **Prevalence-corrected precision** (because the sample over-represents positives):
   `precision = (recall · π) / (recall · π + FPR · (1 − π))`
   Report this, not raw sample precision. Show raw too, labelled.
-- [ ] Same metrics for keyword search (`Digitalisierung|numérique|digitale` in title/text) on the same slice — a second, intuitive baseline.
+- [ ] Same metrics for keyword search on the same slice — a second, intuitive baseline — using exactly the topic's **core** `keywords` (de: Digitalisierung, digital\*; fr: numérique, numérisation, digital\*; it: digitale, digitalizzazione, digital\*; word-start match in title/text).
 
 ### 2.4 Adjudication
 - [ ] Rules fixed **before** results are seen: the reviewer decides by `data/gold/digitalisation_definition.md` as committed (record its git hash in the adjudication file). No rule changes after the review starts.
@@ -51,7 +51,9 @@ Population = federal affairs (`body_key=CHE`), `begin_date ≥ 2018-01-01`, insi
 
 ### 2.5 Breakdowns
 - [ ] By language (DE/FR/IT), by affair type, title-only vs full text
-- [ ] Keyword-absent matches: count + precision
+- [ ] Keyword-absent matches (core keywords): count + precision; also how many are tech-vocab-absent
+- [ ] Abstain count and `inconsistent` count (label vs confidence)
+- [ ] Input length: on the dev split, 12k vs 40k `MAX_INPUT_CHARS` on the truncated affairs — net accuracy change (with n) and tokens; raise the limit only if net accuracy improves meaningfully (D27)
 - [ ] Threshold curve (precision/recall vs `MATCH_THRESHOLD`) on dev; chosen threshold marked
 
 ### 2.6 Wider check (not headline)

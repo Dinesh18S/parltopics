@@ -12,6 +12,7 @@ You are building ParlTopics: an open, topic-agnostic classifier for Swiss parlia
 
 ## Hard rules
 
+- **Never write a person's name** (the team's or anyone else's) into any file — docs, code, commit messages, data, reviews — without explicit approval in that moment. Use roles ("builder", "partner", "reviewer") instead.
 - **Never commit or push yourself, and never to `main`.** When a slice is ready, show the verification output and a proposed commit message, then ask the human to commit. Only commit if the human explicitly says so in that moment, and then on a feature branch, never `main`.
 
 - Never hard-code a topic, scheme or language in Python. Topics are YAML in `topics/`; schemes are loaded from data files.
@@ -72,9 +73,9 @@ Append one entry per decision, newest at the bottom:
 Log: library and model choices, prompt changes, thresholds, sampling, any VERIFY item resolved, any deviation from the docs, and anything that failed and what we did instead.
 
 ### private/learning.md — plain-English notes + jury prep (PRIVATE, gitignored)
-This file is for Dinesh only. It lives in `private/` (gitignored); never commit it, never move it into `docs/`, never mention it in README or the report. Write in simple English (short sentences, explain every technical word). Keep its three parts up to date after each slice:
+This file is private to the builder. It lives in `private/` (gitignored); never commit it, never move it into `docs/`, never mention it in README or the report. Write in simple English (short sentences, explain every technical word). Keep its three parts up to date after each slice:
 - Part 1 — the project in 60 seconds + words to know (add new terms as they appear)
 - Part 2 — per slice: what it does (one line), how it works in plain words, what verification showed (key numbers), what could go wrong and how we'd notice
-- Part 3 — jury practice: likely questions grouped by the 6 jury dimensions, each with a short answer Dinesh can say out loud. Add or update questions the new slice makes answerable; mark answers that still need numbers as *(after Sx)*; never state a number that isn't measured yet.
+- Part 3 — jury practice: likely questions grouped by the 6 jury dimensions, each with a short answer the builder can say out loud. Add or update questions the new slice makes answerable; mark answers that still need numbers as *(after Sx)*; never state a number that isn't measured yet.
 
 Rules: short and factual, no filler. If you can't explain a choice simply, flag it as a question for me instead of hiding it.

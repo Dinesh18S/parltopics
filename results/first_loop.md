@@ -94,3 +94,9 @@ latency p50/p95: 3602/5195 ms   tokens in/out: 87,626/4,752
 ## Truncated affairs re-run at MAX_INPUT_CHARS=40000 (run 20261018T124418349670Z, prompt_version 8f487e483cda)
 
 15 truncated affairs: label/status changed 2 (77719 match→evidence_failed [worse], 336119 evidence_failed→no_match [better]); evidence-only changes 10; input tokens 54,692 → 120,194. Same 15 at 12k again (run 20261018T124505142790Z): 0 label changes, 1 evidence change.
+
+## adhoc_v3 + core keywords (prompt_version d420fc57afb3), stored in SQLite (S5)
+
+Run 20261018T130959024927Z (and an identical repeat 20261018T130918500286Z, 0 changes):
+positives 14/20 (70%, CI 48–85%), negatives 20/20 (100%, CI 84–100%), evidence verified 14/14, keyword-absent matches 6 (all gold positive; 0 also tech-vocab-absent), abstain 1, inconsistent 1 (156184: no_match at 0.6).
+vs adhoc_v2 run 20261018T124304338082Z: 1 change — 336119 (gold no) match/evidence_failed → no_match/ok [fixed].

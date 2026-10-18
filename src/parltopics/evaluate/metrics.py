@@ -22,6 +22,13 @@ def is_predicted_match(row: dict) -> bool:
     return row["status"] == "ok" and row["label"] == "match"
 
 
+def is_correct(row: dict) -> bool:
+    """Gold yes: shown as match. Gold no: a valid non-match answer. Any failure status is wrong."""
+    if row["gold"] == 1:
+        return is_predicted_match(row)
+    return row["status"] == "ok" and row["label"] != "match"
+
+
 def _rate(k: int, n: int) -> dict:
     lo, hi = wilson(k, n)
     return {"n": n, "correct": k, "rate": k / n if n else None, "ci95": [lo, hi]}
@@ -41,14 +48,17 @@ def first_loop_summary(rows: list[dict]) -> dict:
     neg = [r for r in scored if r["gold"] == 0]
     model_matches = [r for r in scored if r["label"] == "match"]
     kw_matches = [r for r in scored if is_predicted_match(r) and r["keyword_absent"]]
+    tech_matches = [r for r in kw_matches if r.get("tech_vocab_absent")]
     called = [r for r in scored if r["status"] not in {"fetch_error"}]
     latencies = [r["latency_ms"] for r in called if r.get("latency_ms")]
     return {
         "n_rows": len(rows),
         "excluded_lang_missing": len(rows) - len(scored),
         "status_counts": dict(Counter(r["status"] for r in rows)),
-        "positives": _rate(sum(is_predicted_match(r) for r in pos), len(pos)),
-        "negatives": _rate(sum(r["status"] == "ok" and r["label"] != "match" for r in neg), len(neg)),
+        "abstain": sum(r["label"] == "abstain" for r in scored),
+        "inconsistent": sum(bool(r.get("inconsistent")) for r in scored),
+        "positives": _rate(sum(is_correct(r) for r in pos), len(pos)),
+        "negatives": _rate(sum(is_correct(r) for r in neg), len(neg)),
         "evidence": {
             "model_matches": len(model_matches),
             "verified": sum(bool(r["verify_ok"]) for r in model_matches),
@@ -59,6 +69,7 @@ def first_loop_summary(rows: list[dict]) -> dict:
             "total": len(kw_matches),
             "gold_positive": sum(r["gold"] == 1 for r in kw_matches),
             "gold_negative": sum(r["gold"] == 0 for r in kw_matches),
+            "also_tech_vocab_absent": len(tech_matches),
         },
         "latency_ms": {"p50": int(median(latencies)) if latencies else None, "p95": _pct(latencies, 0.95)},
         "tokens": {"in": sum(r.get("tok_in") or 0 for r in called), "out": sum(r.get("tok_out") or 0 for r in called)},

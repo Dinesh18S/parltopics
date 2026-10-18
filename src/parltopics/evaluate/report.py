@@ -1,16 +1,13 @@
-"""Human-readable reports from a run directory."""
+"""Human-readable reports from runs in the store."""
 
-import json
-from pathlib import Path
-
-from parltopics.evaluate.metrics import first_loop_summary, is_predicted_match
+from parltopics.evaluate.metrics import first_loop_summary, is_correct
+from parltopics.store import Store
 
 
-def load_run(results_dir: Path, run_id: str) -> tuple[dict, list[dict]]:
-    run_dir = results_dir / "runs" / run_id
-    manifest = json.loads((run_dir / "manifest.json").read_text())
-    rows = [json.loads(line) for line in (run_dir / "predictions.jsonl").read_text().splitlines() if line]
-    return manifest, sorted(rows, key=lambda r: (-r["gold"], r["body_key"], r["affair_id"]))
+def load_run(store: Store, run_id: str) -> tuple[dict, list[dict]]:
+    run = store.run(run_id)
+    rows = store.predictions(run_id)
+    return run["manifest"], sorted(rows, key=lambda r: (-r["gold"], r["body_key"], r["affair_id"]))
 
 
 def _fmt(value: object, width: int) -> str:
@@ -20,14 +17,16 @@ def _fmt(value: object, width: int) -> str:
 
 def table(rows: list[dict]) -> str:
     cols = [("id", 7), ("body", 5), ("lang", 4), ("gold", 4), ("label", 9), ("conf", 4), ("status", 15),
-            ("ev", 6), ("kw_abs", 6), ("t_only", 6), ("ms", 6), ("title", 48)]
-    lines = [" ".join(_fmt(c, w) for c, w in cols)]
+            ("ev", 6), ("flags", 12), ("ms", 6), ("title", 48)]
+    lines = ["flags: kw = keyword-absent (core), tech = tech-vocab-absent, T = title-only, ! = inconsistent",
+             " ".join(_fmt(c, w) for c, w in cols)]
     for r in rows:
         conf = f"{r['confidence']:.2f}" if r.get("confidence") is not None else ""
         verified = r.get("verify_method", "") if r.get("label") == "match" else ""
+        flags = ",".join(name for name, on in (("kw", r.get("keyword_absent")), ("tech", r.get("tech_vocab_absent")),
+                                               ("T", r.get("title_only")), ("!", r.get("inconsistent"))) if on)
         values = [r["affair_id"], r["body_key"], r.get("lang"), r["gold"], r.get("label"), conf, r["status"],
-                  verified, "yes" if r.get("keyword_absent") else "", "yes" if r.get("title_only") else "",
-                  r.get("latency_ms"), r["title"]]
+                  verified, flags, r.get("latency_ms"), r["title"]]
         lines.append(" ".join(_fmt(v, w) for v, (_, w) in zip(values, cols)))
     return "\n".join(lines)
 
@@ -59,7 +58,9 @@ def summary_text(manifest: dict, rows: list[dict]) -> str:
         f"95% CI {neg['ci95'][0]:.0%}–{neg['ci95'][1]:.0%}",
         f"accuracy (all):        {pos['correct'] + neg['correct']}/{pos['n'] + neg['n']}",
         f"evidence verified:     {ev['verified']}/{ev['model_matches']} model matches = {_pct(ev['rate'])}",
-        f"keyword-absent matches: {kw['total']} (gold positive {kw['gold_positive']}, gold negative {kw['gold_negative']})",
+        f"keyword-absent matches: {kw['total']} (gold positive {kw['gold_positive']}, gold negative "
+        f"{kw['gold_negative']}; also tech-vocab-absent: {kw['also_tech_vocab_absent']})",
+        f"abstain: {s['abstain']}   inconsistent label/confidence: {s['inconsistent']}",
         f"latency p50/p95: {s['latency_ms']['p50']}/{s['latency_ms']['p95']} ms   "
         f"tokens in/out: {s['tokens']['in']:,}/{s['tokens']['out']:,}",
     ])
@@ -74,8 +75,7 @@ def compare(rows_a: list[dict], rows_b: list[dict]) -> str:
         if old is None:
             continue
         if (old.get("label"), old["status"]) != (r.get("label"), r["status"]):
-            was_right = is_predicted_match(old) == bool(old["gold"])
-            is_right = is_predicted_match(r) == bool(r["gold"])
+            was_right, is_right = is_correct(old), is_correct(r)
             mark = {(False, True): "fixed", (True, False): "broke"}.get((was_right, is_right), "same outcome")
             lines.append(f"  {r['affair_id']:>7} gold={r['gold']} {old.get('label')}/{old['status']} → "
                          f"{r.get('label')}/{r['status']}  [{mark}]  {r['title'][:50]}")

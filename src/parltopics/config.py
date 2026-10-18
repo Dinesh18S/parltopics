@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     title_only_conf_cap: float = 0.6
     opd_api_base: str = "https://api.openparldata.ch"
     data_dir: Path = Path("./data")
+    db_path: Path = Path("./data/parltopics.db")
 
 
 @lru_cache

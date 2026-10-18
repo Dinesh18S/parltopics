@@ -45,7 +45,7 @@ Required fields, in this order:
 3. Label chip: `match` (green), `no_match` (grey, hidden by default), `abstain` (amber), `NONE_OTHER` (amber)
 4. Confidence bar + number (2 decimals)
 5. Evidence as a quote, in the source language, never translated. Badge: `✓ verified` or `title only` (and capped)
-6. `⚑ keyword absent` badge when applicable
+6. `⚑ keyword absent` badge when none of the topic's core keywords appears (for digitalisation: Digitalisierung, digital…, numérique, numérisation, digitale, digitalizzazione); a second, quieter `tech vocab absent` badge when the broad words (Daten/données/dati, elektronisch/électronique/elettronico, Cyber) are absent too
 7. Source link (opens the parliament's / OpenParlData page)
 8. Review buttons. After review the card shows who/what: "Confirmed by human" in a different colour from the AI suggestion
 9. Small label "AI suggestion — needs human confirmation" on every unreviewed card
@@ -92,7 +92,7 @@ Live classification of everything is impossible in a demo. The UI classifies a *
 
 - [ ] Typing a new topic + definition and pressing Classify returns cards with no code change
 - [ ] Every visible `match` card has verified evidence + working source link
-- [ ] Keyword-absent filter works and shows ≥3 PolitMonitor-confirmed affairs for digitalisation
+- [ ] Keyword-absent filter (core keywords) works and shows ≥3 PolitMonitor-confirmed affairs for digitalisation
 - [ ] Confirm/Reject persists across page reload
 - [ ] With the model endpoint down, the page still demos from cache
 - [ ] Recorded backup video of the full demo exists in `docs/`

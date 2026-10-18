@@ -87,18 +87,25 @@ Unit tests cover: exact, quote variants, hyphenation, fuzzy pass, fuzzy fail, to
 
 ### 4.4 Store (SQLite)
 
+`data/parltopics.db` (gitignored, path `DB_PATH`). Schema in `src/parltopics/store.py`:
+
 ```
-affairs(id PK, body_key, number, type, begin_date, lang, title, url, level)
-sources(affair_id, text_sha256, title_only, n_chars, assembled_at)
-topics(id PK, kind[adhoc|aps|curia_vista], name, definition, scheme_code, lang)
-runs(id PK, started_at, model, base_url_host, prompt_template, prompt_version, template_sha, topic_sha, fewshot_sha,
-     params_sha, params_json, topic_name, git_commit, sample_file, notes)   # prompt_version: see docs/05 "Prompt versioning"
-predictions(id PK, run_id, affair_id, topic_id, label, confidence, evidence, verify_ok, verify_method,
-            status[ok|evidence_failed|parse_error|llm_error], latency_ms, tok_in, tok_out, raw_json, created_at)
-reviews(id PK, prediction_id, decision[confirm|reject|correct], corrected_label, reviewer, note, created_at)
+affairs(id PK, body_key, body_type, number, type, begin_date, title_json, url_external_json, url_api)
+sources(text_sha256 PK, affair_id, lang, lang_source, detected_lang, lang_mismatch, title, title_only, truncated,
+        cut_section, chars_lost, n_chars_full, url, text, assembled_at)        # exact text the model saw
+topics(id PK = topic part hash, kind, name, definition, topic_json)
+runs(id PK, started_at, finished_at, model, base_url_host, prompt_template, prompt_version, template_sha, topic_sha,
+     fewshot_sha, params_sha, params_json, topic_name, git_commit, sample_file, notes, n_rows, manifest_json)
+predictions(id PK, run_id FK, affair_id, topic_id FK, source_sha256 FK (NULL for lang_missing/fetch_error), lang,
+            gold (copied from the sample file), body_key, title, label, confidence, evidence, rationale, verify_ok,
+            verify_method, verify_score, inconsistent, keyword_absent, tech_vocab_absent,
+            status[ok|evidence_failed|parse_error|llm_error|invalid_label|lang_missing|fetch_error],
+            model, latency_ms, tok_in, tok_out, tokens_estimated, repaired, error, raw_json, created_at)
+reviews(id PK, prediction_id FK, decision[confirm|reject|correct], corrected_label (required for correct),
+        reviewer, note, created_at)
 ```
 
-Rules: predictions are append-only; reviews never mutate predictions; every prediction points at a run.
+Rules (enforced in SQLite, tested): predictions and reviews are append-only (UPDATE/DELETE triggers abort); reviews never mutate predictions (the latest review per prediction counts); every prediction points at a run (FK). Each run also writes `results/runs/<run_id>/manifest.json` + `calls.jsonl`.
 
 ### 4.5 Serve
 

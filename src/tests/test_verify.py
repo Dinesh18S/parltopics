@@ -1,6 +1,6 @@
 import pytest
 
-from parltopics.verify import check_prediction, normalize, verify_evidence
+from parltopics.verify import check_prediction, is_inconsistent, normalize, verify_evidence
 
 TITLE = "Die Rolle von Hosting- und Cloud-Anbietern bei Cyberbedrohungen stärken"
 TEXT = (
@@ -104,3 +104,22 @@ def test_title_only_caps_confidence_and_requires_title_evidence():
 def test_title_only_rejects_evidence_outside_title():
     c = check_prediction("match", 0.9, "gesetzliche Grundlagen auszuarbeiten", TEXT, TITLE, title_only=True, cap=0.6)
     assert c.status == "evidence_failed"
+
+
+# --- confidence / label consistency -----------------------------------------
+
+@pytest.mark.parametrize("label,conf,expected", [
+    ("match", 0.4, True), ("match", 0.5, False), ("match", 0.9, False),
+    ("no_match", 0.6, True), ("no_match", 0.5, False), ("no_match", 0.0, False),
+    ("abstain", 0.9, False), ("abstain", 0.1, False),
+])
+def test_inconsistent_flag(label, conf, expected):
+    assert is_inconsistent(label, conf) is expected
+
+
+def test_check_prediction_flags_inconsistency_on_raw_confidence():
+    title_text = f"TITLE: {TITLE}"
+    c = check_prediction("no_match", 0.9, "", title_text, TITLE, title_only=True, cap=0.6)
+    assert c.inconsistent and c.confidence == 0.6
+    c = check_prediction("match", 0.9, "gesetzliche Grundlagen auszuarbeiten", TEXT, TITLE, title_only=False, cap=0.6)
+    assert not c.inconsistent

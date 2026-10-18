@@ -19,7 +19,7 @@ Two prompts, one engine. Prompt templates are versioned files in `src/parltopics
 7. **Short rationale last.** A ≤25-word reason helps debugging; it comes after the label so it doesn't steer it, and it is never shown as evidence.
 8. **Temperature 0.** Max output ~400 tokens.
 
-## 2. Ad-hoc mode — `adhoc_v2`
+## 2. Ad-hoc mode — `adhoc_v3`
 
 ### Inputs
 - `topic.name`, `topic.definition` (one or a few sentences), optional `topic.include` / `topic.exclude` borderline rules as lists (from the partner's definition doc)
@@ -36,7 +36,8 @@ Two prompts, one engine. Prompt templates are versioned files in `src/parltopics
 ```
 - `match` → evidence required.
 - `abstain` → text too short/unclear to decide, or only procedural content.
-- `confidence` = the model's confidence that its label is correct (0–1). Treated as a ranking score, calibrated on dev data; not shown as a probability.
+- `confidence` = how likely it is that the affair is about this topic (0 = certainly not, 1 = certainly). This is the definition stated in the prompt (since `adhoc_v3`) and matches how the model behaved before it was stated (S4: 22/25 non-matches at 0.0). It is a ranking score for threshold curves, calibrated on dev data; not shown as a probability.
+- Consistency: a `match` should have confidence ≥ 0.5 and a `no_match` ≤ 0.5; otherwise the prediction is flagged `inconsistent` (see §4).
 
 ### System message
 ```
@@ -52,6 +53,8 @@ Rules:
   text that best shows the topic. Copy it exactly, character for character, in the original
   language. Do not translate, shorten with "...", or paraphrase.
 - If the text is too short or unclear to decide, answer "abstain".
+- confidence = how likely it is that the affair is about this topic (0 = certainly not,
+  1 = certainly).
 - Respond with one JSON object only, matching the schema. No other text.
 ```
 
@@ -77,7 +80,7 @@ Return JSON: {"label": "match"|"no_match"|"abstain", "confidence": number 0-1,
 2–3 short examples **from the dev split only** (never a test-split affair, and never an affair whose `title_de` equals a test affair's): one match where the topic word never appears, one no_match where the word appears in passing, one abstain (title only, vague). Few-shot vs zero-shot is an A/B we report, not an assumption.
 
 ### Digitalisation topic file
-The source is the partner's definition `data/gold/digitalisation_definition.md` (derived from how PolitMonitor actually tagged; follows PolitMonitor where it differs from the challenge slides). Its prompt form is `topics/digitalisation.yaml`: `definition` (one paragraph), `include` and `exclude` as **lists** (rendered as bullet lists), `keywords` per language (used only for the keyword-absent flag and the keyword baseline, never in the prompt). Any edit to the YAML changes `prompt_version`.
+The source is the partner's definition `data/gold/digitalisation_definition.md` (derived from how PolitMonitor actually tagged; follows PolitMonitor where it differs from the challenge slides). Its prompt form is `topics/digitalisation.yaml`: `definition` (one paragraph), `include` and `exclude` as **lists** (rendered as bullet lists), `keywords` per language = the core words of the pitch claim (de: Digitalisierung, digital\*; fr: numérique, numérisation, digital\*; it: digitale, digitalizzazione, digital\*), used for the `keyword_absent` flag and the keyword-search baseline; `keywords_broad` = general tech vocabulary (Daten/données/dati, elektronisch/électronique/elettronico, Cyber), used only with the core words for the stricter `tech_vocab_absent` badge. Neither ever enters the prompt. Any edit to the YAML changes `prompt_version`.
 
 ## 3. Standard mode — `standard_v1`
 
@@ -106,6 +109,8 @@ Same as ad-hoc, plus:
   most relevant first. Use only codes from the list.
 - If no category fits, or the affair is purely procedural, return exactly one label with
   code "NONE_OTHER".
+- confidence (per label) = how likely it is that this label applies to the affair
+  (0 = certainly not, 1 = certainly).
 ```
 
 ### User message
@@ -131,8 +136,10 @@ Codes in the prompt are short local ids (`C01…C22`, `CV01…CV28`) mapped back
 1. Validate JSON with pydantic → `parse_error` if invalid after one repair retry.
 2. Verify each evidence string (see backend doc §4.3) → drop labels with failed evidence, keep the record.
 3. Title-only cap on confidence.
-4. Keyword-absent flag: none of `topic.keywords` (any language, case-insensitive, word-boundary) appear in the source text.
-5. Decision threshold for "shown as match" (`MATCH_THRESHOLD`, default 0.5) is tuned on the dev split only, then frozen for test.
+4. Consistency flag (ad-hoc): `match` with confidence < 0.5, or `no_match` with confidence > 0.5 → `inconsistent=true`, counted and reported per run. Checked on the model's raw confidence, before the title-only cap. The label still decides; the flag does not change `status`.
+5. `abstain` keeps its confidence, is counted separately, and is treated as not-match for precision/recall.
+6. Keyword flags (all keywords match at the start of a word, case-insensitive, any language; `*` marks an explicit prefix): `keyword_absent` = none of `topic.keywords` (core) appears in the source text — this is the demo/UI filter and the pitch claim; `tech_vocab_absent` = none of core + `keywords_broad` appears — an extra badge.
+7. Decision threshold for "shown as match" (`MATCH_THRESHOLD`, default 0.5) is tuned on the dev split only, then frozen for test.
 
 ## 5. Known risks & mitigations
 
@@ -151,5 +158,6 @@ Codes in the prompt are short local ids (`C01…C22`, `CV01…CV28`) mapped back
 | Version | Date | Change | Dev P/R |
 |---|---|---|---|
 | adhoc_v1 | 2026-10-18 | Initial (only smoke calls, no reported numbers) | — |
-| adhoc_v2 | 2026-10-18 | include/exclude rendered as bullet lists (partner's definition has 11 include / 3 exclude rules); text otherwise unchanged | — |
+| adhoc_v2 | 2026-10-18 | include/exclude rendered as bullet lists (partner's definition has 11 include / 3 exclude rules); text otherwise unchanged | first loop (dev): 14/20 pos, 19/20 neg |
+| adhoc_v3 | 2026-10-18 | system rule: "confidence = how likely it is that the affair is about this topic (0 = certainly not, 1 = certainly)" | first loop (dev): 14/20 pos, 20/20 neg |
 | standard_v1 | 2026-10-18 | Initial | — |
