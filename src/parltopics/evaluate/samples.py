@@ -331,3 +331,36 @@ def build_curia_vista_sample(population: pd.DataFrame, per_area: int, seed: int,
     df = pd.DataFrame(rows)
     df["split"] = grouped_split(df.group_key.tolist(), dev_share, seed)
     return df.drop(columns="group_key").sort_values(["split", "affair_id"])
+
+
+def build_crosslang(settings: Settings, population: pd.DataFrame, n_pos: int, n_neg: int, seed: int,
+                    exclude: set[int]) -> pd.DataFrame:
+    """Affairs whose every title language has a complete, correctly detected version; one row per affair × language."""
+    rng = random.Random(seed)
+    source = AffairSource(settings)
+    langs = sorted({lang for titles in population.titles for lang in titles})
+    rows: list[dict] = []
+    for gold, n in ((1, n_pos), (0, n_neg)):
+        pool = sorted(i for i, g in zip(population.affair_id, population.gold) if g == gold and i not in exclude)
+        rng.shuffle(pool)
+        added = 0
+        for affair_id in pool:
+            if added == n:
+                break
+            affair = source.get_affair(int(affair_id), BULK_BODY_KEY)
+            versions = {}
+            for lang in langs:
+                try:
+                    src = assemble(affair, settings.max_input_chars, lang)
+                except LangMissing:
+                    break
+                if src.lang_mismatch or src.title_only:
+                    break
+                versions[lang] = src
+            if len(versions) < len(langs):
+                continue
+            rows += [{"affair_id": int(affair_id), "body_key": BULK_BODY_KEY, "lang": lang, "gold": gold,
+                      "set": "crosslang", "split": "all", "begin_date": affair.begin_date, "title": versions[lang].title}
+                     for lang in langs]
+            added += 1
+    return pd.DataFrame(rows, columns=SAMPLE_COLUMNS)

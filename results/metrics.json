@@ -1204,5 +1204,148 @@
       },
       "none_other_rate": 0.0
     }
+  },
+  "cost_time": {
+    "runs": [
+      {
+        "run_id": "20261018T134941952960Z",
+        "prompt_template": "adhoc_v5",
+        "model": "apertus-v1-5-70b",
+        "affairs": 548,
+        "model_seconds_per_affair": {
+          "mean": 3.1953686131386863,
+          "p50": 3.128,
+          "p95": 4.893
+        },
+        "tokens_per_affair": {
+          "in": 1480.5547445255474,
+          "out": 134.41058394160584
+        },
+        "calls_per_affair": 1.0255474452554745,
+        "observed": {
+          "wall_seconds": 221.619865,
+          "concurrency": 8,
+          "affairs_per_minute": 148.36215156073666
+        },
+        "estimate": {
+          "target_affairs": 300000,
+          "hours_at_concurrency": {
+            "4": 66.5701794403893,
+            "8": 33.28508972019465,
+            "16": 16.642544860097324,
+            "32": 8.321272430048662
+          },
+          "tokens_in_millions": 444.1664233576642,
+          "tokens_out_millions": 40.32317518248175,
+          "assumptions": "linear scaling of measured mean model time per affair; gateway throughput constant at the given concurrency; one topic (ad-hoc) or one scheme (standard) per affair; no price per token / GPU-hour known, so no CHF figure"
+        }
+      },
+      {
+        "run_id": "20261018T161841410788Z",
+        "prompt_template": "standard_v1",
+        "model": "apertus-v1-5-70b",
+        "affairs": 122,
+        "model_seconds_per_affair": {
+          "mean": 5.390163934426229,
+          "p50": 5.1455,
+          "p95": 8.753
+        },
+        "tokens_per_affair": {
+          "in": 1411.2622950819673,
+          "out": 264.7295081967213
+        },
+        "calls_per_affair": 1,
+        "observed": {
+          "wall_seconds": 85.041598,
+          "concurrency": 8,
+          "affairs_per_minute": 86.07552271066214
+        },
+        "estimate": {
+          "target_affairs": 300000,
+          "hours_at_concurrency": {
+            "4": 112.29508196721311,
+            "8": 56.147540983606554,
+            "16": 28.073770491803277,
+            "32": 14.036885245901638
+          },
+          "tokens_in_millions": 423.3786885245902,
+          "tokens_out_millions": 79.41885245901639,
+          "assumptions": "linear scaling of measured mean model time per affair; gateway throughput constant at the given concurrency; one topic (ad-hoc) or one scheme (standard) per affair; no price per token / GPU-hour known, so no CHF figure"
+        }
+      }
+    ],
+    "hardware": "CSCS-hosted Apertus via the Keera gateway (OpenAI-compatible); GPU type not disclosed by the gateway"
+  },
+  "cross_language": {
+    "sample": "data/samples/crosslang.csv",
+    "threshold": 0.9,
+    "runs": [
+      "20261018T162659841331Z",
+      "20261018T162949819768Z"
+    ],
+    "adhoc": {
+      "n": 100,
+      "skipped_incomplete": 0,
+      "all_agree": {
+        "agree": 94,
+        "n": 100,
+        "rate": 0.94,
+        "ci95": [
+          0.8752318448839114,
+          0.9722138761993719
+        ]
+      },
+      "pairs": {
+        "de-fr": {
+          "agreement": 0.97,
+          "kappa": 0.9278846153846153
+        },
+        "de-it": {
+          "agreement": 0.95,
+          "kappa": 0.8820754716981131
+        },
+        "fr-it": {
+          "agreement": 0.96,
+          "kappa": 0.9048072346501665
+        }
+      },
+      "positive_rate": {
+        "de": 0.3,
+        "fr": 0.29,
+        "it": 0.31
+      }
+    },
+    "standard": {
+      "n": 99,
+      "skipped_incomplete": 1,
+      "top_all_agree": {
+        "agree": 47,
+        "n": 99,
+        "rate": 0.47474747474747475,
+        "ci95": [
+          0.37917455701614367,
+          0.5722069183694671
+        ]
+      },
+      "pairs": {
+        "de-fr": {
+          "top_agreement": 0.6363636363636364,
+          "jaccard_mean": 0.40757575757575754
+        },
+        "de-it": {
+          "top_agreement": 0.5858585858585859,
+          "jaccard_mean": 0.3920875420875422
+        },
+        "fr-it": {
+          "top_agreement": 0.6464646464646465,
+          "jaccard_mean": 0.42609427609427614
+        }
+      }
+    },
+    "recall_by_lang": {
+      "de": 0.58,
+      "fr": 0.56,
+      "it": 0.6
+    }
   }
 }

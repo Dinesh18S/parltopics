@@ -399,6 +399,7 @@ async function loadMetrics() {
   if (!d) { grid.innerHTML = `<div class="card wide"><div class="ctitle">No digitalisation evaluation in results/metrics.json</div></div>`; return; }
   const t = d.test.at_chosen_threshold, b = d.baselines_full_slice, q = d.test.quality;
   const cvt = (m.curia_vista_standard || {}).test;
+  const xl = m.cross_language, ct = ((m.cost_time || {}).runs || [])[0];
   const pending = (what) => `<span class="pending">pending — ${what}</span>`;
   grid.innerHTML = `
     <div class="card wide">
@@ -433,9 +434,12 @@ async function loadMetrics() {
       <div class="kv"><span>Curia Vista · micro-F1</span>${cvt ? `<span class="kvv">${cvt.micro.f1.toFixed(2)} <span class="cap">P ${cvt.micro.precision.toFixed(2)} · R ${cvt.micro.recall.toFixed(2)}</span></span>` : pending("S7")}</div>
       <div class="kv"><span>Labels per affair (gold · predicted)</span>${cvt ? `<span class="kvv">${cvt.cardinality.gold_mean.toFixed(1)} · ${cvt.cardinality.pred_mean.toFixed(1)}</span>` : pending("S7")}</div>
       <div class="kv"><span>APS · gold sample</span>${pending("partner labels")}</div></div>
-    <div class="card"><div class="ctitle">Cross-language · cost</div><div class="csub">Do DE / FR / IT agree? What does it cost?</div>
-      <div class="kv"><span>All three languages agree</span>${pending("S9")}</div>
-      <div class="kv"><span>Seconds per affair · 300k estimate</span>${pending("S9")}</div></div>
+    <div class="card"><div class="ctitle">Cross-language · cost</div><div class="csub">Same federal affairs in DE / FR / IT${xl ? ` (n = ${xl.adhoc.n})` : ""} · measured cost</div>
+      <div class="kv"><span>Ad-hoc: all three languages agree</span>${xl ? `<span class="kvv">${pct(xl.adhoc.all_agree.rate)} <span class="cap">${ci(xl.adhoc.all_agree.ci95)}</span></span>` : pending("S9")}</div>
+      <div class="kv"><span>Cohen's κ DE–FR · DE–IT · FR–IT</span>${xl ? `<span class="kvv">${Object.values(xl.adhoc.pairs).map((p) => p.kappa.toFixed(2)).join(" · ")}</span>` : pending("S9")}</div>
+      <div class="kv"><span>Standard: same top label in all three</span>${xl ? `<span class="kvv">${pct(xl.standard.top_all_agree.rate)}</span>` : pending("S9")}</div>
+      <div class="kv"><span>Model seconds per affair (p50 · p95)</span>${ct ? `<span class="kvv">${ct.model_seconds_per_affair.p50.toFixed(1)} · ${ct.model_seconds_per_affair.p95.toFixed(1)}</span>` : pending("S9")}</div>
+      <div class="kv"><span>300k affairs at concurrency 8 · 32</span>${ct ? `<span class="kvv">${ct.estimate.hours_at_concurrency["8"].toFixed(0)} h · ${ct.estimate.hours_at_concurrency["32"].toFixed(0)} h</span>` : pending("S9")}</div></div>
     <div class="card wide"><div class="csub" style="margin:0">Model <span class="mono">${esc(d.model)}</span> · prompt <span class="mono">${esc(d.prompt_template)}</span> (version <span class="mono">${esc(d.prompt_version.slice(0, 12))}</span>) · runs <span class="mono">${esc(d.run_ids.join(", "))}</span> · commit <span class="mono">${esc((d.git_commit || "").slice(0, 7))}</span></div></div>`;
 }
 

@@ -38,6 +38,7 @@ class RunManifest(BaseModel):
     git_commit: str | None
     sample_file: str | None
     notes: str
+    concurrency: int | None = None  # parallel model calls during the run (throughput only; not in the fingerprint)
 
 
 def _sha(obj: object) -> str:
@@ -90,6 +91,7 @@ def start_run(
         git_commit=git_commit(),
         sample_file=sample_file,
         notes=notes,
+        concurrency=settings.llm_concurrency,
     )
     run_dir = results_dir / "runs" / manifest.run_id
     run_dir.mkdir(parents=True, exist_ok=True)

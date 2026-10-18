@@ -57,6 +57,7 @@ make run               # Docker; app on http://localhost:8080, check /health
 make dev               # same without Docker (needs uv)
 make data              # download challenge files to data/raw and check checksums
 make test              # unit tests
+make status            # where we stand: slices, success criteria, submission checklist
 make first-loop        # 20 positives + 20 negatives → table, accuracy, evidence-verified rate
 uv run parltopics data load-bulk            # once: federal bulk texts → data/cache/bulk.db (needed for > ~500 affairs)
 uv run parltopics runs                      # stored runs (SQLite: data/parltopics.db)

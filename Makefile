@@ -1,4 +1,4 @@
-.PHONY: run dev data test first-loop eval check-topics
+.PHONY: run dev data test first-loop eval check-topics status
 
 run:
 	docker compose up --build
@@ -24,3 +24,6 @@ eval:
 check-topics:
 	uv run parltopics check topic Beekeeping --max-matches 2
 	uv run parltopics check topic Tamil --max-matches 10
+
+status:
+	@uv run parltopics status
