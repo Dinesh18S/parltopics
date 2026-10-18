@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     translate_model: str = ""  # model for the unofficial reading-aid translation; empty = LLM_NAME
     review_lang: str = ""
     scheme_label_fallback: str = ""  # label language when a scheme has none in the affair language (APS has no IT)  # reader language for review aids (official version / unofficial translation); empty = off  # topics/<id>.yaml shown first in the UI; empty = first preset with results
+    collection_exclude_types: list[str] = ["Consultation"]  # not parliamentary affairs; as the federal baseline (D67)
+    translated_lang_order: list[str] = ["de", "fr", "it"]  # federal collections: first complete official version (D67)
     opd_api_base: str = "https://api.openparldata.ch"
     data_dir: Path = Path("./data")
     db_path: Path = Path("./data/parltopics.db")

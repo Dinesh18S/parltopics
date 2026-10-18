@@ -16,6 +16,7 @@ from parltopics.evaluate.samples import (
     build_aps_gold, build_crosslang, build_curia_vista_sample, build_demo_pool, build_digi_federal, build_first_loop, enlarge_negatives,
     federal_slice,
 )
+from parltopics import collection
 from parltopics import partner as partner_files
 from parltopics.sources.router import AffairSource
 from parltopics.llm import LLMClient
@@ -656,3 +657,98 @@ def data_download(force: bool = False) -> None:
         typer.echo(f"wrote {checksum_file}")
     if any(s in {"missing", "changed"} for s in status.values()):
         raise typer.Exit(1)
+
+
+def _target(topic: Path | None, scheme: str | None) -> str:
+    if (topic is None) == (scheme is None):
+        raise typer.BadParameter("pass exactly one of --topic (ad-hoc) or --scheme (standard)")
+    return str(topic) if topic is not None else f"{collection.SCHEME_PREFIX}{scheme}"
+
+
+def _echo_err(line: str) -> None:
+    typer.echo(line, err=True)
+
+
+@app.command()
+def ingest(
+    body: str = typer.Option(..., help="body key, e.g. BE, TG, CHE"),
+    since: str = typer.Option("2018-01-01", help="first begin_date to include"),
+    workers: int = typer.Option(8, help="parallel API fetches"),
+) -> None:
+    """Fetch + assemble every affair of a parliament since a date (new and failed ones only); data-quality report."""
+    settings = get_settings()
+    out = collection.ingest(settings, Store(settings.db_path), body, since, workers=workers)
+    out.pop("new_ids")
+    typer.echo(json.dumps(out, indent=2, ensure_ascii=False))
+
+
+@app.command()
+def index(
+    body: str = typer.Option(..., help="body key of an ingested collection"),
+    topic: Path | None = typer.Option(None, help="topic YAML (ad-hoc mode)"),
+    scheme: str | None = typer.Option(None, help="standard mode: curia_vista | aps"),
+    prompt_version: str | None = typer.Option(None, help="default: adhoc_v5 / standard_v1"),
+    concurrency: int = typer.Option(16, help="parallel model calls (32 stalled the gateway on 2026-10-18, D67)"),
+) -> None:
+    """Classify every ingested affair of a collection; resumable (skips affairs already done for this prompt_version)."""
+    settings = get_settings().model_copy(update={"llm_concurrency": concurrency})
+    out = collection.index(settings, Store(settings.db_path), RESULTS_DIR, body, _target(topic, scheme),
+                           prompt_version, report=_echo_err)
+    typer.echo(json.dumps(out, indent=2))
+
+
+@app.command()
+def update(
+    body: str = typer.Option(..., help="body key of an ingested collection"),
+    concurrency: int = typer.Option(16, help="parallel model calls (32 stalled the gateway on 2026-10-18, D67)"),
+) -> None:
+    """Ingest only what is new since the last ingest, classify it for every indexed topic/scheme, print the feed."""
+    from parltopics.api import match_threshold
+
+    settings = get_settings().model_copy(update={"llm_concurrency": concurrency})
+    store = Store(settings.db_path)
+    out = collection.update(settings, store, RESULTS_DIR, body, report=_echo_err)
+    new_ids = set(out["new_ids"])
+    typer.echo(f"{body}: {out['ingest']['listed']} listed, {len(new_ids)} new since the last ingest")
+    for path in out["skipped_changed"]:
+        typer.echo(f"  skipped {path}: topic/scheme changed since it was indexed (run `parltopics index`)")
+    threshold = match_threshold(settings)
+    for t in out["indexed"]:
+        rows = [r for r in collection.export_rows(store, body, t["prompt_version"], threshold)
+                if r["affair_id"] in new_ids]
+        hits = [r for r in rows if r["shown_as_match"] or (r["scheme_code"] and r["status"] == "ok")]
+        typer.echo(f"  {t['target']}: {len(hits)} new suggestions, not done {t['not_done']}")
+        for r in hits[:50]:
+            typer.echo(f"    {r['affair_id']} {r['date']} {r['label'] or ''} {r['confidence']:.2f} | {r['title'][:80]}")
+
+
+@app.command("export")
+def export_collection(
+    body: str = typer.Option(..., help="body key of an indexed collection"),
+    topic: Path | None = typer.Option(None, help="topic YAML (ad-hoc mode)"),
+    scheme: str | None = typer.Option(None, help="standard mode: curia_vista | aps"),
+    prompt_version: str | None = typer.Option(None, help="default: the latest indexed for this target"),
+    out: Path | None = typer.Option(None, help=".xlsx or .csv; default data/exports/<body>_<target>.xlsx"),
+    only_matches: bool = typer.Option(False, help="ad-hoc: only rows shown as match"),
+) -> None:
+    """Export suggestions + review status of a collection to Excel/CSV (one row per prediction)."""
+    from parltopics.api import match_threshold
+
+    settings = get_settings()
+    store = Store(settings.db_path)
+    target = _target(topic, scheme)
+    indexed = collection.latest_targets(store, body).get(target)
+    if indexed is None:
+        raise typer.BadParameter(f"{target} was never indexed on {body}")
+    template = prompt_version or indexed["prompt_template"]
+    version = collection.target_version(settings, target, template)[2]
+    rows = collection.export_rows(store, body, version, match_threshold(settings))
+    if only_matches:
+        rows = [r for r in rows if r["shown_as_match"]]
+    name = topic.stem if topic is not None else scheme
+    out = out or settings.data_dir / "exports" / f"{body}_{name}.xlsx"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    df = pd.DataFrame(rows)
+    df.to_csv(out, index=False) if out.suffix == ".csv" else df.to_excel(out, index=False)
+    typer.echo(f"{len(df)} rows ({df.affair_id.nunique() if len(df) else 0} affairs, prompt_version "
+               f"{version[:12]}) → {out}")

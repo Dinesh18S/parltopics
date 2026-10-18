@@ -41,6 +41,7 @@ Gateway throughput (adhoc_v5, Bern sample, 0 errors): 182 affairs/min at concurr
 | `parltopics update --body BE` | only affairs new since the last ingest → classify them → "new since last visit" feed (cron/Docker) |
 | export | Excel/CSV of suggestions + review status (what staff already use) |
 Tests for: resumability (no duplicate work), idempotency, update picks only new affairs.
+**Result (D67):** done; ingested BE 5,249 / TG 1,447 / CHE 27,465 (1 lang_missing); TG digitalisation indexed (1,447, resumed after 3 interruptions, no repeat work); default concurrency 16.
 
 ### Phase 2 — run it (mostly machine time)
 - Bern + Thurgau: digitalisation, Covid-19, Curia Vista/APS.

@@ -52,6 +52,17 @@ CREATE TABLE IF NOT EXISTS reviews (
     corrected_label TEXT CHECK (decision != 'correct' OR corrected_label IS NOT NULL),
     reviewer TEXT, note TEXT, created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS ingests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, body_key TEXT NOT NULL, since TEXT NOT NULL, started_at TEXT NOT NULL,
+    finished_at TEXT, n_listed INTEGER, n_new INTEGER, report_json TEXT
+);
+CREATE TABLE IF NOT EXISTS collection_items (
+    body_key TEXT NOT NULL, affair_id INTEGER NOT NULL, begin_date TEXT, type TEXT, title TEXT,
+    text_sha256 TEXT REFERENCES sources(text_sha256),
+    status TEXT NOT NULL CHECK (status IN ('ok', 'lang_missing', 'fetch_error')), error TEXT,
+    first_ingest INTEGER NOT NULL REFERENCES ingests(id), first_seen_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+    PRIMARY KEY (body_key, affair_id)
+);
 CREATE TRIGGER IF NOT EXISTS predictions_no_update BEFORE UPDATE ON predictions
     BEGIN SELECT RAISE(ABORT, 'predictions are append-only'); END;
 CREATE TRIGGER IF NOT EXISTS predictions_no_delete BEFORE DELETE ON predictions
@@ -75,6 +86,32 @@ ADDED_PREDICTION_COLUMNS = {"evidence_retried": "INTEGER", "evidence_recovered":
                             "rank": "INTEGER"}
 SOURCE_FIELDS = ("lang_source", "detected_lang", "lang_mismatch", "title_only", "truncated", "cut_section",
                  "chars_lost", "n_chars_full", "url")
+
+
+RETRY_STATUSES = ("llm_error", "fetch_error")  # transient: retried. parse_error is deterministic at temperature 0 (D67)
+_RETRY_SQL = ", ".join(f"'{s}'" for s in RETRY_STATUSES)
+
+ITEMS_SELECT = (
+    "SELECT p.id AS prediction_id, p.run_id, p.affair_id, p.lang, p.gold, p.body_key, p.title, p.label, p.confidence, "
+    "p.evidence, p.rationale, p.verify_ok, p.verify_method, p.inconsistent, p.keyword_absent, p.tech_vocab_absent, "
+    "p.status, p.evidence_recovered, p.scheme_code, p.rank, a.number, a.type, a.begin_date, a.body_type, s.url, "
+    "s.title_only, s.truncated, r.decision AS review_decision, r.corrected_label AS review_label, "
+    "r.created_at AS reviewed_at "
+    "FROM predictions p LEFT JOIN affairs a ON a.id = p.affair_id "
+    "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 "
+    "LEFT JOIN reviews r ON r.id = (SELECT MAX(id) FROM reviews WHERE prediction_id = p.id) "
+)
+# per affair of a collection: the run whose predictions count — newest complete one, else newest
+_BEST_RUN_SQL = f"""
+WITH cand AS (
+    SELECT p.affair_id, p.run_id, r.started_at, SUM(p.status IN ({_RETRY_SQL})) AS n_fail
+    FROM predictions p JOIN runs r ON r.id = p.run_id
+    WHERE r.sample_file = ? AND r.prompt_version = ? GROUP BY p.affair_id, p.run_id
+), best AS (
+    SELECT affair_id, run_id, n_fail FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY affair_id ORDER BY n_fail > 0, started_at DESC) AS rn FROM cand
+    ) WHERE rn = 1
+)"""
 
 
 def _now() -> str:
@@ -136,6 +173,18 @@ class Store:
                  source.chars_lost, source.n_chars_full, source.url, source.text, _now()),
             )
 
+    def source_text(self, text_sha256: str) -> SourceText:
+        """A stored text as the classifier needs it (section headers are not stored)."""
+        row = self.db.execute("SELECT * FROM sources WHERE text_sha256 = ?", (text_sha256,)).fetchone()
+        if row is None:
+            raise KeyError(text_sha256)
+        r = _row(row)
+        return SourceText(affair_id=r["affair_id"], lang=r["lang"], lang_source=r["lang_source"],
+                          detected_lang=r["detected_lang"], lang_mismatch=r["lang_mismatch"], title=r["title"],
+                          text=r["text"], sha256=r["text_sha256"], sections=[], title_only=r["title_only"],
+                          truncated=r["truncated"], cut_section=r["cut_section"], chars_lost=r["chars_lost"],
+                          n_chars_full=r["n_chars_full"], url=r["url"])
+
     def add_prediction(self, record: dict) -> int:
         run = self.db.execute("SELECT topic_sha FROM runs WHERE id = ?", (record["run_id"],)).fetchone()
         if run is None:
@@ -191,17 +240,7 @@ class Store:
 
     def run_items(self, run_id: str) -> list[dict]:
         """Predictions of a run with affair metadata and the latest review (no source text)."""
-        rows = self.db.execute(
-            "SELECT p.id AS prediction_id, p.affair_id, p.lang, p.gold, p.body_key, p.title, p.label, p.confidence, "
-            "p.evidence, p.verify_ok, p.verify_method, p.inconsistent, p.keyword_absent, p.tech_vocab_absent, "
-            "p.status, p.evidence_recovered, p.scheme_code, p.rank, a.number, a.type, a.begin_date, a.body_type, s.url, s.title_only, "
-            "s.truncated, r.decision AS review_decision, r.corrected_label AS review_label, r.created_at AS reviewed_at "
-            "FROM predictions p LEFT JOIN affairs a ON a.id = p.affair_id "
-            "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 "
-            "LEFT JOIN reviews r ON r.id = (SELECT MAX(id) FROM reviews WHERE prediction_id = p.id) "
-            "WHERE p.run_id = ? ORDER BY p.id",
-            (run_id,),
-        )
+        rows = self.db.execute(ITEMS_SELECT + "WHERE p.run_id = ? ORDER BY p.id", (run_id,))
         return [_row(r) for r in rows]
 
     def prediction_detail(self, prediction_id: int) -> dict:
@@ -223,3 +262,63 @@ class Store:
             "ORDER BY r.started_at DESC LIMIT 1", (topic_sha, sample_file, min_affairs),
         ).fetchone()
         return self.run(row["id"]) if row else None
+
+    def start_ingest(self, body_key: str, since: str, n_listed: int) -> int:
+        with self.lock:
+            cur = self.db.execute("INSERT INTO ingests (body_key, since, started_at, n_listed) VALUES (?,?,?,?)",
+                                  (body_key, since, _now(), n_listed))
+        return cur.lastrowid
+
+    def finish_ingest(self, ingest_id: int, n_new: int, report: dict) -> None:
+        with self.lock:
+            self.db.execute("UPDATE ingests SET finished_at = ?, n_new = ?, report_json = ? WHERE id = ?",
+                            (_now(), n_new, json.dumps(report), ingest_id))
+
+    def last_ingest(self, body_key: str) -> dict | None:
+        row = self.db.execute("SELECT * FROM ingests WHERE body_key = ? AND finished_at IS NOT NULL "
+                              "ORDER BY id DESC LIMIT 1", (body_key,)).fetchone()
+        return _row(row) if row else None
+
+    def put_item(self, body_key: str, ingest_id: int, item: dict) -> None:
+        """Insert a collection item, or update its status/text; first_ingest and first_seen_at never change."""
+        now = _now()
+        with self.lock:
+            self.db.execute(
+                "INSERT INTO collection_items (body_key, affair_id, begin_date, type, title, "
+                "text_sha256, status, error, first_ingest, first_seen_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) "
+                "ON CONFLICT(body_key, affair_id) DO UPDATE SET begin_date = excluded.begin_date, type = excluded.type, "
+                "title = excluded.title, text_sha256 = excluded.text_sha256, status = excluded.status, error = excluded.error, "
+                "updated_at = excluded.updated_at",
+                (body_key, item["affair_id"], item.get("begin_date"), item.get("type"), item.get("title"),
+                 item.get("text_sha256"), item["status"], item.get("error"),
+                 ingest_id, now, now),
+            )
+
+    def items(self, body_key: str) -> list[dict]:
+        rows = self.db.execute(
+            "SELECT c.*, s.lang, s.lang_mismatch, s.title_only, s.truncated, s.n_chars_full, s.chars_lost "
+            "FROM collection_items c LEFT JOIN sources s ON s.text_sha256 = c.text_sha256 "
+            "WHERE c.body_key = ? ORDER BY c.affair_id", (body_key,))
+        return [_row(r) for r in rows]
+
+    def done_affairs(self, collection: str, prompt_version: str) -> set[int]:
+        """Affairs of a collection with a complete result (no transient failure) for this prompt_version."""
+        rows = self.db.execute(_BEST_RUN_SQL + " SELECT affair_id FROM best WHERE n_fail = 0",
+                               (collection, prompt_version))
+        return {r["affair_id"] for r in rows}
+
+    def collection_results(self, collection: str, prompt_version: str) -> list[dict]:
+        """Per affair, the predictions of the run that counts for it (see _BEST_RUN_SQL), with metadata + review."""
+        rows = self.db.execute(
+            _BEST_RUN_SQL + " " + ITEMS_SELECT +
+            "JOIN best b ON b.affair_id = p.affair_id AND b.run_id = p.run_id ORDER BY p.affair_id, p.id",
+            (collection, prompt_version))
+        return [_row(r) for r in rows]
+
+    def collection_targets(self, collection: str) -> list[dict]:
+        """Distinct (prompt template, topic/scheme path, prompt_version) that were indexed on a collection."""
+        rows = self.db.execute(
+            "SELECT prompt_template, prompt_version, json_extract(manifest_json, '$.topic_path') AS topic_path, "
+            "MAX(started_at) AS last_started FROM runs WHERE sample_file = ? GROUP BY prompt_version "
+            "ORDER BY last_started", (collection,))
+        return [_row(r) for r in rows]

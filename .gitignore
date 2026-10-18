@@ -45,3 +45,6 @@ private/
 designs/
 *.db-wal
 *.db-shm
+
+# Collection exports (may contain many rows; regenerate with `parltopics export`)
+data/exports/

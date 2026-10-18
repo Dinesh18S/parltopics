@@ -66,10 +66,11 @@ class OPDClient:
     def _cache_path(self, url: str) -> Path:
         return self.cache_dir / f"{hashlib.sha1(url.encode()).hexdigest()}.json"
 
-    def get_json(self, path: str, params: dict | None = None) -> dict:
+    def get_json(self, path: str, params: dict | None = None, fresh: bool = False) -> dict:
+        """GET with the on-disk cache; fresh=True skips reading it (listings change, affairs rarely do)."""
         url = f"{self.base}{path}" + (f"?{urlencode(sorted(params.items()))}" if params else "")
         cached = self._cache_path(url)
-        if cached.exists():
+        if cached.exists() and not fresh:
             return json.loads(cached.read_text())
         for attempt in range(MAX_RETRIES + 1):
             try:
@@ -99,20 +100,27 @@ class OPDClient:
                 return rows
             offset += PAGE_LIMIT
 
-    def list_affairs_since(self, body_key: str, since: str) -> list[dict]:
-        """All affairs of a body with begin_date >= since (newest first; the API has no date filter)."""
+    def list_affairs_since(self, body_key: str, since: str, fresh: bool = False) -> list[dict]:
+        """All affairs of a body with begin_date >= since (newest first; the API has no date filter).
+        Affairs without a begin_date sort first and are skipped (not stopped at); rows carry type_en.
+        `-id` breaks ties: offset paging over begin_date alone repeated some rows and skipped others (D67)."""
         rows: list[dict] = []
         offset = 0
         while True:
             page = self.get_json(
                 "/v1/affairs/",
-                {"body_key": body_key, "sort_by": "-begin_date", "fields": "id,begin_date",
+                {"body_key": body_key, "sort_by": "-begin_date,-id", "fields": "id,begin_date,type_harmonized",
                  "limit": PAGE_LIMIT, "offset": offset},
+                fresh=fresh,
             )
             for row in page["data"]:
-                if (row.get("begin_date") or "")[:10] < since:
+                date = (row.get("begin_date") or "")[:10]
+                if not date:
+                    continue
+                if date < since:
                     return rows
-                rows.append(row)
+                rows.append({"id": row["id"], "begin_date": date,
+                             "type_en": ((row.get("type_harmonized") or {}).get("en") or "").strip()})
             if not page["meta"]["has_more"]:
                 return rows
             offset += PAGE_LIMIT

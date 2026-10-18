@@ -65,6 +65,10 @@ uv run parltopics partner files             # Excel files for the domain partner
 make eval RUN="<dev_run> <test_run>"        # digitalisation like-for-like eval → results/metrics.json + metrics.md
 uv run parltopics demo export               # refresh results/demo/*.json (cached demo results for offline mode)
 uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # human review, append-only
+uv run parltopics ingest --body BE --since 2018-01-01    # whole parliament: fetch + assemble every affair once, data-quality report
+uv run parltopics index --body BE --topic topics/digitalisation.yaml   # classify all of it (or --scheme aps); resumable
+uv run parltopics update --body BE           # only affairs new since the last ingest → classify → "new" feed (cron)
+uv run parltopics export --body BE --topic topics/digitalisation.yaml  # Excel/CSV with review status → data/exports/
 uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
 uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # one model call
 ```

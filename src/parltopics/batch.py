@@ -23,6 +23,7 @@ from parltopics.topics import Topic, keyword_absent, load_topic, tech_vocab_abse
 def iter_classify(
     settings: Settings, store: Store, results_dir: Path, run: RunManifest, topic: Topic, prompt: Prompt,
     rows: list[dict], cancel: threading.Event | None = None,
+    stored_source: Callable[[dict], SourceText] | None = None,
 ) -> Iterator[dict]:
     """Ad-hoc mode over rows; see iter_records."""
     llm = LLMClient(settings)
@@ -36,16 +37,18 @@ def iter_classify(
             "tech_vocab_absent": tech_vocab_absent(source.text, topic),
         }]
 
-    yield from iter_records(settings, store, run, rows, adhoc, cancel)
+    yield from iter_records(settings, store, run, rows, adhoc, cancel, stored_source)
 
 
 def iter_records(
     settings: Settings, store: Store, run: RunManifest, rows: list[dict],
     classify_one: Callable[[SourceText], list[dict]], cancel: threading.Event | None = None,
+    stored_source: Callable[[dict], SourceText] | None = None,
 ) -> Iterator[dict]:
     """Fetch + assemble each row (affair_id, body_key, lang, gold, title), classify it in parallel, store and yield
-    every resulting record as it finishes. Setting `cancel` stops new work; finished records are kept."""
-    source_of = AffairSource(settings)
+    every resulting record as it finishes. Setting `cancel` stops new work; finished records are kept.
+    stored_source(row) instead returns the already stored text (collections: no re-fetch, no re-assembly)."""
+    source_of = AffairSource(settings) if stored_source is None else None
 
     def one(row: dict) -> list[dict]:
         base = {"run_id": run.run_id, "affair_id": int(row["affair_id"]), "body_key": row["body_key"],
@@ -53,6 +56,9 @@ def iter_records(
                 "lang": row["lang"] or None}
         if cancel is not None and cancel.is_set():
             return []
+        if stored_source is not None:
+            source = stored_source(row)
+            return [base | {"title": source.title} | record for record in classify_one(source)]
         try:
             affair = source_of.get_affair(int(row["affair_id"]), row["body_key"])
             source = assemble(affair, settings.max_input_chars, row["lang"] or None)
