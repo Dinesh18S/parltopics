@@ -125,7 +125,7 @@ def classify_standard(
     if call.status != "ok":
         return [base | {"label": None, "status": call.status, "error": call.error, "confidence": None, "evidence": "",
                         "rationale": "", "verify_ok": False, "verify_method": "not_run", "verify_score": 0.0}]
-    labels = call.parsed["labels"]
+    labels = list({lab["code"]: lab for lab in reversed(call.parsed["labels"])}.values())[::-1]  # first occurrence wins
     note = None
     if any(lab["code"] == NONE_OTHER for lab in labels) and len(labels) > 1:
         labels = [lab for lab in labels if lab["code"] != NONE_OTHER]

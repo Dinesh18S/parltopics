@@ -40,22 +40,18 @@
       <button class="btn" type="button" id="retryBtn">Retry connection</button>
     </div>
 
-    <div class="row" id="standardNote" hidden>
-      <div class="banner" style="flex:1;margin:0;background:#F0ECF5;border-color:#D9D1E6;color:#473C5F">
-        <div><div class="t">Standard mode (APS / Curia Vista)</div>
-        <div>Scheme classification is built in the next slice (S7). Ad-hoc mode works now.</div></div>
-      </div>
-    </div>
-
     <div class="row" id="queryRow">
-      <label class="inp" style="flex:0 0 auto">
+      <span class="cap std-only hidden" style="font-weight:600">Scheme</span>
+      <div class="seg std-only hidden" role="group" aria-label="Classification scheme" id="schemeSeg"></div>
+      <span class="cap std-only hidden">Full taxonomy · up to 3 per affair · labels in DE/FR (APS has no IT labels)</span>
+      <label class="inp adhoc-only" style="flex:0 0 auto">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#908A7E" stroke-width="1.8"/><path d="M20 20 L16 16" stroke="#908A7E" stroke-width="1.8" stroke-linecap="round"/></svg>
         <input id="topicName" type="text" placeholder="Topic name" aria-label="Topic name" autocomplete="off">
       </label>
-      <button class="btn" type="button" id="defToggle" aria-expanded="false" aria-controls="defBox">+ Definition</button>
-      <div class="vsep"></div>
-      <span class="cap" style="font-weight:600">Presets</span>
-      <span id="presetChips" style="display:flex;gap:8px;flex-wrap:wrap"></span>
+      <button class="btn adhoc-only" type="button" id="defToggle" aria-expanded="false" aria-controls="defBox">+ Definition</button>
+      <div class="vsep adhoc-only"></div>
+      <span class="cap adhoc-only" style="font-weight:600">Presets</span>
+      <span id="presetChips" class="adhoc-only" style="display:flex;gap:8px;flex-wrap:wrap"></span>
       <div class="spacer"></div>
       <span class="chip chip-amber hidden" id="sampleChip" title="Model offline: these are stored results from an earlier run">Cached results</span>
       <button class="btn btn-primary" type="button" id="classifyBtn">Classify <span class="kbd"><b>↵</b></span></button>
@@ -88,7 +84,7 @@
 
     <div class="tablewrap" id="tableWrap">
       <table class="tbl">
-        <thead><tr><th>Parl.</th><th>Number</th><th>Date</th><th>Lang</th><th>Title</th><th>Label</th><th>Confidence</th><th>Evidence</th><th>Review</th></tr></thead>
+        <thead id="thead"></thead>
         <tbody id="rows"></tbody>
       </table>
       <div class="empty hidden" id="emptyState"></div>

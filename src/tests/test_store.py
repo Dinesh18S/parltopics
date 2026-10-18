@@ -121,3 +121,13 @@ def test_adding_a_source_again_updates_its_link(store):
     s, source = store
     s.add_source(AFFAIR, source.model_copy(update={"url": "https://ge.ch/new"}))
     assert s.predictions("run1")[0]["url"] == "https://ge.ch/new"
+
+
+def test_latest_run_skips_partial_runs(store):
+    s, source = store
+    s.add_run(_manifest("run2"), TOPIC)
+    s.finish_run("run2", 0)  # cancelled before any prediction
+    s.finish_run("run1", 1)
+    sha = s.run("run1")["topic_sha"]
+    assert s.latest_run(sha, "s.csv", 1)["id"] == "run1"
+    assert s.latest_run(sha, "s.csv", 0)["id"] in {"run1", "run2"}

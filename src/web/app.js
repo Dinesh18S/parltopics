@@ -10,7 +10,10 @@ const S = {
   app: null, presetId: null, topicName: "", runId: null, items: [], live: false, controller: null,
   filters: { parl: "", level: "", lang: "", year: "" }, kwOnly: false, show: { rejected: false, below: false },
   selected: -1, detailId: null, pending: [], definitionUsed: "", hasKeywords: false, pool: [],
+  mode: "adhoc", scheme: "aps", labelNames: {}, loadSeq: 0,
 };
+const ADHOC_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Label", "Confidence", "Evidence", "Review"];
+const STD_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Labels (confidence)", "Evidence (top label)", "Review"];
 
 async function api(path, opts = {}) {
   const r = await fetch(path, { headers: { "Content-Type": "application/json" }, ...opts });
@@ -30,6 +33,7 @@ async function loadState() {
   if (!S.pool.length) S.pool = await api("/api/pool");
   $("classifyBtn").title = live ? "Classify the demo pool (Enter)" : "Model endpoint unreachable";
   renderPresets();
+  renderSchemes();
   const preferred = S.app.presets.find((p) => p.id === S.app.default_preset && p.run);
   if (!S.presetId && !S.runId) selectPreset((preferred || S.app.presets.find((p) => p.run) || S.app.presets[0] || {}).id);
 }
@@ -43,7 +47,7 @@ function renderPresets() {
 
 function selectPreset(id) {
   const p = S.app.presets.find((x) => x.id === id);
-  if (!p) return showEmpty();
+  if (!p) return render();
   S.presetId = id;
   $("topicName").value = p.name;
   $("topicDef").value = p.definition.trim();
@@ -53,11 +57,13 @@ function selectPreset(id) {
   S.definitionUsed = p.definition.trim();
   S.hasKeywords = Object.keys(p.keywords || {}).length > 0;
   if (p.run) loadRun(p.run.run_id);
-  else { S.items = []; S.runId = null; S.topicName = p.name; render(); }
+  else { S.loadSeq += 1; S.items = []; S.runId = null; S.topicName = p.name; render(); }
 }
 
 async function loadRun(runId) {
+  const seq = ++S.loadSeq;
   const data = await api(`/api/runs/${encodeURIComponent(runId)}`);
+  if (seq !== S.loadSeq) return;  // a newer preset/scheme was selected meanwhile
   Object.assign(S, { runId, items: data.items, topicName: data.topic_name, selected: -1, pending: [] });
   const when = (data.run.finished_at || data.run.started_at || "").slice(0, 16).replace("T", " ");
   $("offlineText").innerHTML = `Showing cached results from run <span class="mono">${esc(runId)}</span> · ${esc(when)}. Live classification is paused.`;
@@ -81,7 +87,7 @@ function presetUnchanged() {
 
 async function classify() {
   if (S.app.mode !== "live" || S.live) return;
-  const body = presetUnchanged() ? { preset_id: S.presetId } : { topic: topicFromForm() };
+  const body = S.mode === "standard" ? { scheme: S.scheme } : presetUnchanged() ? { preset_id: S.presetId } : { topic: topicFromForm() };
   if (body.topic) {
     S.presetId = null; renderPresets();
     if (!body.topic.name) { $("topicName").focus(); return; }
@@ -92,7 +98,7 @@ async function classify() {
   closeDetail();
   $("classifyBtn").disabled = true; $("classifyBtn").firstChild.textContent = "Classifying… ";
   $("progress").classList.remove("hidden");
-  $("progTopic").textContent = body.topic ? body.topic.name : $("topicName").value;
+  $("progTopic").textContent = body.scheme ? schemeName(body.scheme) : body.topic ? body.topic.name : $("topicName").value;
   render();
   try {
     const r = await fetch("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: S.controller.signal });
@@ -156,6 +162,7 @@ function groups() {
 }
 
 function visibleRows() {
+  if (S.mode === "standard") return stdGroups().shown;
   const g = groups();
   return [...g.suggested, ...(S.show.below ? g.below : []), ...(S.show.rejected ? g.rejected : [])];
 }
@@ -175,6 +182,8 @@ function fillFilterOptions() {
 
 // ---------- rendering ----------
 function render() {
+  $("thead").innerHTML = `<tr>${(S.mode === "standard" ? STD_HEAD : ADHOC_HEAD).map((h) => `<th>${h}</th>`).join("")}</tr>`;
+  if (S.mode === "standard") return renderStandard();
   const g = groups();
   const rows = visibleRows();
   $("kwToggle").classList.toggle("hidden", !S.hasKeywords);
@@ -261,6 +270,7 @@ function highlight(text, span) {
 }
 
 async function openDetail(pid) {
+  if (S.mode === "standard") return openStandardDetail(pid);
   const d = await api(`/api/predictions/${pid}`);
   const item = S.items.find((i) => i.prediction_id === pid) || {};
   S.detailId = pid;
@@ -347,7 +357,8 @@ async function review(pid, decision, correctedLabel) {
   const item = S.items.find((i) => i.prediction_id === pid);
   if (item) Object.assign(item, { review_decision: last.decision, review_label: last.corrected_label });
   render();
-  if (S.detailId === pid) openDetail(pid);
+  if (S.mode === "standard" && S.detailId) openStandardDetail(S.detailId);
+  else if (S.detailId === pid) openDetail(pid);
 }
 
 function move(delta) {
@@ -361,6 +372,147 @@ function move(delta) {
 }
 
 const selectedPid = () => S.detailId || (visibleRows()[S.selected] || {}).prediction_id;
+
+// ---------- standard mode (APS / Curia Vista) ----------
+const schemeName = (id) => ((S.app.schemes || []).find((x) => x.id === id) || {}).name || id;
+
+function renderSchemes() {
+  $("schemeSeg").innerHTML = (S.app.schemes || []).map((x) =>
+    `<button type="button" data-scheme="${esc(x.id)}" class="${x.id === S.scheme ? "on" : ""}" aria-pressed="${x.id === S.scheme}">${esc(x.name)}</button>`).join("");
+}
+
+async function setMode(mode) {
+  if (S.live) return;
+  S.mode = mode;
+  document.querySelectorAll("[data-mode]").forEach((x) => { x.classList.toggle("on", x.dataset.mode === mode); x.setAttribute("aria-pressed", String(x.dataset.mode === mode)); });
+  document.querySelectorAll(".adhoc-only").forEach((x) => x.classList.toggle("hidden", mode !== "adhoc"));
+  document.querySelectorAll(".std-only").forEach((x) => x.classList.toggle("hidden", mode !== "standard"));
+  document.body.classList.toggle("std", mode === "standard");
+  $("defBox").classList.add("hidden");
+  $("kwToggle").classList.toggle("hidden", mode === "standard" || !S.hasKeywords);
+  closeDetail();
+  S.runId = null; S.items = []; S.selected = -1;
+  render();
+  if (mode === "standard") return selectScheme(S.scheme);
+  selectPreset(S.presetId || (S.app.presets.find((p) => p.id === S.app.default_preset) || S.app.presets[0] || {}).id);
+}
+
+async function selectScheme(id) {
+  S.scheme = id; renderSchemes();
+  const seq = ++S.loadSeq;
+  if (!S.labelNames[id]) S.labelNames[id] = await api(`/api/schemes/${encodeURIComponent(id)}/labels`);
+  if (seq !== S.loadSeq || S.scheme !== id) return;
+  const sc = (S.app.schemes || []).find((x) => x.id === id);
+  S.topicName = schemeName(id); S.definitionUsed = ""; S.hasKeywords = false;
+  if (sc && sc.run) return loadRun(sc.run.run_id);
+  S.loadSeq += 1; S.items = []; S.runId = null; render();
+}
+
+function labelText(sid, lang) {
+  if (sid === "NONE_OTHER") return "None / other";
+  const names = (S.labelNames[S.scheme] || {})[sid] || {};
+  return names[lang] || names[S.app.scheme_label_fallback] || Object.values(names)[0] || sid;
+}
+
+function stdGroups() {
+  const by = new Map();
+  for (const i of S.items) {
+    if (!passesFilters(i)) continue;
+    if (!by.has(i.affair_id)) by.set(i.affair_id, { ...i, labels: [], failed: 0 });
+    const g = by.get(i.affair_id);
+    if (i.status === "ok" && i.label && !g.labels.some((l) => l.label === i.label)) g.labels.push(i);
+    else if (i.status === "evidence_failed") g.failed += 1;
+  }
+  const all = [...by.values()];
+  for (const g of all) {
+    g.labels.sort((a, b) => (a.rank || 9) - (b.rank || 9) || String(a.label).localeCompare(String(b.label)));
+    const top = g.labels.find((l) => l.label !== "NONE_OTHER") || g.labels[0];
+    if (top) Object.assign(g, { prediction_id: top.prediction_id, evidence: top.evidence, verify_ok: top.verify_ok, verify_method: top.verify_method });
+  }
+  return { all, shown: all.filter((g) => g.labels.length), failed: all.reduce((n, g) => n + g.failed, 0),
+           none: all.filter((g) => g.labels.length && g.labels.every((l) => l.label === "NONE_OTHER")).length };
+}
+
+function paths(g) {
+  const isTopic = (l) => (l.label.match(/\./g) || []).length >= 2;
+  const topics = g.labels.filter((l) => l.label !== "NONE_OTHER" && isTopic(l));
+  const chapters = g.labels.filter((l) => l.label !== "NONE_OTHER" && !isTopic(l));
+  const out = [];
+  for (const c of chapters) {
+    const sub = topics.filter((t) => t.label.startsWith(`${c.label}.`));
+    if (!sub.length) out.push({ chap: labelText(c.label, g.lang), conf: c.confidence });
+    for (const t of sub) out.push({ chap: labelText(c.label, g.lang), topic: labelText(t.label, g.lang), conf: t.confidence });
+  }
+  for (const t of topics.filter((t) => !chapters.some((c) => t.label.startsWith(`${c.label}.`)))) out.push({ topic: labelText(t.label, g.lang), conf: t.confidence });
+  if (g.labels.some((l) => l.label === "NONE_OTHER")) out.push({ none: true });
+  return out;
+}
+
+function stdReview(g) {
+  const st = g.labels.map(reviewState);
+  if (st.length && st.every((x) => x === "confirmed")) return `<span class="chip chip-confirmed">✓ Confirmed</span>`;
+  if (st.some((x) => x === "rejected")) return `<span class="chip chip-grey">Partly rejected</span>`;
+  if (st.some((x) => x === "confirmed")) return `<span class="chip chip-topic">Partly confirmed</span>`;
+  return `<span class="ai">✦ AI suggestion</span>`;
+}
+
+function renderStandard() {
+  const g = stdGroups();
+  const fallbackNote = S.scheme === "aps" ? " · APS has no Italian labels: Italian affairs show the German label" : "";
+  $("strip").innerHTML = S.items.length || S.live ? `
+    <span><b>${g.shown.length}</b> affairs labelled</span><span>·</span>
+    <span><b>${g.shown.reduce((n, x) => n + x.labels.filter((l) => l.label !== "NONE_OTHER").length, 0)}</b> labels</span><span>·</span>
+    <span><b>${g.none}</b> none / other</span><span>·</span>
+    <span><b>${g.failed}</b> labels rejected (evidence not found)</span>
+    <span class="spacer"></span><span class="cap">Pool: <b>${S.pool.length || S.app.pool.n}</b> affairs · scheme ${esc(schemeName(S.scheme))}${fallbackNote}</span>` : "";
+  $("strip").classList.toggle("hidden", !S.items.length && !S.live);
+  $("rows").innerHTML = g.shown.map((x, n) => `<tr tabindex="0" data-pid="${x.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}">
+    <td>${esc(x.body_key)}</td><td class="mono muted">${esc(x.number)}</td><td class="muted nowrap">${esc(x.begin_date)}</td>
+    <td><span class="lang">${esc((x.lang || "").toUpperCase())}</span></td><td class="tbltitle" lang="${esc(x.lang)}">${esc(x.title)}</td>
+    <td><div class="labels">${paths(x).map((p) => p.none ? `<span class="path none">None / other</span>`
+      : `<span class="path">${p.chap ? `<span class="chap">${esc(p.chap)}</span>` : ""}${p.chap && p.topic ? `<span class="arr">→</span>` : ""}${p.topic ? `<span class="topic">${esc(p.topic)}</span>` : ""}<span class="cf">${(p.conf ?? 0).toFixed(2)}</span></span>`).join("")}</div></td>
+    <td class="evcell">${quote(x)}</td><td>${stdReview(x)}</td></tr>`).join("") + placeholderRows().map(placeholderHtml).join("");
+  const empty = $("emptyState");
+  if (!S.items.length && !S.live) empty.innerHTML = `<h2>No results for ${esc(schemeName(S.scheme))} yet</h2><p>${S.app.mode === "live" ? "Press <b>Classify</b> to label the demo pool with this scheme." : "The model endpoint is unreachable and no cached run exists for this scheme."}</p>`;
+  empty.classList.toggle("hidden", !!g.shown.length || S.live);
+}
+
+async function openStandardDetail(pid) {
+  const group = stdGroups().all.find((x) => x.labels.some((l) => l.prediction_id === pid));
+  if (!group) return;
+  const d = await api(`/api/predictions/${pid}`);
+  S.detailId = pid;
+  const rl = S.app.review_lang;
+  const aid = rl && d.lang && d.lang !== rl ? `<div class="aid" id="readingAid"><button class="btn" type="button" data-act="reading">Show ${esc(rl.toUpperCase())} version</button></div>` : "";
+  const items = group.labels.map((l) => {
+    const st = reviewState(l);
+    const name = l.label === "NONE_OTHER" ? "None / other" : labelText(l.label, group.lang);
+    return `<div class="lbitem${l.prediction_id === pid ? " on" : ""}">
+      <div class="badges" style="align-items:center;margin:0"><span class="chip chip-topic">${esc(name)}</span><span class="mono cap">${esc(l.label)}</span>
+        <span class="cap">confidence ${(l.confidence ?? 0).toFixed(2)}</span>${st === "confirmed" ? `<span class="chip chip-confirmed">✓ Confirmed by reviewer</span>` : st === "rejected" ? `<span class="chip chip-grey">✕ Rejected by reviewer</span>` : `<span class="ai">✦ AI suggestion</span>`}</div>
+      ${l.evidence ? `<div class="ev" lang="${esc(group.lang)}">${esc(l.evidence)}</div>` : ""}
+      <div class="acts"><button class="btn btn-sm" type="button" data-act="show-label" data-pid="${l.prediction_id}">Highlight evidence</button>
+        <button class="btn btn-sm btn-primary" type="button" data-act="confirm-label" data-pid="${l.prediction_id}" aria-pressed="${st === "confirmed"}">${st === "confirmed" ? "✓ Confirmed" : "Confirm"}</button>
+        <button class="btn btn-sm${st === "rejected" ? " btn-on" : ""}" type="button" data-act="reject-label" data-pid="${l.prediction_id}" aria-pressed="${st === "rejected"}">${st === "rejected" ? "✕ Rejected" : "Reject"}</button></div></div>`;
+  }).join("");
+  $("detail").innerHTML = `
+    <div class="dtop"><button class="iconbtn" type="button" data-act="close" aria-label="Close detail">✕</button><span class="spacer"></span>
+      <button class="iconbtn" type="button" data-act="prev" aria-label="Previous affair">↑</button><button class="iconbtn" type="button" data-act="next" aria-label="Next affair">↓</button></div>
+    <div class="dbody">
+      <div class="badges">${d.type ? `<span class="chip chip-topic">${esc(d.type)}</span>` : ""}<span class="chip chip-grey">${esc(d.body_key)} · ${esc(LEVEL[d.body_type] || "Municipal")}</span>
+        <span class="mono cap" style="align-self:center">${esc(d.number || "")}</span><span class="lang">${esc((d.lang || "").toUpperCase())}</span><span class="cap" style="align-self:center">${esc(d.begin_date || "")}</span></div>
+      <h1 lang="${esc(d.lang)}">${esc(d.title)}</h1>
+      <div class="meta-k">Suggested ${esc(schemeName(S.scheme))} labels — review each one</div>
+      <div class="lblist">${items}</div>
+      <div class="meta-k">Text (evidence of the selected label highlighted)</div>
+      <div class="textbox" lang="${esc(d.lang)}">${highlight(d.text || "", d.evidence_span)}</div>
+      ${aid}
+      <div class="rationale"><div class="meta-k">Model rationale — not evidence</div><div class="cap" style="font-size:13.5px">${esc(d.rationale)}</div></div>
+      ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">Open source page ↗</a>` : ""}
+    </div>`;
+  $("detail").classList.remove("hidden");
+  $("scrim").classList.remove("hidden");
+}
 
 // ---------- metrics ----------
 const pct = (x) => (x == null ? "—" : `${(100 * x).toFixed(1)}%`);
@@ -458,11 +610,11 @@ document.addEventListener("click", (e) => {
     if (t.dataset.view === "metrics") loadMetrics();
     return;
   }
-  if (t.dataset.mode) {
-    document.querySelectorAll(".seg button").forEach((x) => { x.classList.toggle("on", x === t); x.setAttribute("aria-pressed", String(x === t)); });
-    $("standardNote").hidden = t.dataset.mode !== "standard";
-    return;
-  }
+  if (t.dataset.mode) return setMode(t.dataset.mode);
+  if (t.dataset.scheme) return selectScheme(t.dataset.scheme);
+  if (t.dataset.act === "confirm-label") return review(Number(t.dataset.pid), "confirm");
+  if (t.dataset.act === "reject-label") return review(Number(t.dataset.pid), "reject");
+  if (t.dataset.act === "show-label") return openStandardDetail(Number(t.dataset.pid));
   if (t.matches("tr[data-pid]")) { S.selected = Number(t.dataset.n); render(); return openDetail(Number(t.dataset.pid)); }
   if (t.id === "scrim" || t.dataset.act === "close") return closeDetail();
   if (t.dataset.act === "prev") return move(-1);

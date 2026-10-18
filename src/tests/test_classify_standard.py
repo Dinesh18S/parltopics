@@ -57,3 +57,10 @@ def test_none_other_mixed_with_codes_is_dropped_and_flagged():
 def test_unknown_code_is_invalid_label():
     recs = _run({"labels": [{"code": "CV99", "confidence": 0.9, "evidence": "x"}], "rationale": "r"})
     assert recs[0]["status"] in {"invalid_label", "parse_error"}
+
+
+def test_duplicate_codes_are_kept_once():
+    ev = "créer une plateforme numérique pour les médias régionaux"
+    recs = _run({"labels": [{"code": "CV02", "confidence": 0.9, "evidence": ev},
+                            {"code": "CV02", "confidence": 0.8, "evidence": ev}], "rationale": "r"})
+    assert [r["label"] for r in recs] == ["34"]

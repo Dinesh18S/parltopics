@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from parltopics.runlog import RunManifest
+from parltopics.schemes import Scheme
 from parltopics.sources.api import Affair, Body
 from parltopics.sources.assemble import SourceText
 from parltopics.store import Store
@@ -39,7 +40,8 @@ def import_cache(store: Store, path: Path) -> str | None:
     manifest = RunManifest.model_validate(data["manifest"])
     if store.db.execute("SELECT 1 FROM runs WHERE id = ?", (manifest.run_id,)).fetchone():
         return None
-    store.add_run(manifest, Topic.model_validate(data["topic"]))
+    topic_cls = Scheme if "categories" in data["topic"] else Topic
+    store.add_run(manifest, topic_cls.model_validate(data["topic"]))
     affairs = {a["id"]: a for a in data["affairs"]}
     for s in data["sources"]:
         a = affairs[s["affair_id"]]

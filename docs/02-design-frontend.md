@@ -51,7 +51,7 @@ Required fields, in this order:
 8. Review buttons. After review the card shows who/what: "Confirmed by human" in a different colour from the AI suggestion
 9. Small label "AI suggestion — needs human confirmation" on every unreviewed card
 
-Standard mode extras: chapter → topic path (DE or FR label per affair language; IT affairs show DE/FR label + "IT (unofficial): …" in italics).
+Standard mode extras: chapter → topic path (DE or FR label per affair language). APS has no Italian labels: IT affairs show the DE label (`SCHEME_LABEL_FALLBACK`) and the strip says so; the "IT (unofficial)" gloss from the design is **not** generated (it would be one more unverified model output). Each label is reviewed on its own in the detail panel.
 
 ### 2.3 Metrics (second tab)
 

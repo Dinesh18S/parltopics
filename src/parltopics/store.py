@@ -194,7 +194,7 @@ class Store:
         rows = self.db.execute(
             "SELECT p.id AS prediction_id, p.affair_id, p.lang, p.gold, p.body_key, p.title, p.label, p.confidence, "
             "p.evidence, p.verify_ok, p.verify_method, p.inconsistent, p.keyword_absent, p.tech_vocab_absent, "
-            "p.status, p.evidence_recovered, a.number, a.type, a.begin_date, a.body_type, s.url, s.title_only, "
+            "p.status, p.evidence_recovered, p.scheme_code, p.rank, a.number, a.type, a.begin_date, a.body_type, s.url, s.title_only, "
             "s.truncated, r.decision AS review_decision, r.corrected_label AS review_label, r.created_at AS reviewed_at "
             "FROM predictions p LEFT JOIN affairs a ON a.id = p.affair_id "
             "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 "
@@ -214,9 +214,12 @@ class Store:
             raise KeyError(prediction_id)
         return _row(row) | {"reviews": self.reviews(prediction_id)}
 
-    def latest_run(self, topic_sha: str, sample_file: str) -> dict | None:
+    def latest_run(self, topic_sha: str, sample_file: str, min_affairs: int = 0) -> dict | None:
+        """Newest finished run for this topic/scheme on this sample that covers at least `min_affairs` affairs
+        (cancelled or partial runs are kept in the store but never picked)."""
         row = self.db.execute(
-            "SELECT id FROM runs WHERE topic_sha = ? AND sample_file = ? AND finished_at IS NOT NULL "
-            "ORDER BY started_at DESC LIMIT 1", (topic_sha, sample_file),
+            "SELECT r.id FROM runs r WHERE r.topic_sha = ? AND r.sample_file = ? AND r.finished_at IS NOT NULL "
+            "AND (SELECT COUNT(DISTINCT p.affair_id) FROM predictions p WHERE p.run_id = r.id) >= ? "
+            "ORDER BY r.started_at DESC LIMIT 1", (topic_sha, sample_file, min_affairs),
         ).fetchone()
         return self.run(row["id"]) if row else None

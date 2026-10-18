@@ -16,7 +16,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from parltopics import demo
-from parltopics.batch import iter_classify
+from parltopics.batch import iter_classify, iter_records, scheme_classifier, scheme_object
+from parltopics.schemes import load_aps_chapters, load_aps_topics, load_curia_vista
 from parltopics.llm import LLMClient
 from parltopics.config import Settings, get_settings
 from parltopics.prompts import load_prompt
@@ -34,6 +35,7 @@ RESULTS_DIR = ROOT / "results"
 DEMO_CACHE_DIR = RESULTS_DIR / "demo"
 DEMO_POOL = Path("data/samples/demo_pool.csv")  # relative: the same string is stored as runs.sample_file
 PROMPT_TEMPLATE = "adhoc_v5"
+STANDARD_TEMPLATE = "standard_v1"
 EXPORT_FIELDS = ("prediction_id", "affair_id", "body_key", "number", "begin_date", "lang", "title", "label",
                  "confidence", "evidence", "verify_method", "keyword_absent", "status", "url", "review_decision",
                  "review_label")
@@ -80,6 +82,27 @@ def topic_sha(topic: Topic) -> str:
     return fingerprint(load_prompt(PROMPT_TEMPLATE), topic, get_settings()).parts["topic"]
 
 
+SCHEMES = {"aps": "APS", "curia_vista": "Curia Vista"}
+
+
+def scheme_sha(scheme_id: str) -> str:
+    settings = get_settings()
+    return fingerprint(load_prompt(STANDARD_TEMPLATE), scheme_object(settings, scheme_id), settings).parts["topic"]
+
+
+@app.get("/api/schemes/{scheme_id}/labels")
+def scheme_labels(scheme_id: str) -> dict:
+    """source id → labels per language, for every level of the scheme (APS: chapters and topics)."""
+    raw = get_settings().data_dir / "raw"
+    if scheme_id == "curia_vista":
+        cats = load_curia_vista(raw).categories
+    elif scheme_id == "aps":
+        cats = load_aps_chapters(raw).categories + load_aps_topics(raw).categories
+    else:
+        raise HTTPException(404, "unknown scheme")
+    return {c.source_id: c.labels for c in cats}
+
+
 @app.get("/health")
 def health() -> dict:
     settings = get_settings()
@@ -97,17 +120,23 @@ def state() -> dict:
     settings = get_settings()
     model = check_model(settings)
     s = store()
+    pool = pd.read_csv(ROOT / DEMO_POOL) if (ROOT / DEMO_POOL).exists() else pd.DataFrame()
     out = []
     for pid, (_, topic) in presets().items():
-        run = s.latest_run(topic_sha(topic), str(DEMO_POOL))
+        run = s.latest_run(topic_sha(topic), str(DEMO_POOL), len(pool))
         out.append({"id": pid, **topic.model_dump(), "run": _run_meta(run) if run else None})
-    pool = pd.read_csv(ROOT / DEMO_POOL) if (ROOT / DEMO_POOL).exists() else pd.DataFrame()
+    schemes = []
+    for sid, name in SCHEMES.items():
+        run = s.latest_run(scheme_sha(sid), str(DEMO_POOL), len(pool))
+        schemes.append({"id": sid, "name": name, "run": _run_meta(run) if run else None})
     return {
         "mode": "live" if model["reachable"] else "cached",
         "model": settings.llm_name,
         "endpoint_host": urlparse(settings.llm_base_url).hostname or "",
         "model_error": model.get("error"),
         "presets": out,
+        "schemes": schemes,
+        "scheme_label_fallback": settings.scheme_label_fallback,
         "pool": {"file": str(DEMO_POOL), "n": len(pool)},
         "prompt_template": PROMPT_TEMPLATE,
         "match_threshold": match_threshold(settings),
@@ -217,6 +246,7 @@ class TopicIn(BaseModel):
 class SearchIn(BaseModel):
     preset_id: str | None = None
     topic: TopicIn | None = None
+    scheme: str | None = None
 
 
 def build_topic(body: SearchIn) -> tuple[Topic, str]:
@@ -248,23 +278,39 @@ def search(body: SearchIn) -> StreamingResponse:
     settings = get_settings()
     if not check_model(settings)["reachable"]:
         raise HTTPException(503, "model endpoint unreachable — cached results only")
-    topic, topic_ref = build_topic(body)
     rows = pd.read_csv(ROOT / DEMO_POOL, dtype={"lang": str}, keep_default_na=False).to_dict("records")
-    prompt = load_prompt(PROMPT_TEMPLATE)
     s = store()
-    run = start_run(RESULTS_DIR, prompt, topic, Path(topic_ref), settings, sample_file=str(DEMO_POOL),
-                    notes="ui live search")
-    s.add_run(run, topic)
     cancel = threading.Event()
+    if body.scheme:
+        if body.scheme not in SCHEMES:
+            raise HTTPException(404, "unknown scheme")
+        topic = scheme_object(settings, body.scheme)
+        prompt = load_prompt(STANDARD_TEMPLATE)
+        run = start_run(RESULTS_DIR, prompt, topic, Path(f"scheme:{body.scheme}"), settings,
+                        sample_file=str(DEMO_POOL), notes="ui live standard")
+        s.add_run(run, topic)
+        records = iter_records(settings, s, run, rows, scheme_classifier(settings, body.scheme, prompt, run.run_id),
+                               cancel)
+    else:
+        topic, topic_ref = build_topic(body)
+        prompt = load_prompt(PROMPT_TEMPLATE)
+        run = start_run(RESULTS_DIR, prompt, topic, Path(topic_ref), settings, sample_file=str(DEMO_POOL),
+                        notes="ui live search")
+        s.add_run(run, topic)
+        records = iter_classify(settings, s, RESULTS_DIR, run, topic, prompt, rows, cancel)
 
     def stream():
         n = 0
         yield json.dumps({"type": "run", "run_id": run.run_id, "n": len(rows), "topic_name": topic.name,
-                          "definition": topic.definition, "include": topic.include, "exclude": topic.exclude,
-                          "has_keywords": bool(topic.keywords)}, ensure_ascii=False) + "\n"
+                          "definition": topic.definition, "include": getattr(topic, "include", []),
+                          "exclude": getattr(topic, "exclude", []), "has_keywords": bool(getattr(topic, "keywords", {})),
+                          "scheme": body.scheme}, ensure_ascii=False) + "\n"
+        seen: set[int] = set()
         try:
-            for record in iter_classify(settings, s, RESULTS_DIR, run, topic, prompt, rows, cancel):
-                n += 1
+            for record in records:
+                if record["affair_id"] not in seen:
+                    seen.add(record["affair_id"])
+                    n += 1
                 item = next((i for i in s.run_items(run.run_id) if i["prediction_id"] == record["prediction_id"]))
                 yield json.dumps({"type": "item", "done": n, "item": item}, ensure_ascii=False) + "\n"
             yield json.dumps({"type": "done", "done": n}) + "\n"

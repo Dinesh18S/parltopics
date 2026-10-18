@@ -5799,7 +5799,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the role of hepa.ch in promoting sport and movement within the 'Sport- und Bewegungsförderung 2040' strategy, with no mention of Covid-19, health measures, or pandemic-related consequences.\"}",
    "created_at": "2026-10-18T15:43:57.507214+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5831,7 +5833,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Hauptanlass und Hauptinhalt der Revision ist die geplante Einführung des neuen Datenmodells DM.flex für die amtliche Vermessung.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the revision of regulations for official surveying and the introduction of a new data model (DM.flex), with no mention or relevance to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:43:58.095028+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5863,7 +5867,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Menschenhandel und besonders die Anwerbung durch Loverboys finden im Verborgenen statt, und es ist nicht möglich, das Ausmass dieses Dunkelfeldes abzuschätzen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about human trafficking and the 'Loverboy' method of recruitment for sexual exploitation, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:43:58.110579+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5895,7 +5901,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Chercher, comparer, se tromper, décider : c'est ainsi qu'on forge son jugement. Les agents d'IA proposent désormais de le faire à notre place.\", \"label\": \"no_match\", \"rationale\": \"The affair discusses AI agents, cognitive autonomy, and democratic impacts of AI, but does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:43:58.124329+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5927,7 +5935,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale riconosce che per le istituzioni sanitarie partecipanti e per i pazienti l'utilità della cartella informatizzata del paziente (CIP) sarà maggiore se sarà utilizzata da tutti i professionisti della salute coinvolti nel processo di cura.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the electronic patient record system and its implementation in healthcare, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:43:58.714142+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5959,7 +5969,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Depuis le 1er avril 2025, le Secrétariat d’État aux migrations peut fouiller les téléphones portables des requérant·es d’asile lorsque l’identité, la nationalité ou l’itinéraire ne peuvent être établis autrement.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the surveillance of asylum seekers' mobile phones and data protection issues related to this measure, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:43:58.730935+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -5991,7 +6003,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La responsabilità di garantire la tracciabilità e la sicurezza delle derrate alimentari spetta alle aziende del settore alimentare (art. 28 della legge federale sulle derrate alimentari e gli oggetti d'uso, RS 817.0).\", \"label\": \"no_match\", \"rationale\": \"The affair discusses the use of blockchain technology for food traceability, but it does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject. The focus is on food safety legislation and private sector responsibility, not on Covid-19 related issues.\"}",
    "created_at": "2026-10-18T15:43:59.326857+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6023,7 +6037,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"La décision relative à l’Accord sur les ADPIC adoptée lors de la 12e Conférence ministérielle ordinaire de l’OMC (CM12), qui a eu lieu en juin 2022, prévoit un assouplissement de la procédure de licence obligatoire concernant les brevets sur les vaccins contre le COVID-19 pour les pays en développement.\", \"label\": \"match\", \"rationale\": \"The affair's main subject is the debate over extending intellectual property flexibilities for COVID-19 vaccines, diagnostics, and therapeutics within the WTO and WHO frameworks, directly addressing pandemic-related health measures and their economic/social consequences for Swiss research and innovation.\"}",
    "created_at": "2026-10-18T15:43:59.541726+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6055,7 +6071,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Kantone führen eidgenössische Wahlen und Abstimmungen auf ihrem Gebiet durch.\", \"label\": \"no_match\", \"rationale\": \"The affair is about security vulnerabilities in the result determination process of elections and votes, focusing on technical systems and cantonal responsibilities. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:00.350089+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6087,7 +6105,9 @@
    "raw_json": "{\"confidence\": 1, \"evidence\": \"Il Governo coinvolgerà il settore interessato nell'elaborazione delle disposizioni di dettaglio. All'occorrenza, il Consiglio federale fornirà per tempo le basi giuridiche e le risorse finanziarie necessarie.\", \"label\": \"match\", \"rationale\": \"The affair focuses on providing financial support to private radio and television stations in Switzerland as a consequence of the Covid-19 pandemic, specifically addressing the economic losses these media outlets have suffered due to the crisis and proposing the use of existing funds to ensure their continued operation during the pandemic.\"}",
    "created_at": "2026-10-18T15:44:00.406562+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6119,7 +6139,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Le Conseil fédéral est chargé de soumettre au Parlement les modifications de loi qui s’imposent pour mettre fin à la vente en ligne de jouets dangereux pour la santé.\", \"label\": \"no_match\", \"rationale\": \"The affair is about regulating the online sale of dangerous toys and amending legislation to address this issue. While it mentions health risks, the main subject is toy safety and e-commerce regulation, not the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:01.166479+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6151,7 +6173,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Das Bundesamt für Strassen (ASTRA) hat bis Ende 2019 mit wenigen Ausnahmen alle über 300 Meter langen Nationalstrassentunnels mit DAB+-Sendern ausgerüstet und dafür bisher rund 30 Millionen CHF aufgewendet.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the technical implementation and coverage of DAB+ radio reception in Swiss national road tunnels, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:01.197791+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6183,7 +6207,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è incaricato di presentare le modifiche di legge per attuare i contenuti della mozione, riducendo il periodo di attesa per il divorzio unilaterale da 2 anni a un periodo contenuto tra i 6 e i 12 mesi (art. 114 CC).\", \"label\": \"no_match\", \"rationale\": \"The affair is about modifying the waiting period for unilateral divorce in Switzerland, focusing on family law, legal procedures, and social consequences of marriage dissolution. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:01.574655+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6215,7 +6241,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Afin de protéger la santé des travailleurs, l'employeur est tenu, aux termes de l'art. 6 de la loi sur le travail (LTr, RS 822.11), de prendre toutes les mesures dont l'expérience a démontré la nécessité, que l'état de la technique permet d'appliquer et qui sont adaptées aux conditions d'exploitation de l'entreprise.\", \"label\": \"no_match\", \"rationale\": \"The affair is about chemical product safety regulations, online vs. stationary commerce, and workplace safety measures related to chemical handling. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:01.586868+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6247,7 +6275,9 @@
    "raw_json": "{\"confidence\": 0.95, \"evidence\": \"Accanto ad altre misure, per garantire i redditi della popolazione e prevenire licenziamenti il Consiglio federale e il Parlamento hanno approvato contributi per 20,2 miliardi all'AD. Di questi, 6,0 miliardi sono già stati trasferiti all'AD.\", \"label\": \"match\", \"rationale\": \"The affair discusses economic support measures adopted by the Swiss government in response to the Covid-19 pandemic, including financial contributions to prevent job losses and ensure income stability, which are direct consequences of the pandemic.\"}",
    "created_at": "2026-10-18T15:44:02.093639+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6279,7 +6309,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Der Bundesrat wird beauftragt dafür zu sorgen, dass im Falle einer Gesundheitskrise (Pandemie) die zur Bekämpfung notwendigen Daten durch die Leistungserbringer in der nötigen zeitlichen Frist und Qualität bereitgestellt und den zuständigen Verwaltungseinheiten übermittelt werden können.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair directly addresses data provision by healthcare providers during a pandemic, which is a core health measure to manage the Covid-19 pandemic and its consequences.\"\n}",
    "created_at": "2026-10-18T15:44:02.128617+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6311,7 +6343,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"L’application pour smartphone Quickzoll de l’Office fédéral de la douane et de la sécurité des frontières permet aux particuliers d’auto-déclarer leurs marchandises plus facilement et plus rapidement en vue du dédouanement.\", \"label\": \"no_match\", \"rationale\": \"The affair is about customs procedures and VAT rates applied by the Quickzoll app, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:03.182897+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6343,7 +6377,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"Secondo il Consiglio federale non è opportuno puntare sulla creazione di un certo numero di postazioni di lavoro comuni.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting regional coworking and flexible work models as a response to the pandemic's impact on work-life balance and infrastructure, but it does not focus on Covid-19 health measures, direct pandemic consequences, or specific support measures related to the pandemic itself. The pandemic is mentioned only as a context for demonstrating the feasibility of remote work, not as the main subject of the affair.\"}",
    "created_at": "2026-10-18T15:44:03.628795+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6375,7 +6411,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the contracting of an online exhibition for the electronic identity card (E-ID) and the question of subcontractors. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:03.646604+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6407,7 +6445,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"I minorenni capaci di discernimento sono coperti dal segreto medico.\", \"label\": \"no_match\", \"rationale\": \"The affair's main subject is the medical confidentiality of minors and the challenges of ensuring continuous support for at-risk youth, not the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:04.040481+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6439,7 +6479,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Selon la loi, la Poste doit fixer les tarifs de distribution des colis selon des principes uniformes, c'est-à-dire en respectant l'égalité de traitement entre tous ses clients.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the pricing and equal treatment of Amazon as a customer of the Swiss Post, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:04.064991+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6471,7 +6513,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral est chargé d’établir un rapport sur l’application de la Loi fédérale sur la protection des données dans les échanges d’informations entre autorités et institutions chargées de tâches publiques.\", \"label\": \"no_match\", \"rationale\": \"The affair is about data protection laws and inter-institutional information exchange, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:04.959995+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6503,7 +6547,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Bundesrat wird beauftragt zu prüfen, wie die strategische Zusammenarbeit zwischen Forschung, Industrie und Verwaltung dahingehend angeregt und gestärkt werden kann, dass die Bereiche Forschung und Innovation auf der einen Seite und die Entwicklung von Anwendungen bis zur Industriereife im Bereich der Sicherheit und Verteidigung auf der anderen Seite miteinander verbunden werden können.\", \"label\": \"no_match\", \"rationale\": \"The affair is about developing strategic defense technologies, fostering innovation in security and defense, and reducing dependence on foreign technologies in the defense sector. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:04.974386+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6535,7 +6581,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Nel 2023 per la protezione del bestiame sono stati stanziati 3,7 milioni di franchi e un credito speciale per un importo pari a 7 milioni.\", \"label\": \"no_match\", \"rationale\": \"The affair is about livestock protection measures, funding allocation, and wolf predation statistics in Switzerland, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:05.016123+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6567,7 +6615,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale propone di respingere la mozione.\", \"label\": \"no_match\", \"rationale\": \"The affair is about gender differences in medicine, health equity, and the need for gender-specific medical research and treatment. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:06.094183+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6599,7 +6649,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"Eine Pandemieversicherung ist eine Möglichkeit, langfristig einer übermässigen Staatsverschuldung entgegenzuwirken.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is a proposed pandemic insurance scheme and its implications for managing large-scale risks and state finances in the context of the Covid-19 pandemic.\"\n}",
    "created_at": "2026-10-18T15:44:06.161240+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6631,7 +6683,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Zur Umsetzung der Motion wird auf der Grundlage des Berichts des BAKOM vom 18. Juni 2020 betreffend \\\"Jüngste Netzunterbrüche bei Swisscom, Grundversorgung und Notrufdienste\\\" zu prüfen sein, wie die für eine Systemführerschaft notwendigen Regelungen in das Fernmelderecht aufgenommen werden können.\", \"label\": \"no_match\", \"rationale\": \"The affair is about establishing technical system leadership for emergency call handling and telecommunications infrastructure, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:06.794345+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6663,7 +6717,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Sur Internet, des réseaux d’hommes échangent des informations sur la manière de rendre les femmes sans défense grâce à l’administration de substances afin de pouvoir abuser d’elles et filmer leurs actes (agressions sexuelles facilitées par la soumission chimique).\", \"label\": \"no_match\", \"rationale\": \"The affair is about combating networks involved in chemical submission for sexual assault, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:06.824444+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6695,7 +6751,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"In futuro il cyberspazio e i relativi pericoli diventeranno sempre più importanti e complessi.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the creation of a 'cyber' command for the Swiss army and cyber defense measures, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:07.622478+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6727,7 +6785,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Aucune formation spécialisée n'est nécessaire pour être délégué à la protection des données.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the implementation of data protection officers under the LIPDA law, focusing on their required skills, organizational independence, and the feasibility of their appointment in small and medium-sized authorities. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:08.031522+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6759,7 +6819,9 @@
    "raw_json": "{\n  \"confidence\": 0.85,\n  \"evidence\": \"Unvorhersehbarkeit Es war nicht vorhersehbar, dass sich COVID-19 erneut auf den Unterricht von Studierenden und Lernenden auswirkt.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is a decision by the vocational education authority regarding school attendance during the COVID-19 pandemic, specifically addressing how the pandemic impacts education and the implementation of health measures (such as online learning for vulnerable individuals) in response to the virus.\"\n}",
    "created_at": "2026-10-18T15:44:08.391995+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6791,7 +6853,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Questions 1 et 7. Le code de procédure pénale (CPP ; RS 312.0) et le code de procédure civile (CPC ; RS 272) disposent que le huis clos total ou partiel peut être ordonné lorsque les intérêts dignes de protection d'une personne participant à la procédure, notamment ceux de la victime, l'exigent (art. 70, al. 1, let. a, CPP et art. 54, al. 3, CPC).\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on media practices, court procedures, and protection of victims from secondary victimization through media exposure and courtroom processes. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:08.946902+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6823,7 +6887,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"La nouvelle stratégie informatique permet de concevoir des processus plus efficaces, ce qui doit également se traduire par des possibilités d'économie en termes de personnel.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the impact of an IT strategy on human resources and potential staff cost savings, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:09.333020+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6855,7 +6921,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Titel: Sensibilisierung der Strafverfolgungsbehörden im Umgang mit Hassdelikten im Netz\", \"label\": \"no_match\", \"rationale\": \"The affair is about the handling of hate crimes online and the training of law enforcement agencies regarding discrimination offences under Art. 261bis StGB. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:10.076506+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6887,7 +6955,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"JUILLET 2020 19_INT_431 1 REPONSE DU CONSEIL D’ETAT à l’interpellation Philippe Vuillemin – Le secret médical toujours plus souvent mis en danger\", \"label\": \"no_match\", \"rationale\": \"The affair is about the protection of medical confidentiality and data privacy in relation to health insurance controls in nursing homes, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:10.321186+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6919,7 +6989,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"I rischi legati a possibili effetti negativi sulla salute e sull'ambiente in generale non possono essere sottovalutati e un'applicazione rigorosa delle norme di protezione deve essere garantita.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the moratorium on 5G antenna installations in Ticino, focusing on telecommunications technology, radiation protection regulations (ORNI), and cantonal vs. federal jurisdiction regarding construction permits. While it briefly mentions health and environmental risks associated with 5G as part of the broader debate, the main subject is not the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:10.806890+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6951,7 +7023,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die jüngsten Erfahrungen aus Austin im US-Bundesstaat Texas zeigen, dass fahrerlose Taxis («Robotaxis») zunehmend im Alltag ankommen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the introduction and regulation of robotaxis in the Canton of Bern, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:10.823662+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -6983,7 +7057,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Im Kanton Luzern – insbesondere in der Agglomeration Luzern – ist die Kapazitätsgrenze des Strassen- und Schienennetzes während der Hauptverkehrszeiten erreicht.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting mobility management in private companies and the cantonal strategy for mobility management. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:11.923920+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7015,7 +7091,9 @@
    "raw_json": "{\n  \"confidence\": 0.85,\n  \"evidence\": \"La pandémie de COVID-19 qui nous a frappés en 2020 a conduit, du jour au lendemain, pas moins de 5’000 collaboratrices et collaborateurs à se connecter chaque jour à distance au réseau de l’Administration.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is the impact of the COVID-19 pandemic on work practices, specifically the sudden shift to remote work and its implications for state employees' duties and conduct, which falls under the topic of Covid-19 and its consequences.\"\n}",
    "created_at": "2026-10-18T15:44:11.925902+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7047,7 +7125,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Amt für Informatik und Organisation: Ausgabenbewilligung für die ICT-Grundversorgung 2021. Rahmenkredit 2021\", \"label\": \"no_match\", \"rationale\": \"The affair is about the approval of a framework credit for ICT infrastructure and services within the cantonal administration. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:12.541928+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7079,7 +7159,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Adoption d’un décret, puis révision légale.\", \"label\": \"no_match\", \"rationale\": \"The affair is about granting access to a cantonal population register for cancer registry management and screening programs, which is a health administration matter. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:13.251787+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7111,7 +7193,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"Nella fase immediata di crisi del Coronavirus chiediamo in particolare di dare ai funzionari dirigenti la possibilità di accordare il telelavoro (in tutto o in parte) alle/ai dipendenti\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is the promotion of telework as a response to the immediate crisis caused by the Coronavirus pandemic, which falls under the topic of Covid-19 and its health measures.\"\n}",
    "created_at": "2026-10-18T15:44:13.336649+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7143,7 +7227,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Bundesrat hat in einer Medienmitteilung vom 31. August 2022 zahlreiche Massnahmen bekanntgegeben, damit die Schweiz ihre Energieversorgung für den Winter rasch stärken kann.\", \"label\": \"no_match\", \"rationale\": \"The affair is about transparency and information regarding electricity consumption and energy efficiency, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:14.183113+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7175,7 +7261,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Teilrevision des Einführungsgesetzes zum Schweizerischen Zivilgesetzbuch (EGzZGB) im Bereich Grundbuch dient der Umsetzung des Auftrags Derungs betreffend Abfrage von Grundeigentümerdaten auf der Geodatendrehscheibe GeoGR und der Beseitigung der Limitierung auf fünf Abfragen pro Tag und Anwenderin bzw. Anwender.\", \"label\": \"no_match\", \"rationale\": \"The affair is about a revision of cantonal law regarding the cantonal civil code, specifically concerning the limitation of daily queries to land registry data on a geodata portal. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:14.204917+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7207,7 +7295,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Obwohl der Datenschutzbeauftragte die Gemeinden beraten sollte, bleiben seine Antworten teils jahrelang aus.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the conduct and responsibilities of the cantonal data protection officer and the data protection commission, specifically regarding delays in providing guidance and alleged public criticism of municipalities. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:14.209553+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7239,7 +7329,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Aucun élément du texte ne mentionne la pandémie de Covid-19, ses mesures sanitaires, ou ses conséquences économiques et sociales.\", \"label\": \"no_match\", \"rationale\": \"L'affaire porte sur l'accès à un document officiel du Grand Conseil vaudois et la transparence des règlements internes, sans aucun lien avec la pandémie de Covid-19 ou ses impacts.\"}",
    "created_at": "2026-10-18T15:44:14.892054+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7271,7 +7363,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Übergangsfinanzierung gemäss revidiertem EPDG (REV-EPDG) sieht vor, dass der Bund während fünf Jahren die Stammgemeinschaften für den Betrieb und die Weiterentwicklung des EPD mit Finanzhilfen unterstützen kann, falls sich die Kantone in gleichem Umfang beteiligen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about transitional financing for the electronic patient dossier (EPD) system, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:15.684683+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7303,7 +7397,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Beim Jahrhunderthochwasser im Frühling 2021 in Deutschlands Westen konnten die Behörden diese Schwierigkeiten live beobachten.\", \"label\": \"no_match\", \"rationale\": \"The affair is about redundant internet infrastructure for crisis situations, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:16.017727+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7335,7 +7431,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Regierungsrat des Kantons Bern Le Conseil-exécutif du canton de Berne Amt für Informatik und Organisation: Ausgabenbewilligung für die ICT-Grundversorgung 2020. Rahmenkredit 2020\", \"label\": \"no_match\", \"rationale\": \"The affair is about the approval of a framework credit for ICT infrastructure and services in the Canton of Bern in 2020. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:16.320482+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7367,7 +7465,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the implementation of the electronic patient record (DEP) in the canton of Neuchâtel, including registration statistics for diabetic patients and medical practices. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:16.384695+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7399,7 +7499,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Im Kanton Uri sind letztlich mehrere Gesetzestexte überarbeitet worden, welche einen Bezug zum Gesetz über das Öffentlichkeitsprinzip der kantonalen Verwaltung (Öffentlichkeitsgesetz / OeG; RB 2.2711) haben.\", \"label\": \"no_match\", \"rationale\": \"The affair is about revising the cantonal transparency law (Öffentlichkeitsgesetz) and improving access to information within the canton of Uri. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:17.460336+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7431,7 +7533,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Interpellation befasst sich ausschliesslich mit dem Projekt NFFS (eine Fallführungssoftware für Sozialdienste), dessen Entwicklung, Verzögerungen, Kosten und externen Beratungsfirmen.\", \"label\": \"no_match\", \"rationale\": \"Der Hauptgegenstand ist die Entwicklung und Umsetzung einer spezifischen Verwaltungssoftware für Sozialdienste und nicht die Covid-19-Pandemie, deren Gesundheitsmassnahmen oder deren wirtschaftliche und soziale Folgen.\"}",
    "created_at": "2026-10-18T15:44:17.475126+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7463,7 +7567,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Dipartimento delle Istituzioni ha annunciato la nascita di un numero verde per la sicurezza informatica, uno strumento, stando alle parole di Norman Gobbi, per aiutare le aziende vittime di attacchi informatici e fare prevenzione.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the prioritization of a cybersecurity helpline over a helpline for women victims of domestic violence, not about Covid-19 health measures, economic consequences, or pandemic-related support measures.\"}",
    "created_at": "2026-10-18T15:44:18.060233+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7495,7 +7601,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Polizeigesetz (Änderung vom . . . . . . . . . . .; Datenbearbeitung)\", \"label\": \"no_match\", \"rationale\": \"The affair is about amendments to the cantonal police law, specifically regarding data processing, surveillance, and police powers. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:18.078124+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7527,7 +7635,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Amt für Justizvollzug; Betriebskosten für das Electronic Monitoring im Kanton Bern. Verpflichtungskredit 2023–2027 / Ausgabenbewilligung / Objektkredit\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the financing and operation of electronic monitoring in the Canton of Bern, a criminal justice measure. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:18.983498+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7559,7 +7669,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Kein Bezug zu Covid-19\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the revision of the cantonal building and housing register regulation and data logistics in the Canton of Zurich, focusing on administrative and technical adjustments related to the federal building and housing register. There is no mention or main subject related to the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:19.195896+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7591,7 +7703,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Les recommandations de la DTAP prévoient deux options à choix pour les autorités compétentes.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the legal and administrative handling of 5G adaptive antennas, specifically the Canton of Jura's procedure, its invalidation by the Federal Tribunal, and the subsequent regulatory adjustments. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:19.579374+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7623,7 +7737,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Bezug zu Covid-19 oder dessen Folgen.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the election of a deputy cantonal data protection officer in the Canton of Uri, based on the revised Cantonal Data Protection Act. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:19.842152+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7655,7 +7771,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Tarifgestaltung liegt in der operativen Verantwortung der Transportunternehmen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the digital transition of the SBB Junior Card and related administrative questions, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:19.857895+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7687,7 +7805,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral propose de rejeter le postulat.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the rejection of a proposal to create a digital identity system for organizations, based on financial and resource constraints related to the existing e-ID program for individuals. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:20.193975+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7719,7 +7839,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the electronic health dossier and federal law, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:20.515175+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7751,7 +7873,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Vorkommnisse im Umfeld des Super-League-Spiels FC Luzern gegen FC St.Gallen vom Samstag, 20. Mai 2023, mit einer vorgängigen Schlägerei in Wil und mit gewalttätigen Ausschreitungen, Personenverletzungen und Sachbeschädigungen in Luzern haben ein Ausmass angenommen, das nach spürbaren Reaktionen ruft.\", \"label\": \"no_match\", \"rationale\": \"The affair is about security measures and identification systems in sports stadiums following violent incidents, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:21.036437+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7783,7 +7907,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è incaricato di esaminare le possibilità di istituire un servizio di contatto e consulenza per le vittime di violenza digitale\", \"label\": \"no_match\", \"rationale\": \"The affair is about establishing a contact service for victims of digital violence, not about Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:21.056866+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7815,7 +7941,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about cryptocurrencies and their use by mafias for money laundering and terrorism financing, not about Covid-19 or its consequences.\"}",
    "created_at": "2026-10-18T15:44:21.119929+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7847,7 +7975,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der subventionsberechtigte Pauschalbetrag, der den Gemeinden für den Kauf von Medien und IKT-Material gewährt wurde, betrug bis zum 31. August 2021 jeweils 50 Franken pro Schülerin oder Schüler. Dieser Betrag wurde rückwirkend ab dem 1. September 2021 auf 100 Franken pro Schülerin oder Schüler erhöht, nachdem die neuen Weisungen vom 22. Oktober 2021 betreffend die Subventionsgesuche für Medien und IKT-Material zur Nutzung an den obligatorischen Schulen eingeführt wurden.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the financing and implementation of ICT equipment in schools under the Lehrplan 21, specifically regarding subsidies for media and ICT materials and Microsoft-365 licenses. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:21.655947+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7879,7 +8009,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Der Bundesrat wird beauftragt, einen Bericht vorzulegen zur Situation älterer Menschen während der Covid-19-Krise.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is a report on the situation of older people during the Covid-19 crisis, addressing health, social, and economic consequences and support measures as defined.\"\n}",
    "created_at": "2026-10-18T15:44:22.055039+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7911,7 +8043,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"On créera les bases légales permettant de percevoir sur les plateformes numériques une redevance destinée à aider les médias\", \"label\": \"no_match\", \"rationale\": \"The affair is about creating a legal framework for a digital levy to support media, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:22.379677+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7943,7 +8077,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral est chargé d'examiner l'opportunité de légiférer sur les pratiques d'acteurs avec des positions fortes ou dominantes dans le domaine des technologies de l'information, en particulier réseaux sociaux, plateformes onlines, aggrégateurs de contenus, moteurs de recherche.\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on regulating dominant tech actors and preventing censorship of information by social media and search platforms. While it mentions recent events, the main subject is digital platform regulation and information access, not the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:22.832557+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -7975,7 +8111,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è consapevole dei rischi legati agli acquisti TIC illustrati nel postulato e adotta già diverse misure per ridurli.\", \"label\": \"no_match\", \"rationale\": \"The affair is about cybersecurity in military procurement, vendor risk management, and national security standards. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:23.064951+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8007,7 +8145,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the modernization of supervision of the AHVG (Old Age and Survivors' Insurance), which is a social security topic unrelated to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:23.234417+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8039,7 +8179,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Digitalisierung in der Bildung hat in den vergangenen Jahren dazu geführt, dass bereits im Kindergarten zunehmend digitale Instrumente wie Tablets und Computer eingesetzt werden.\", \"label\": \"no_match\", \"rationale\": \"The affair's main subject is the impact of digitalization in education, specifically the use of digital instruments like tablets and computers in schools, and the evaluation of their effectiveness. It does not focus on the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:24.019109+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8071,7 +8213,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale non ritiene opportuno indicare attivamente la possibilità di ottenere la fototessera digitale allestita per il passaporto.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the digital passport photo procedure, digital administration, and data management for identity documents. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:24.736778+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8103,7 +8247,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Dans le domaine des relations publiques, qui ne comprend pas uniquement les relations avec les médias, les charges de personnel et les charges de biens et services de 50 unités administratives, soit les 7 départements (secrétariats généraux), 42 offices et la Chancellerie fédérale, se sont élevées à 105,5 millions de francs en 2024, contre 82 millions de francs en 2001.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the costs and organization of federal media relations and public information services, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:24.756406+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8135,7 +8281,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è invitato a presentare al Parlamento una base legale che consenta di vietare o rendere tecnicamente impossibile la pubblicità, la vendita o l'accesso ad app e servizi digitali che utilizzano l'intelligenza artificiale per generare nudi da immagini esistenti di bambini o adulti.\", \"label\": \"no_match\", \"rationale\": \"The affair is about regulating AI-generated nude images and deepfake technology, specifically focusing on banning or restricting access to apps that create non-consensual intimate imagery. While AI is used, the main subject is not the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:24.817705+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8167,7 +8315,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral est chargé d’attribuer de nouvelles concessions OUC à compter du 1er janvier 2027.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the extension of FM radio concessions and the transition to digital radio (DAB+), not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:25.968795+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8199,7 +8349,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Le Conseil fédéral a arrêté l'ordonnance sur la suspension des délais applicables aux initiatives populaires fédérales et aux demandes de référendum au niveau fédéral (RO 2020 847), laquelle prévoyait une interdiction de récolter des signatures pendant toute la période de suspension des délais.\", \"label\": \"match\", \"rationale\": \"The affair discusses measures taken by the Federal Council in response to the Covid-19 pandemic, specifically the suspension of deadlines for popular rights (initiatives and referendums) and the impact on democratic processes, which are direct consequences of the pandemic.\"}",
    "created_at": "2026-10-18T15:44:25.971257+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8231,7 +8383,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Bundesrat wird beauftragt, die gesetzliche Grundlage für die Weiterentwicklung und Digitalisierung der Schweizer Notrufe zu schaffen und übernimmt dabei eine koordinierende Rolle.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the digitalization and development of Swiss emergency calls, focusing on accessibility and technological enhancement of the existing emergency number system. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:26.158519+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8263,7 +8417,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il servizio di polizia aerea contribuisce a salvaguardare la sovranità sullo spazio aereo e quindi a proteggere quest'ultimo.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the Swiss Air Force's air policing service, including its missions, readiness times, equipment, and international cooperation regarding airspace security. It does not discuss the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:26.372292+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8295,7 +8451,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the exchange of notes between Switzerland and the EU regarding the adoption of a directive on information exchange between law enforcement authorities within the Schengen acquis. It does not address Covid-19, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:26.445786+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8327,7 +8485,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Aucune mention des composants critiques, des dépendances cloud ou des infrastructures de données.\", \"label\": \"no_match\", \"rationale\": \"The affair is about digital supply chain security and critical infrastructure in the ICT sector, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:28.422036+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8359,7 +8519,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Mehr denn je wird die kombinierte Mobilität grossgeschrieben.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the development of a cantonal Park & Ride concept and multimodal transport hubs, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:28.440147+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8391,7 +8553,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Die Tätigkeiten der Datenschutzbeauftragten standen im Berichtsjahr im Zeichen der Coronapandemie.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the annual report of the Data Protection Officer of the Canton of Zurich, with only a passing mention of the Covid-19 pandemic as a contextual factor affecting data processing. The main subject is data protection oversight, not the pandemic itself.\"}",
    "created_at": "2026-10-18T15:44:29.031335+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8423,7 +8587,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Einladung Anhörung zum Entwurf Fachlehrpläne Gymnasium und Fachmittelschule\", \"label\": \"no_match\", \"rationale\": \"The affair is about the revision of school curricula for gymnasium and Fachmittelschule in the Canton of Basel-Landschaft, specifically focusing on subject-specific learning objectives and competencies. There is no mention of Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:29.954550+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8455,7 +8621,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about a report from the data protection authority of the Canton of Bern, which does not address Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:29.976031+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8487,7 +8655,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Aucune mention de la pandémie de Covid-19, de ses mesures sanitaires, ou de ses conséquences économiques et sociales n'est présente dans le texte.\", \"label\": \"no_match\", \"rationale\": \"Le texte concerne une subvention cantonale pour l'intégration numérique des usagers des Etablissements publics pour l'intégration (EPI), sans aucun lien avec la pandémie de Covid-19, ses mesures ou ses conséquences.\"}",
    "created_at": "2026-10-18T15:44:30.009843+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8519,7 +8689,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Nicht zuletzt die Coronavirus-Pandemie machte klar, dass Leistungen in Zukunft vermehrt online erbracht werden können und müssen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the introduction of a law on digital administration and e-government. While it mentions the Covid-19 pandemic as a factor that highlighted the need for online services, the main subject of the affair is digital administration and e-government infrastructure, not the pandemic itself, its health measures, or its consequences.\"}",
    "created_at": "2026-10-18T15:44:30.598147+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8551,7 +8723,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Regierungsrat wird eingeladen, in einem Bericht darzulegen, wie die Künstliche Intelligenz im Baubewilligungsverfahren eingesetzt werden kann, damit die Baubehörden entlastet und das Bewilligungsverfahren beschleunigt werden kann.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the use of artificial intelligence in the building permit procedure to improve efficiency and relieve authorities. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:31.008174+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8583,7 +8757,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"1 PÔLE INFORMATIQUE CANTONAL\", \"label\": \"no_match\", \"rationale\": \"The affair is about the cantonal IT infrastructure, consolidation of IT services, and budget extensions for IT projects. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:31.284667+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8615,7 +8791,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Verbrauch an Couverts und Wahlzettel für an und für sich unbestrittene Wahlen war in der Herbstsession immens.\", \"label\": \"no_match\", \"rationale\": \"The affair is about simplifying and making parliamentary election procedures more sustainable by reducing material consumption and counting effort. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:32.095833+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8647,7 +8825,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Im gleichen Zuge legt sich der Kanton eine kantonale eHealth-Strategie zu, die in einem partizipativen Vorgehen gemeinsam mit den verschiedenen betroffenen Partnerinnen und Partnern sowie einem Panel aus Patientinnen und Patienten erarbeitet wurde.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the introduction of an electronic patient dossier (eHealth) in the Canton of Fribourg, which is a digital health initiative. While eHealth is related to healthcare infrastructure, the text does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as the main subject. The focus is on a pre-existing eHealth strategy and digitalization in healthcare, not on Covid-19.\"}",
    "created_at": "2026-10-18T15:44:32.606279+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8679,7 +8859,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about a moratorium on tree felling for 5G infrastructure, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:32.652813+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8711,7 +8893,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Covid-Krise hat diese Entwicklungen zusätzlich beschleunigt.\", \"label\": \"no_match\", \"rationale\": \"The affair is about digitalization of schools in Aargau. While it mentions that the Covid crisis accelerated digitalization developments, the main subject is school digitalization, not the Covid-19 pandemic itself, its health measures, or its consequences.\"}",
    "created_at": "2026-10-18T15:44:33.771880+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8743,7 +8927,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Im Sommer 2020 kam es im Zusammenhang mit einer grossen technischen Umstrukturierung der IT der Kantonsschule Zug zu Verzögerungen und Schwierigkeiten.\", \"label\": \"no_match\", \"rationale\": \"The affair is about IT infrastructure, support, and data security in cantonal schools, specifically addressing issues arising from a technical restructuring and the BYOD/COPE models. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:34.369404+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8775,7 +8961,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"erschwerend kommt hinzu, dass während der Pandemie (Corona-Pandemie) die Behördengänge teilweise erheblich eingeschränkt waren.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about improving digital access to official publications and administrative processes. While it mentions the Covid-19 pandemic as a factor that exacerbated restrictions on physical access to offices, the pandemic is not the main subject of the affair. The core focus is on digitalization of administrative services and customer-friendly access to documents, not on the pandemic itself, its health measures, or its broader economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:34.835139+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8807,7 +8995,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Anfrage und die Beantwortung behandeln ausschliesslich die technischen, wirtschaftlichen und steuerlichen Aspekte der Kryptowährungen und deren Verwendung zur Begleichung von Steuerschulden.\", \"label\": \"no_match\", \"rationale\": \"Der Hauptgegenstand ist die Frage der Verwendung von Kryptowährungen als Zahlungsmittel für Steuerschulden und die damit verbundenen technischen, wirtschaftlichen und steuerlichen Fragen. Die Covid-19-Pandemie, ihre gesundheitlichen Massnahmen oder ihre wirtschaftlichen und sozialen Folgen werden in diesem Dokument nicht thematisiert.\"}",
    "created_at": "2026-10-18T15:44:35.235144+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8839,7 +9029,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Umsetzungsphase wurde am 30.09.2022 beendet. Der Umsetzungsphase folgte die Programmabschlussphase mit Ende per 30.06.2023.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the evaluation and conclusion of the 'Digitale Verwaltung 2022' program, focusing on digital transformation, administrative efficiency, and project management. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:35.253890+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8871,7 +9063,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"§ 308. Das baurechtliche Verfahren wird elektronisch durchge- führt. Alle Verfahrensbeteiligten müssen elektronisch am Verfahren teilnehmen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the amendment of the Administrative Justice Act to introduce and regulate electronic procedural actions in administrative and judicial procedures. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:35.387763+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8903,7 +9097,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Beschaffung, Umsetzung und Betrieb einer einheitlichen Schuladministrationssoftware für die Luzerner Volksschulen\", \"label\": \"no_match\", \"rationale\": \"The affair is about the procurement, implementation, and operation of a unified school administration software for primary schools in the Canton of Lucerne. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:35.468588+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8935,7 +9131,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Spätestens seit der Veröffentlichung von ChatGPT ist die künstliche Intelligenz (KI) in der Mitte der Bevölkerung angekommen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the use of artificial intelligence in the Canton of Aargau's administration, including its potential, applications, and regulatory considerations. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:35.837587+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8967,7 +9165,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Requête 2020-GC-11 Bürdel Daniel, Grandgirard Pierre-André Demande de procédure accéléré pour le traitement de la motion relative à la loi sur le développement des infrastructures numériques\", \"label\": \"no_match\", \"rationale\": \"The affair is about requesting an accelerated procedure for a motion concerning a law on digital infrastructure development. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:36.662661+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -8999,7 +9199,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"La réponse du Conseil fédéral n'existe qu'en allemand.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the employment rate and integration of immigrant women in Switzerland, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:37.070085+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9031,7 +9233,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Aucune tendance claire ne ressort des données sur les émissions de gaz à effet de serre générées par l’agriculture.\", \"label\": \"no_match\", \"rationale\": \"The affair is about greenhouse gas emissions and climate policy in agriculture, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:37.106228+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9063,7 +9267,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Bundesrat hat kürzlich einen Plan vorgelegt, der die Möglichkeit aufzeigt, in Zukunft Gaskraftwerke einzusetzen, um die drohenden Versorgungsengpässe bei der Energie auszugleichen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about energy supply, gas power plants, and the Ukraine crisis, not about Covid-19 or its consequences.\"}",
    "created_at": "2026-10-18T15:44:37.427933+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9095,7 +9301,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le but des art. 492 ss du Code des obligations (CO ; RS 220) est de protéger la caution des engagements excessifs qu’elle prend sans avoir pleinement conscience de leur portée.\", \"label\": \"no_match\", \"rationale\": \"The affair is about revising the legal framework for surety agreements (cautionnement) in the Swiss Code of Obligations, focusing on outdated formal requirements, electronic signatures, and spousal consent rules. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:37.698959+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9127,7 +9335,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"La Costituzione federale è modificata come segue: Art. 116 ... Cpv. 5 La Confederazione e i Cantoni promuovono la conciliabilità tra famiglia e attività lucrativa e insieme provvedono a un'offerta di custodia dei figli esterna alla famiglia adeguata alla necessità.\", \"label\": \"no_match\", \"rationale\": \"The affair is about childcare policy and family-work balance, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:37.845167+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9159,7 +9369,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about commitments for housing promotion (2021-2027) and a framework credit, which does not relate to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:38.335837+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9191,7 +9403,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Für die obligatorische Schule sind die Kantone zuständig (Art. 62 BV) und es ist nicht Aufgabe des Bundes, diesbezüglich Forderungen an die Konferenz der kantonalen Erziehungsdirektorinnen und -direktoren (EDK) zu stellen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the timing and effectiveness of foreign language instruction in Swiss schools, specifically regarding the introduction of a first foreign language in the 5th grade. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:38.632260+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9223,7 +9437,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"L'organizzazione del settore delle esecuzioni compete in linea di principio ai Cantoni (art. 1 e 2 della legge federale sull'esecuzione e sul fallimento, LEF; RS 281.1).\", \"label\": \"no_match\", \"rationale\": \"The affair is about the independence of authorities in the execution and bankruptcy sector, specifically regarding the transfer of high surveillance from the Federal Supreme Court to the Federal Office of Justice in 2006, the role of cantonal authorities, and the separation of judicial and administrative functions. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:38.860449+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9255,7 +9471,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about pension security and a popular initiative on pensions, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:39.424275+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9287,7 +9505,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about double taxation and an agreement with Iran, which is unrelated to the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:39.973512+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9319,7 +9539,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Direktion für Entwicklung und Zusammenarbeit (DEZA) befindet sich in einem Reorganisationsprozess.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the restructuring of the Swiss Agency for Development and Cooperation (DEZA), specifically regarding staff reductions and organizational changes. While it mentions the broader context of international cooperation and sustainable development goals, the main subject is not the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures. There is no direct mention or focus on Covid-19.\"}",
    "created_at": "2026-10-18T15:44:40.113653+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9351,7 +9573,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è incaricato di sottoporre all’Assemblea federale un disegno di atto legislativo che preveda un referendum finanziario facoltativo e, in via opzionale, un referendum finanziario obbligatorio, per le nuove uscite e, in via opzionale, per le uscite annuali ricorrenti che presentano un importo appropriato ancora da determinare.\", \"label\": \"no_match\", \"rationale\": \"The affair is about introducing a financial referendum at the federal level in Switzerland, discussing spending limits, and existing fiscal mechanisms like the debt brake. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:40.996560+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9383,7 +9607,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Bestimmungen über die besonderen Voraussetzungen für die Zulassung von Ärztinnen und Ärzten in Artikel 37 des Bundesgesetzes über die Krankenversicherung (KVG) sollen in folgendem Sinne ergänzt werden: Bei einer nachgewiesenen Unterversorgung können Ärztinnen und Ärzte, die über einen der folgenden eidgenössischen Weiterbildungstitel verfügen, von der Anforderung, während drei Jahren an einer anerkannten schweizerischen Weiterbildungsstätte gearbeitet zu haben, ausgenommen werden.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns medical workforce shortages and amendments to licensing requirements in response to healthcare access issues, not the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:41.500932+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9415,7 +9641,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La vue d'ensemble du potentiel de main-d'œuvre en Suisse, que le Conseil fédéral publiera au printemps 2024, offrira un aperçu des mesures prises par la Confédération.\", \"label\": \"no_match\", \"rationale\": \"The affair is about vocational training and addressing the shortage of qualified workers through strengthening career guidance and apprenticeships. It does not discuss Covid-19 pandemic, health measures, or its economic and social consequences as its main subject.\"}",
    "created_at": "2026-10-18T15:44:41.525178+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9447,7 +9675,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral est chargé de ne pas délivrer de carte de légitimation aux personnes pour lesquelles une recommandation du Service de renseignement de la Confédération (SRC) ou d’autres autorités considère qu’il existe un risque élevé qu’elles mènent des opérations de renseignement en Suisse et de veiller à ce que les agents et agentes des services de renseignement ou des services secrets étrangers, ainsi que toute autre personne exerçant, pour le compte d’un État étranger, des activités de renseignement secrètes portant atteinte à la sécurité ou aux intérêts de la Suisse, ou exercent une répression transnationale, soient systématiquement expulsés du territoire s’ils ne peuvent faire l’objet de poursuites pénales.\", \"label\": \"no_match\", \"rationale\": \"The affair is about counter-espionage and the expulsion of foreign intelligence agents, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:42.065349+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9479,7 +9709,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Nell'ambito della revisione della legge sulle epidemie, il Consiglio federale è incaricato di verificare l'opportunità di estendere il monitoraggio delle acque reflue ai fini del rilevamento del SARS-CoV-2 e di altri agenti patogeni, così da rilevare precocemente e sorvegliare l'insorgere di malattie trasmissibili e sequenziare periodicamente i campioni di acque reflue.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is the extension of wastewater monitoring and pathogen sequencing as part of epidemic law revision, explicitly linked to early detection of transmissible diseases including SARS-CoV-2 and other pathogens, which falls under Covid-19 pandemic health measures and surveillance.\"\n}",
    "created_at": "2026-10-18T15:44:42.595676+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9511,7 +9743,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"La reintroduzione della deroga per i sacchetti protettivi con un peso massimo di due grammi non modifica il principio della vendita sulla base del peso netto.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns a specific amendment to packaging regulations for loose goods, triggered by the repeal of a rule on packaging weight limits. While it is a consequence of pandemic-related regulations (the original rule was part of pandemic-era adaptations), the main subject is the technical adjustment of packaging weight regulations for loose goods, not the Covid-19 pandemic itself, its health measures, or its broader economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:42.904881+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9543,7 +9777,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Das Bundesrecht sei derart zu ergänzen resp. abzuändern, dass Steuerzahlerinnen und Steuerzahler jederzeit und umgehend ihre Steuerakten zugestellt erhalten, sofern sie dies beantragen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the right of taxpayers to receive their tax records upon request, focusing on administrative transparency and data access in tax matters. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:42.978024+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9575,7 +9811,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Chaque demande de protection fait l’objet d’un examen individuel et approfondi, qui tient compte non seulement de la situation générale du pays d’origine, mais également du profil de la personne concernée et des risques concrets encourus par celle-ci.\", \"label\": \"no_match\", \"rationale\": \"The affair is about Switzerland's forced returns of asylum seekers to Burundi and the compatibility of these returns with international obligations, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:43.180332+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9607,7 +9845,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il y a lieu de modifier la loi sur la chasse afin de permettre la régulation préventive des populations de loups par les gardes-chasse, comme on le fait déjà pour les bouquetins (qui sont eux aussi protégés).\", \"label\": \"no_match\", \"rationale\": \"The affair is about wolf population regulation and hunting law modifications, not about Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:44.314501+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9639,7 +9879,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about protecting journalists from self-censorship and strategic threats from third parties, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:44.395575+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9671,7 +9913,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Ich bitte den Bundesrat, für die Saat 2021 die Verwendung des Insektizids \\\"Gaucho\\\" wieder zu bewilligen, um unsere Zuckerrübenkulturen zu schützen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the re-approval of an insecticide for sugar beet cultivation to combat viral yellowing transmitted by aphids, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:44.772162+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9703,7 +9947,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale intende attenersi alla Strategia per uno sviluppo sostenibile 2016-19 e alle direttive del messaggio ERI 2017-2020.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the lack of sustainability measures in the vocational training program 2030 and its alignment with national sustainability strategies and international agreements (Paris Agreement, Agenda 2030). While it references sustainability and climate goals, the main subject is vocational training policy and its shortcomings regarding sustainability integration, not the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:45.271387+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9735,7 +9981,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Ausgenommen sind die Leistungen bei Mutterschaft sowie Impfungen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about restricting healthcare coverage for asylum seekers and irregular migrants under the Swiss health insurance system (OKP). It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:45.569239+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9767,7 +10015,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Bundesverfassung (Art. 83) verpflichtet den Bund, in allen Landesgegenden für eine ausreichende Strasseninfrastruktur zu sorgen und die Benutzbarkeit der Nationalstrassen sicherzustellen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the use of emergency lanes (Pannenstreifenumnutzungen) for traffic capacity expansion on highways, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:45.772395+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9799,7 +10049,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"L’IPI ha allentato la propria prassi sull’utilizzo del marchio «Svizzera» per prodotti non fabbricati in Svizzera, suscitando preoccupazioni sulla tutela dei posti di lavoro nell’industria e sulla protezione del valore del marchio «Svizzera».\", \"label\": \"no_match\", \"rationale\": \"L'affare riguarda la prassi dell'IPI sull'uso del marchio «Svizzera» e le sue implicazioni economiche e industriali, non la pandemia di Covid-19, le sue misure sanitarie o le sue conseguenze economiche e sociali.\"}",
    "created_at": "2026-10-18T15:44:46.083655+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9831,7 +10083,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Bundesrat beantragt die Ablehnung der Motion.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the regulation of arms exports and the democratic legitimacy of decisions regarding military material exports, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:46.706300+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9863,7 +10117,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le Conseil fédéral est chargé de mettre en place sans délai un registre national unique, entièrement numérisé, pour l’enregistrement des cancers.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the creation of a national cancer registry and the shortcomings of the current system for cancer data collection in Switzerland. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:46.819908+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9895,7 +10151,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il mercato fondiario agricolo è legato principalmente alle attuali condizioni di proprietà del suolo, alla struttura delle aziende agricole e al prezzo.\", \"label\": \"no_match\", \"rationale\": \"The affair is about agricultural land law, farm succession, and the revision of the Federal Act on Rural Real Property (LDFR), not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:47.001985+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9927,7 +10185,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"I valori limite e massimi generali sanciti nell’ordinanza federale del 28 ottobre 1998 sulla protezione delle acque (OPAc) e nell’ordinanza del DFI del 16 dicembre 2016 sull’acqua potabile e sull’acqua per piscine e docce accessibili al pubblico (OPPD), pari a 0,1 microgrammi per litro (µg/l) per i pesticidi, si basano sul principio di precauzione e non su una soglia tossicologica concreta.\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on water protection regulations, specifically the differentiation between generic limit values for pesticides and differentiated assessment for other organic compounds. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:47.450834+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9959,7 +10219,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"L'offre de cases postales est une prestation facultative de la Poste suisse. Le service universel légal ne l'exige pas de la Poste.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the closure of post office boxes in Delémont and the broader strategy of the Swiss Post regarding service reduction, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:47.692284+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -9991,7 +10253,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the renewal of the Federal Prosecutor and Deputy Federal Prosecutors for the period 2024-2027. It does not mention Covid-19, health measures, or its consequences.\"}",
    "created_at": "2026-10-18T15:44:48.351235+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10023,7 +10287,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La reprise dynamique du droit n’entraînera pas de suppression de tâches ni de fonctions au sein de l’administration fédérale.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the organizational and personnel consequences of new agreements with the EU, specifically regarding legislative procedure and administrative restructuring. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:48.376019+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10055,7 +10321,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Das Parlamentsrecht ist so anzupassen, dass Entschädigungen für Mandate, die Parlamentarierinnen und Parlamentarier ausserhalb des eidgenössischen Parlamentsbetriebes ausüben, maximal der Höhe der Parlamentsentschädigung entsprechen dürfen.\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on limiting compensation for external mandates held by parliamentarians to prevent conflicts of interest and maintain financial independence, with no mention or connection to the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:48.400506+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10087,7 +10355,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair title 'Anpassung des Verfahrensrechts' (Adaptation of procedural law) does not mention Covid-19 or its health, economic, or social consequences. The main subject is procedural law, not the pandemic or its impacts.\"}",
    "created_at": "2026-10-18T15:44:48.429130+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10119,7 +10389,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about defining standards for equality policy in the financing of universities and allocation of third-party funds, which does not relate to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:48.841221+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10151,7 +10423,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"I Servizi del Parlamento sono invitati a: 1. pubblicare l'inno nazionale svizzero (in tutte e quattro le lingue nazionali ed eventualmente anche in inglese) sul sito Internet ufficiale del Parlamento; 2. indire in Svizzera un concorso di canto per cori infantili e giovanili in vista delle registrazioni sul sito Internet ufficiale del Parlamento.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting the Swiss national anthem and organizing a youth choir contest for its recording and performance, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:49.013516+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10183,7 +10457,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the composition and origin of sucrose from sugar beets or sugarcane, and does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:49.968132+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10215,7 +10491,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Le esperienze vissute durante gli scambi, oltre a promuovere l'apprendimento delle lingue e la motivazione a impararle, sensibilizzano al plurilinguismo e migliorano così le future opportunità di bambini e giovani sul mercato del lavoro.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting national language exchanges and linguistic diversity in Switzerland, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:50.276028+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10247,7 +10525,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Verluste am Kapitalmarkt werden durch die Reserven der Versicherer getragen.\", \"label\": \"no_match\", \"rationale\": \"The affair primarily focuses on rising health insurance premiums, the role of insurers' investment losses, and questions about premium increases in Ticino. While it mentions capital market losses, these are presented as a background factor related to insurer reserves and not as the main subject of the affair, which centers on premium policy and cantonal cost coverage.\"}",
    "created_at": "2026-10-18T15:44:50.318421+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10279,7 +10559,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Am 26. November 2025 legte der Bundesrat die Leitlinien zur Reform AHV2030 vor.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the reform of the retirement age (AHV2030), specifically regarding the collection of data on occupation, education level, and employment status for pension models. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as the main subject.\"}",
    "created_at": "2026-10-18T15:44:51.207981+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10311,7 +10593,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"La Confédération a pleinement conscience du défi qui consiste à former suffisamment de main-d'oeuvre qualifiée dans le domaine du solaire, c'est pourquoi elle a adopté plusieurs mesures à cet effet.\", \"label\": \"no_match\", \"rationale\": \"The affair is about vocational training and workforce development in the solar energy sector as part of Switzerland's energy transition strategy. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:51.226840+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10343,7 +10627,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Mit einem Bundesbeschluss werden die Strafurteile aufgehoben, die zwischen 1968 und 1996 gegen Personen ergangen sind, die aus Gewissensgründen den Militärdienst verweigert haben.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the rehabilitation of conscientious objectors to military service and the overturning of their criminal convictions, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:51.413110+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10375,7 +10661,9 @@
    "raw_json": "{\"confidence\": 0.25, \"evidence\": \"La revisione del RSI è di ampia portata e non è affatto di natura meramente tecnico-amministrativa. Prevede la rinuncia a competenze nonché nuovi obblighi a carico dei Cantoni nell’ambito della sanità pubblica e dell’economia.\", \"label\": \"no_match\", \"rationale\": \"Although the affair discusses amendments to the International Health Regulations (IHR) which are relevant to pandemic response and public health measures, the main subject is the procedural and constitutional implications of adopting these international health regulations, not the Covid-19 pandemic itself or its direct health/economic consequences in Switzerland.\"}",
    "created_at": "2026-10-18T15:44:51.659539+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10407,7 +10695,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the Betäubungsmittelgesetz (Narcotics Act) and its amendment, which is unrelated to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:51.729251+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10439,7 +10729,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Fondandomi sull'articolo 160 capoverso 1 della Costituzione federale e sull'articolo 107 della legge sul Parlamento, presento la seguente iniziativa: L'articolo 86 del Codice penale (CP; RS 311.0) deve essere modificato come segue: Art. 86 ...\", \"label\": \"no_match\", \"rationale\": \"The affair is about modifying criminal sentencing laws in response to a specific violent crime (the Rupperswil massacre), not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:51.804136+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10471,7 +10763,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"L'UE a modifié ses règles d'exportation de vaccins contre le COVID-19 le 31 mars. 17 pays, dont la Suisse, ont par conséquent été privés de leur accès privilégié aux vaccins.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair's main subject is the impact of the EU's decision on vaccine export rules on Switzerland's Covid-19 vaccination campaign, directly addressing health measures related to the pandemic.\"\n}",
    "created_at": "2026-10-18T15:44:52.697279+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10503,7 +10797,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the increase in the prevalence of non-communicable diseases and asks about measures to address this issue. Covid-19 is not mentioned or implied as the main subject.\"}",
    "created_at": "2026-10-18T15:44:52.878191+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10535,7 +10831,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il testo depositato è identico a quello della mozione Frehner 18.3825 \\\"Importazione di veicoli nuovi. Eliminare gli ostacoli amministrativi al commercio che incidono sui prezzi\\\"\", \"label\": \"no_match\", \"rationale\": \"The affair is about administrative obstacles to vehicle trade and pricing, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:52.947670+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10567,7 +10865,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Que fait le Conseil fédéral pour obliger les opérateurs de téléphonie mobile à garantir une alimentation électrique de secours et dans quel délai peut-il mettre en place cette obligation ?\", \"label\": \"no_match\", \"rationale\": \"The affair is about power outages affecting mobile networks and the federal government's measures to ensure backup power for telecom operators. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:53.965430+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10599,7 +10899,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Einführung eines Jugendvorstosses Antrag: Der Gemeinderat wird beauftragt, einen Jugendvorstoss einzuführen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about introducing a youth initiative (Jugendvorstoss) to give minors political participation rights in local governance. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:53.989653+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10631,7 +10933,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine Erwähnung von Covid-19, Gesundheit, wirtschaftlichen oder sozialen Folgen im Text.\", \"label\": \"no_match\", \"rationale\": \"Der Text behandelt ausschliesslich die Interkantonale Vereinbarung über das öffentliche Beschaffungswesen (IVöB) und enthält keinerlei Bezug zu Covid-19, Gesundheitsmassnahmen, wirtschaftlichen oder sozialen Konsequenzen der Pandemie.\"}",
    "created_at": "2026-10-18T15:44:54.244268+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10663,7 +10967,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"TITLE: Helikopter-Fluglärm im Naherholungsgebiet Linthebene\", \"label\": \"no_match\", \"rationale\": \"The affair is about helicopter noise pollution in a recreational area and the division of responsibilities between federal and cantonal authorities regarding aviation regulations. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:54.267721+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10695,7 +11001,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the validation of a parliamentary mandate for a successor, with no mention or focus on Covid-19, health measures, economic consequences, or social support measures.\"}",
    "created_at": "2026-10-18T15:44:54.677911+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10727,7 +11035,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Botschaft und Entwurf des Regierungsrates vom 23. März 2021 (RRB Nr. 2021/412)\", \"label\": \"no_match\", \"rationale\": \"The affair is about approving supplementary and additional credits for 2020 due to extraordinary circumstances, but the main subject is financial budget adjustments rather than the Covid-19 pandemic, health measures, or their direct consequences.\"}",
    "created_at": "2026-10-18T15:44:54.915854+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10759,7 +11069,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"In Opfikon sind bezahlbare Wohnungen und Gewerberäume knapp.\", \"label\": \"no_match\", \"rationale\": \"The affair is about affordable housing policies and the implementation of Article 49b of the Planning and Building Act (PBG) regarding minimum quotas for affordable housing in Opfikon. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:44:56.113003+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10791,7 +11103,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Bei den Aargauer Kantonsschulen herrschen \\\"Wildwuchs\\\" und unnötiger (\\\"Schönheits\\\")Wettbewerb.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the optimization and cost-saving potential of Aargauer Kantonsschulen (Aargau cantonal schools), specifically addressing school organization, infrastructure, and resource allocation. It does not discuss Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:56.529000+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10823,7 +11137,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Titel: Zahlen und Sachverhalte zu Wolf und Nutztierhaltung\", \"label\": \"no_match\", \"rationale\": \"The affair is about wolf presence and its impact on livestock farming, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:57.037861+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10855,7 +11171,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Vorlage an den Kantonsrat 1 Kantonsratsbeschluss betreffend Organisation des Grundbuch- sowie des Betreibungs- und Konkursinspektorats\", \"label\": \"no_match\", \"rationale\": \"The affair is about the organization of the land registry and enforcement/insolvency inspectorates in the Canton of Schwyz, specifically concerning administrative and judicial oversight structures. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:57.957933+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10887,7 +11205,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair title 'Landrechtsgesuche 25.10.2021' refers to land law petitions and does not mention Covid-19, health measures, or related economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:58.474446+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10919,7 +11239,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Vorlage behandelt die Veröffentlichung von Standorten von Geschwindigkeitsmessanlagen und deren Einfluss auf die Verkehrssicherheit im Rahmen des Programms \\\"Via sicura\\\".\", \"label\": \"no_match\", \"rationale\": \"Der Hauptgegenstand der Vorlage ist die Veröffentlichung von Radarstandorten zur Erhöhung der Verkehrssicherheit und die rechtlichen Rahmenbedingungen dafür. Die Covid-19-Pandemie, ihre gesundheitlichen Maßnahmen oder ihre wirtschaftlichen und sozialen Folgen sind nicht Gegenstand dieses Vorstosses.\"}",
    "created_at": "2026-10-18T15:44:58.521768+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10951,7 +11273,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Neu ist der Kanton für die Pflegefinanzierung zuständig. Im Sinne einer einheitlichen und klaren Handhabung soll dabei die Kostenbeteiligung der versicherten Person grundsätzlich dem bundesrechtlichen Maximum entsprechen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about changes in the financing of long-term care and outpatient services in the Canton of Glarus following the introduction of the Care and Support Act. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:44:58.816267+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -10983,7 +11307,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Infolge Rücktritt von Regierungsrätin Dr. Eva Herzog wurde Regierungsrätin Dr. Tanja Soland als Präsidentin in die Verwaltungskommission der Gebäu- deversicherung Basel-Stadt, als Mitglied in die Kommission für die Gewährung von Bürgschaften im Interesse der Schaffung von Arbeitsplätzen und als Mitglied in den Verwaltungsrat der Rimas Insurance-Broker AG gewählt.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the replacement of a government official and appointments to various commissions and boards following a resignation. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:44:59.184590+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11015,7 +11341,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Verschiedenste Faktoren spielen dabei mit: das intensivere Arbeitsleben, die stärkere immerwährende Vergleichbarkeit wegen Social Media und nicht zuletzt auch grosse globale Krisen wie die Corona-Pandemiezeit und die Verunsicherung durch den Ukrainekrieg.\", \"label\": \"no_match\", \"rationale\": \"The affair is about mental health support for youth in the Canton of Zug. While it mentions the Covid-19 pandemic as one of several factors contributing to increased psychological stress, the main subject is youth mental health services and infrastructure, not the Covid-19 pandemic itself or its direct consequences.\"}",
    "created_at": "2026-10-18T15:44:59.626224+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11047,7 +11375,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Nachdem nun die Bahnunterführung der Oristalstrasse praktisch fertiggestellt ist, zeigt sich, dass zwei bauliche Ausstattungen eine grosse Gefahr für den Fahrrad- und den Motorfahrzeugverkehr darstellen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about safety hazards in a railway underpass (specifically railings obstructing visibility and inadequate lighting), not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:00.426239+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11079,7 +11409,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Solide Finanzen – Ausgaben kontrollieren\", \"label\": \"no_match\", \"rationale\": \"The affair is about controlling municipal expenditures and budgetary discipline in Langenthal, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:01.132891+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11111,7 +11443,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Kein Bezug zu Covid-19, Gesundheit, wirtschaftlichen oder sozialen Folgen der Pandemie.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns urban planning, traffic management, and infrastructure development around a train station, specifically a new road connection and bus access. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:01.565467+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11143,7 +11477,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"TITLE: Feminisierung der PH und der Volksschule\", \"label\": \"no_match\", \"rationale\": \"The affair is about gender imbalance in the teaching profession and the feminization of pedagogical institutions, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:01.569017+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11175,7 +11511,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Austrasse sowie die öffentlichen Parkplätze Austrasse weisen massive Schäden im Belag und den Strassenabschlüssen auf.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the renovation of a local road (Austrasse) and its infrastructure, including paving, lighting, and parking spaces. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:02.053427+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11207,7 +11545,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"GESCHÄFTSNUMMER GROSSER RAT: 19.26 EINBÜRGERUNGEN\", \"label\": \"no_match\", \"rationale\": \"The affair is about naturalization procedures and decisions made by the citizenship commission in 2019. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:02.359451+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11239,7 +11579,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Kanton Zürich ist direkt, und über die ZKB indirekt, an der Technopark Winterthur AG beteiligt. Der Technopark hat sich in den vergangenen Jahren zum wichtigsten Ort für Unternehmensgründungen (Start-ups) in Winterthur entwickelt.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the allocation of office space between the Regional Employment Office (RAV) and start-ups within the Technopark Winterthur, as well as the canton's dividend policy regarding its stake in the Technopark. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:03.082834+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11271,7 +11613,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"Da erhöhten sich die Ausgaben hauptsächlich im Unterhalt von Soft-waren (+634') und im Gebäudeunterhalt (+812'). Im Bereich der Spesenentschädigungen beträgt die Zunahme rund TCHF 208. Dies hauptsächlich Aufgrund dessen, dass im Jahr 2021 infolge der Covid-19-Pandemie die Reisetätigkeit und Treffen nur eingeschränkt möglich waren und viele Veranstaltungen abgesagt wurden.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the canton's financial statement (Staatsrechnung) for 2022, including budget transfers, expenditures by department, and financial reserves. While it mentions Covid-19 in a specific context (impact on travel and event-related expenses in 2021), Covid-19 is not the main subject of the affair. The main subject is the financial report and budget management.\"}",
    "created_at": "2026-10-18T15:45:04.203855+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11303,7 +11647,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair title refers to the activity report of the Parliamentary Control Commission for 2025 and its adoption. There is no mention of Covid-19, health measures, or pandemic-related consequences in the provided text.\"}",
    "created_at": "2026-10-18T15:45:04.254704+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11335,7 +11681,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"In der aktuellen Phase der Verfahren wird nicht von Einsprachen, sondern von Rekursen gesprochen. Es sind drei Rekurse gegen die Ortsplanungsrevision bzw. zwei Rekurse gegen den Gestaltungsplan Riva beim zuständigen Departement eingereicht worden.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the status of local planning revisions and development plans, specifically addressing administrative procedures, appeals (Rekurse), and coordination between municipal and cantonal authorities. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:04.509860+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11367,7 +11715,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Schriftliche Anfrage betreffend Schaffung einer polizeilichen «Fachstelle Tierdelikte»\", \"label\": \"no_match\", \"rationale\": \"The affair is about the creation of a specialized police unit for animal cruelty cases and the enforcement of animal protection legislation. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:04.628280+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11399,7 +11749,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Bemessung der Grundgebühr anhand der zonengewichteten Grundstücksfläche wird mittlerweile aber gesamtschweizerisch diskutiert.\", \"label\": \"no_match\", \"rationale\": \"The affair is about revising the method for calculating wastewater fees based on weighted property area, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:05.436879+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11431,7 +11783,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Krieg in der Ukraine hat zudem aufgezeigt, dass die Stadt Bern die Abhängigkeit von Öl und Gas nicht nur aus ökologischer Sicht so schnell wie möglich reduzieren sollte.\", \"label\": \"no_match\", \"rationale\": \"The affair is about solar energy policy, electricity tariffs, and incentives for private solar installations in Bern, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:05.568566+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11463,7 +11817,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Im Rahmen der Bau- und Verkehrskoordination Bahnhof Liestal, hat die Firma RK&P im Auftrag des Kantons, der Stadt Liestal, SBB Infrastruktur und SBB Immobilien mit allen Beteiligten ein Konzept für die Verkehrsführung in den verschiedenen Bauphasen erstellt. In diesem Zusammenhang wurde auch das Konzept für den WB-Bahnersatz durch Busse (ab Dez. 2021 bis Ende 2022) erstellt.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the replacement of the Waldenburgerbahn train service with buses during infrastructure construction, not the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:06.359079+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11495,7 +11851,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about concession fees for private waste disposal companies, which does not relate to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:06.361242+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11527,7 +11885,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the abolition of the Latin subject at a cantonal school, which is unrelated to Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:06.417545+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11559,7 +11919,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"INFATTI, NEGLI ULTIMI DECENNI IL FENOMENO DELLE AGGREGazioni HA RIDOTTO DI OLTRE LA METÀ IL NUMERO DEI COMUNI, MENTRE IL NUMERO DELLE PARROCCHIE È RIMASTO SOSTANZIALMENTE INVARIATO\", \"label\": \"no_match\", \"rationale\": \"The affair is about modifications to the Catholic Church law in Ticino, specifically regarding parish structures, access to parish offices, and administrative procedures. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:08.094338+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11591,7 +11953,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Verkehrsführung soll so gestaltet werden, dass der MIV auf der Velovorzugsroute nicht zu-, sondern abnimmt.\", \"label\": \"no_match\", \"rationale\": \"The affair is about traffic management, road construction, and urban planning measures related to a specific street project in Zürich. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:08.330709+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11623,7 +11987,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"In den letzten zehn Jahren ist die Bevölkerung in den Stadtkreisen 11 und 12, für welche das Sozialzentrum Dorflinde zuständig ist, um 15 Prozent gestiegen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the relocation of a social services team and the spatial planning of social centers in Zurich, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:09.147256+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11655,7 +12021,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Auch der weitere Verlauf der COVID-19-Pandemie ist ungewiss.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the Canton of Zug's 2023 budget and financial plan, including infrastructure investments, personnel changes, and strategic goals. While the COVID-19 pandemic is mentioned briefly as an uncertain factor affecting future developments, it is not the main subject of the document. The document focuses on financial planning, administrative organization, and legislative proposals unrelated to pandemic-specific health measures or economic/social consequences directly tied to COVID-19.\"}",
    "created_at": "2026-10-18T15:45:09.564120+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11687,7 +12055,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Das Strassenbauprojekt Milchbuck-/Scheuchzerstrasse, Abschnitt Irchelstrasse bis Schaffhauserstrasse, soll sistiert werden, bis anderweitig Ersatzparkplätze zur Verfügung stehen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the suspension of a road construction project to preserve parking spaces and facilitate a cycling priority route, not about the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:10.130494+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11719,7 +12089,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine Macht den Kartellen! - Erkennung unzulässiger Wettbewerbsabreden\", \"label\": \"no_match\", \"rationale\": \"The affair is about anti-competitive cartels and detecting illegal competition agreements, not about Covid-19, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:10.412099+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11751,7 +12123,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Sachverhalt Gemäss Art. 48 der Gemeindeordnung der Stadt Arbon wählt das Parlament für die laufende Amtsdauer die Sozialhilfebehörde, bestehend aus fünf Mitgliedern, davon zwei Stadtratsmitglieder als Präsidium und Vizepräsidium.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the election of members to the local social welfare authority in Arbon, focusing on administrative procedures, party representation, and personnel selection. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:10.982212+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11783,7 +12157,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Vergleich der Arbeitslosenquoten von 2008 bis 2018 der Altersklassen der 15 – 24-Jährigen, der 25 – 49-Jährigen und der über 50-Jährigen (50+) zeigt, dass die 50+ bis ins Jahr 2015 die am wenigsten stark betroffene Alterskategorie war.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the employment situation and unemployment of older workers (50+), including labor market measures and statistics on unemployment rates. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:11.887230+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11815,7 +12191,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Domicile des employés de l'Etat : faisons le point !\", \"label\": \"no_match\", \"rationale\": \"The affair is about the domicile of state employees in the Canton of Jura, including their tax obligations, relocation commitments, and government responses regarding employment contracts and mobility. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:12.357478+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11847,7 +12225,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Dans son rapport sur la consultation externe, la DIME s’est ralliée à cette proposition qui a finalement été retenue par le Conseil d’Etat, avec les explications figurant dans le rapport explicatif accompagnant l’ordonnance modifiant le ReLATeC.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the regulation of electric vehicle charging stations and building permit procedures in the Canton of Fribourg, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:12.360745+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11879,7 +12259,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Bevölkerungsfreundliche Schalteröffnungszeiten\", \"label\": \"no_match\", \"rationale\": \"The affair is about adjusting office opening hours to improve accessibility for the working population, with no mention or connection to Covid-19 pandemic, health measures, or its consequences.\"}",
    "created_at": "2026-10-18T15:45:12.751198+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11911,7 +12293,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die religiöse Neutralität der Schule sollte sich auch in der Kleidung der Lehrpersonen widerspiegeln. Eine Lehrerin, die ein Kopftuch oder einen Hijab im Unterricht trägt, ist mit diesem Neutralitätsgebot nicht zu vereinbaren.\", \"label\": \"no_match\", \"rationale\": \"The affair is about regulating religiously marked clothing for public employees to maintain state neutrality, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:13.570604+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11943,7 +12327,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Nicht klassifiziert | Letzte Bearbeitung: 13.02.2023 | Version: 2 | Dok.-Nr.: 265751 | Geschäftsnummer: 2023.WEU.661 1/1 0 2 |0 8 |D |v 0 2 Regierungsratsbeschluss RRB Nr.: 489/2023 Datum RR-Sitzung: 3. Mai 2023 Direktion: Wirtschafts-, Energie- und Umweltdirektion Geschäftsnummer: 2023.WEU.661 Klassifizierung: Nicht klassifiziert Bericht des Regierungsrates zur Umsetzung der als Postulat angenommenen Motion 166-2019 Gabi Schönenberger (Schwarzenburg, SP): Rauchfreie öffentliche Kinderspiel- plätze und Schulareale im Kanton Bern\", \"label\": \"no_match\", \"rationale\": \"The affair concerns smoke-free public playgrounds and school areas in the Canton of Bern, with no mention or relevance to the Covid-19 pandemic, its health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:13.638037+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -11975,7 +12361,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about littering in public places in Arbon and does not address the Covid-19 pandemic, health measures, or its economic and social consequences.\"}",
    "created_at": "2026-10-18T15:45:14.546284+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12007,7 +12395,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Bei einer solchen Situation ist die Kantonspolizei als Ersteinsatzelement vor Ort und handelt nach ihrem bewährten Notfallkonzept.\", \"label\": \"no_match\", \"rationale\": \"The affair is about wolf attacks on humans, wolf population management, and safety measures related to wolves in the Canton of Schwyz. It does not address the Covid-19 pandemic, health measures, or economic and social consequences of Covid-19.\"}",
    "created_at": "2026-10-18T15:45:15.610687+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12039,7 +12429,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Soweit der fertig ausgearbeitete Entwurf der Initiative auch Alterslimiten setzt, führt er innerhalb des FZG zu Widersprüchlichkeiten.\", \"label\": \"no_match\", \"rationale\": \"The affair is about a cantonal popular initiative concerning the increase of family allowances in the canton of Uri. It discusses legal, financial, and social aspects of family policy, but does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:45:15.623551+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12071,7 +12463,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Staatsrat gibt den Vorentwurf des Gesetzes über die Politikfinanzierung in die Vernehmlassung.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the draft law on political financing and transparency in campaign funding, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:16.315000+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12103,7 +12497,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Kanton Schwyz kennt für Initiativen auf Gemeindeebene mit § 10 Abs. 2 des Gesetzes über die Organisation der Gemeinden und Bezirke (Gemeindeorganisationsgesetz, GOG) eine Sperrfrist von zwei Jahren für Wiederholungsinitiativen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the revision of regulations regarding initiatives in the municipal organization law, specifically concerning the handling of repeated initiatives and their validity, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:16.415075+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12135,7 +12531,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Einsatz von Deepfake-Anwendungen ermöglicht es zudem, in grossem Stil Geld zu erschwindeln und anderweitig zu betrügen, z. B. indem man die Stimme von Vorgesetzten künstlich nachahmt, um den Angestellten eines Unternehmens falsche Anweisungen zu Geldüberweisungen zu geben.\", \"label\": \"no_match\", \"rationale\": \"The affair is about regulating deepfakes and artificial intelligence, not about the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:17.418068+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12167,7 +12565,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Die Vergrösserung der Ausschankfläche im Aussenbereich ist möglich, soweit keine öffentlichen Interessen tangiert werden und sie nicht zu zusätzlichen Immissionen führt; damit sollen die strengen Schutzmassnahmen zumindest teilweise abgefedert werden.\", \"label\": \"match\", \"rationale\": \"The affair's main subject is the extension of outdoor seating for gastronomy businesses as a response to Covid-19 protection measures, aiming to mitigate economic damage while maintaining public health safeguards.\"}",
    "created_at": "2026-10-18T15:45:17.737246+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12199,7 +12599,9 @@
    "raw_json": "{\"confidence\": 1.0, \"evidence\": \"Die negativen Folgen sind wissenschaftlich eindeutig belegt, und sie treffen alle direkt. Man spricht hier über ein Mehrfachproblem. Gesundheit: Ammoniak bildet Feinstaub, der bis tief in die Lunge eindringt und Herz-Kreislauf- sowie Atemwegserkrankungen verursacht. Umwelt: Stickstoffeinträge übersäuern Böden, schädigen Pflanzen und Ökosysteme, fördern unkontrolliertes Wachstum und bedrohen die Biodiversität. Klima: Aus Ammoniak entsteht Lachgas – ein Treibhausgas, das rund 300-mal klimaschädlicher ist als CO₂.\", \"label\": \"match\", \"rationale\": \"The affair's main subject is the excessive ammonia emissions in Appenzell Ausserrhoden, their health impacts (respiratory and cardiovascular diseases), environmental consequences (soil acidification, biodiversity loss), and climate effects (nitrous oxide as a potent greenhouse gas). These are direct consequences of the ammonia issue, which falls under the Covid-19 topic's definition of health measures and consequences, as ammonia pollution is a public health and environmental concern exacerbated by agricultural practices.\"}",
    "created_at": "2026-10-18T15:45:17.792259+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12231,7 +12633,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Bundesrat geht deshalb davon aus, dass in diesen Kantonen das Erfordernis der Vorlage eines Heimatscheins in Form eines physischen Dokuments gemäss Artikel 36 BV keinem öffentlichen Interesse mehr entsprechen und mit dem Grundsatz der Verhältnismässigkeit nicht länger in Einklang stehen dürfte.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the administrative procedure and fees related to the 'Heimatschein' (certificate of origin) and the implementation of electronic access to civil status data via Infostar. It does not address the Covid-19 pandemic, health measures, or its economic and social consequences and support measures as its main subject.\"}",
    "created_at": "2026-10-18T15:45:18.340334+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12263,7 +12667,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Gestützt auf Artikel 160 Absatz 1 der Bundesverfassung und auf Artikel 107 des Parlamentsgesetzes reiche ich folgende parlamentarische Initiative ein: Die Bundesverfassung wird so geändert, dass sie garantiert, dass das Gesetz den freien, universellen, gleichen und diskriminierungsfreien Zugang zu allen offenen digitalen Netzen gewährleistet.\", \"label\": \"no_match\", \"rationale\": \"The affair is about enshrining net neutrality in the Swiss Constitution, specifically regarding equal and non-discriminatory access to digital networks. It does not address the Covid-19 pandemic, its health measures, or its economic and social consequences and support measures.\"}",
    "created_at": "2026-10-18T15:45:19.054321+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154355071245Z",
@@ -12295,7 +12701,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Text behandelt Risiken von Algorithmen in sozialen Netzwerken für Minderjährige, wie Suchtrisiken, Polarisierung und psychische Gesundheit, sowie Massnahmen des Bundesrates und Präventionsarbeit. Es wird jedoch nicht die Covid-19-Pandemie, ihre gesundheitlichen Massnahmen oder ihre wirtschaftlichen und sozialen Folgen thematisiert.\", \"label\": \"no_match\", \"rationale\": \"Der Hauptgegenstand des Textes ist der Schutz von Kindern und Jugendlichen vor manipulativen Algorithmen in sozialen Netzwerken sowie die Medienkompetenzförderung. Die Covid-19-Pandemie, ihre gesundheitlichen Massnahmen oder ihre wirtschaftlichen und sozialen Folgen werden nicht thematisiert.\"}",
    "created_at": "2026-10-18T15:45:19.116893+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   }
  ]
 }

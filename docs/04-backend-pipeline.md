@@ -115,7 +115,8 @@ Rules (enforced in SQLite, tested): predictions and reviews are append-only (UPD
 | GET | `/api/state` | mode, model, presets (topics/*.yaml) with their latest demo-pool run, pool size, match threshold |
 | GET | `/api/runs/{run_id}` | items of a run: prediction + affair meta + latest review (no source text) |
 | GET | `/api/predictions/{id}` | one prediction with the exact source text, evidence span (for highlighting), reviews |
-| POST | `/api/search` | `{preset_id}` or `{topic:{name,definition,include,exclude}}` → classifies the demo pool live, streams NDJSON (`run`, `item`…, `done`); closing the connection cancels. 503 in cached mode |
+| GET | `/api/schemes/{aps|curia_vista}/labels` | source id → labels per language (APS: chapters + topics) |
+| POST | `/api/search` | `{preset_id}`, `{topic:{name,definition,include,exclude}}` or `{scheme}` → classifies the demo pool live, streams NDJSON (`run`, `item`…, `done`); closing the connection cancels. 503 in cached mode |
 | POST | `/api/reviews` | `{prediction_id, decision, corrected_label?, note?}` (append-only) |
 | GET | `/api/export.csv`, `/api/export.json` | `?run_id=` topic, affair, confidence, evidence, link, review status |
 | GET | `/api/metrics` | `results/metrics.json` |

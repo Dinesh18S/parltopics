@@ -5845,7 +5845,9 @@
    "raw_json": "{\"confidence\": 0.8, \"evidence\": \"die Öffnung für neue Technologien\", \"label\": \"match\", \"rationale\": \"The affair explicitly mentions the opening up for new technologies as part of the revision of the ordinance on official surveying, which falls under the topic of digitalisation as it involves technological advancement and digital infrastructure in a government-regulated domain.\"}",
    "created_at": "2026-10-18T15:42:13.817947+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -5877,7 +5879,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"studiare in modo chiaro la tracciabilità delle derrate alimentari;\", \"label\": \"match\", \"rationale\": \"The affair explicitly proposes a pilot project using blockchain technology to improve the traceability of food products, which falls under the topic of digitalisation as it involves the application of digital technology (blockchain) to enhance data management and administrative processes in the food sector.\"}",
    "created_at": "2026-10-18T15:42:14.105955+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -5909,7 +5913,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the role of hepa.ch in the national strategy for sport and movement promotion, focusing on information, networking, and movement recommendations. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:42:14.217782+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -5941,7 +5947,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"On prévoit un affaiblissement de la propriété intellectuelle lors de la conférence ministérielle de l’OMC.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the protection of intellectual property rights in the context of international trade negotiations (WTO) and pandemic preparedness, not about digitalisation. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:42:14.660110+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -5973,7 +5981,9 @@
    "raw_json": "{\n  \"confidence\": 0.95,\n  \"evidence\": \"Lorsque l'agent nous accompagne en permanence, choisit-on encore consciemment ce qu'on lui délègue ? Plus on délègue, moins on voit les alternatives écartées, et moins on exerce les compétences qui fondent notre autonomie.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair focuses on artificial intelligence agents, their impact on cognitive autonomy, decision-making processes, and democratic participation, which are central aspects of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:14.704210+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6005,7 +6015,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about preventing 'Loverboy' human trafficking and sexual exploitation, specifically focusing on awareness campaigns, police strategies, and support for victims. While the text mentions that the recruitment occurs via the internet, this is merely a means of communication and not a central subject related to digitalisation topics such as data protection, e-government, AI, cybersecurity, or digital infrastructure. The digital aspect is not a central part of what the affair asks or regulates; it is only mentioned in passing as a method of contact.\"}",
    "created_at": "2026-10-18T15:42:15.123731+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6037,7 +6049,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Actuellement, les données issues de supports électroniques de données sont visualisées et analysées manuellement et ne sont pas sauvegardées (art. 10f OA 3). Le résultat de l’analyse est consigné dans un procès-verbal.\", \"label\": \"match\", \"rationale\": \"The affair deals with the use of digital technology (analysis of electronic data on mobile phones) in a government procedure (asylum process), including data handling, storage, security, and the use of software tools for data analysis, which are central aspects of digitalisation as defined.\"}",
    "created_at": "2026-10-18T15:42:15.174938+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6069,7 +6083,9 @@
    "raw_json": "{\"confidence\": 1, \"evidence\": \"Il Consiglio federale è incaricato di elaborare le basi legali necessarie affinché tutti i fornitori di prestazioni e i professionisti della salute siano obbligati ad affiliarsi a una comunità o a una comunità di riferimento certificate secondo l'articolo 11 lettera a della legge federale del 19 giugno 2015 sulla cartella informatizzata del paziente.\", \"label\": \"match\", \"rationale\": \"The affair deals with the electronic patient record (cartella informatizzata del paziente), which is a core digital health initiative. It involves legal frameworks, infrastructure for digital health records, and their mandatory use by healthcare professionals, directly addressing the topic of digitalisation in the health sector.\"}",
    "created_at": "2026-10-18T15:42:15.834918+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6101,7 +6117,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die technischen Systeme zur Unterstützung der Ergebnisermittlung beziehungsweise -übermittlung und deren Integration in den gesamten Prozess inklusive begleitender Sicherheitsmassnahmen und Kontrollprozesse\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the security of digital systems used in the process of counting and transmitting election and voting results, including server configurations, encryption, and protection against cyberattacks. This falls under digitalisation, specifically cybersecurity and digital administration.\"\n}",
    "created_at": "2026-10-18T15:42:16.679846+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6133,7 +6151,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Das ASTRA hat bis Ende 2019 mit wenigen Ausnahmen alle über 300 Meter langen Nationalstrassentunnels mit DAB+-Sendern ausgerüstet und dafür bisher rund 30 Millionen CHF aufgewendet.\", \"label\": \"match\", \"rationale\": \"The affair deals with the deployment of DAB+ digital radio technology in national road tunnels, including infrastructure development, signal strength, and network operator coordination, which falls under digitalisation as it involves telecommunications technology and its implementation.\"}",
    "created_at": "2026-10-18T15:42:17.109362+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6165,7 +6185,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale è invitato a versare immediatamente 30 milioni di franchi dalla riserva di fluttuazione del canone radiotelevisivo per finanziare misure di sostegno in relazione alla crisi da coronavirus.\", \"label\": \"no_match\", \"rationale\": \"The affair is about financial support for private radio and television stations during the coronavirus crisis using funds from the radio/TV licence fee reserve. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society as a central subject. The digital aspect is not present; it is purely about media funding and economic relief for traditional broadcasting.\"}",
    "created_at": "2026-10-18T15:42:17.336330+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6197,7 +6219,9 @@
    "raw_json": "{\"confidence\": 0.7, \"evidence\": \"Il s’agit notamment de permettre aux autorités d’exécution cantonales de fermer plus facilement des sites web et de retirer des produits vendus proposés par des boutiques et plateformes en ligne.\", \"label\": \"match\", \"rationale\": \"The affair deals with regulating online commerce through digital platforms, specifically targeting the sale of dangerous toys via the internet. It involves measures to close websites and remove products sold online, which falls under the topic of digitalisation as it pertains to e-commerce regulation, digital administration, and the use of online platforms for commercial activities.\"}",
    "created_at": "2026-10-18T15:42:17.920791+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6229,7 +6253,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il termine minimo di separazione dopo il quale un coniuge può domandare il divorzio è stato abbreviato da quattro a due anni nel 2004 (art. 114 del Codice civile svizzero [CC; RS 210]; RU 2004 2161).\", \"label\": \"no_match\", \"rationale\": \"The affair is about family law and divorce procedures, specifically the waiting period for unilateral divorce under Swiss civil law. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is entirely unrelated.\"}",
    "created_at": "2026-10-18T15:42:18.217757+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6261,7 +6287,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"La plate-forme en ligne SICHEM (www.seco.admin.ch/sichem) est disponible depuis cette année ; il s'agit d'un outil de la Confédération visant à faciliter l'accomplissement du devoir de diligence dans le cadre de l'emploi de produits chimiques en entreprise.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about chemical product regulation and the impact of online sales on safety standards for workers handling chemicals. While it mentions a digital platform (SICHEM) as a tool for compliance, digitalisation is not a central subject of the affair. The core issue is the regulation of chemical products and the disparity between online and physical commerce in terms of safety information, not digital technology, data, telecommunications, or their effects on society/economy/education/government as defined for the topic.\"}",
    "created_at": "2026-10-18T15:42:18.298635+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6293,7 +6321,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"Um die Datenbereitstellung der Leistungserbringer zu vereinfachen und die nötigen Anforderungen an Datenstruktur und Schnittstellen so zu definieren, dass ein einfacher und effizienter Austausch mit den verantwortlichen Stellen bei Bund und Kantonen ermöglicht wird.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair focuses on improving data exchange between healthcare providers and government entities using digital infrastructure and standardized data structures, which falls under digitalisation, specifically e-government and digital administration.\"\n}",
    "created_at": "2026-10-18T15:42:18.321974+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6325,7 +6355,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il fondo deve svolgere i seguenti compiti: 1. acquisire partecipazioni aumentando il capitale proprio di aziende svizzere di rilevanza sistemica (in particolare PMI) che a seguito della crisi del coronavirus non sono in grado di proseguire la loro attività senza sostegno finanziario\", \"label\": \"no_match\", \"rationale\": \"The affair is about establishing a sovereign fund to stabilize and strengthen the economy, focusing on financial support for businesses, strategic assets, and economic recovery. While the fund's activities may involve digital infrastructure (e.g., 'reti di dati' in point 4), this is not a central or main subject of the affair. The primary focus is on economic stabilization, financial support, and business rescue through capital injections and loans, with digital infrastructure mentioned only as one of many sectors among others (transport, healthcare, production, tourism, education, research). Digitalisation is not a central part of what the affair asks or regulates.\"}",
    "created_at": "2026-10-18T15:42:19.563204+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6357,7 +6389,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"L’application pour smartphone Quickzoll de l’Office fédéral de la douane et de la sécurité des frontières permet aux particuliers d’auto-déclarer leurs marchandises plus facilement et plus rapidement en vue du dédouanement.\", \"label\": \"no_match\", \"rationale\": \"The affair is about customs procedures and the functionality of a specific government application for tax declaration. While it involves a digital application, the central subject is the customs process and tax rate application, not digitalisation as a main topic. The digital aspect is merely the tool used, not a central focus on digital technology, data, telecommunications, or their broader societal/economic effects as defined.\"}",
    "created_at": "2026-10-18T15:42:20.123780+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6389,7 +6423,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Der Bericht muss: • aufzeigen, wie die Verbindung zwischen Forschung, Innovation, Entwicklung und Verteidigung gestärkt werden könnte, um unsere nationale Sicherheit zu stützen;\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on strategic defense technologies and reducing dependence on foreign technologies, but it does not explicitly address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society as a central subject. The mention of \\\"Technologien\\\" is too generic and not clearly tied to digitalisation as defined.\"}",
    "created_at": "2026-10-18T15:42:20.187841+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6421,7 +6457,9 @@
    "raw_json": "{\"confidence\": 0.15, \"evidence\": \"Secondo il Consiglio federale non è opportuno puntare sulla creazione di un certo numero di postazioni di lavoro comuni.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about regional coworking and flexible work models, with a focus on economic, ecological, and social benefits. While coworking spaces may involve digital tools or infrastructure, the text does not centrally address digital technology, data, telecommunications, their regulation, infrastructure, security, or social consequences as defined for the topic of digitalisation. The digital aspect is not a central part of the affair; it is merely a possible tool for coworking, not the main subject.\"}",
    "created_at": "2026-10-18T15:42:20.664803+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6453,7 +6491,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Entwickelt diese das System alleine oder gibt es Sub- und Subsubunternehmer?\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair directly concerns the development of the electronic identity (E-ID) system, which falls under 'E-voting and electronic identity (E-ID)' as listed in the COUNTS AS THIS TOPIC criteria. The question about subcontractors relates to the digital infrastructure and implementation of the E-ID system.\"\n}",
    "created_at": "2026-10-18T15:42:20.876451+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6485,7 +6525,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Est-ce que la Poste traite de façon égale les clients avec lesquels elle a conclu un contrat particulier - comme Amazon - et les clients avec lesquels elle n'a pas conclu de contrat particulier ?\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on equal treatment of clients and tariff policies of Swiss Post in relation to Amazon, without addressing digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The digital aspect is not a central part of the affair; it is only mentioned in passing as part of the context of Amazon as a client.\"}",
    "created_at": "2026-10-18T15:42:21.167134+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6517,7 +6559,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Le Conseil fédéral est chargé d’établir un rapport sur l’application de la Loi fédérale sur la protection des données dans les échanges d’informations entre autorités et institutions chargées de tâches publiques.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about data protection law (LPD) and its impact on information exchanges between public institutions, which falls under the topic of digitalisation as it involves data regulation, legal frameworks for data handling, and the effects on administrative cooperation and government operations.\"\n}",
    "created_at": "2026-10-18T15:42:21.176906+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6549,7 +6593,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Nel 2023 per la protezione del bestiame sono stati stanziati 3,7 milioni di franchi e un credito speciale per un importo pari a 7 milioni.\", \"label\": \"no_match\", \"rationale\": \"The affair is about livestock protection measures, funding allocation, and administrative procedures related to wolf predation in Switzerland. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of funding is purely financial and administrative, not related to digitalisation.\"}",
    "created_at": "2026-10-18T15:42:22.746637+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6581,7 +6627,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il paziente può decidere liberamente se consentire che sia costituita una cartella informatizzata del paziente (CIP) che lo riguarda (LCIP; RS 816.1). Il paziente può inoltre decidere quale professionista della salute può avere accesso alla sua CIP.\", \"label\": \"no_match\", \"rationale\": \"The affair is about medical confidentiality for minors, suicide prevention, and the role of electronic patient records in information sharing between healthcare professionals. While it mentions electronic patient records (CIP), this is only a small part of a broader discussion on medical secrecy, suicide prevention, and child protection. The central subject is not digitalisation (e.g., data protection, e-government, AI, 5G, digital infrastructure, or digital transformation of society/economy/education/media), but rather the legal and ethical implications of medical confidentiality in the context of mental health and suicide prevention among minors. Digital technology is not a central part of the affair; it is only mentioned in passing regarding electronic patient records.\"}",
    "created_at": "2026-10-18T15:42:23.379178+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6613,7 +6661,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"La cyberdifesa è quindi più che mai importante ed è già oggi un aspetto centrale della nostra difesa nazionale.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the creation of a 'Cyber' Command for the Swiss army, focusing on cyber defense, cyber threats, and the strategic importance of cybersecurity in national defense. This directly relates to the topic of digitalisation, specifically cybersecurity and cybercrime as listed in the COUNTS AS THIS TOPIC section.\"\n}",
    "created_at": "2026-10-18T15:42:23.790273+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6645,7 +6695,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale riconosce l'importanza di un sistema sanitario che garantisca pari opportunità, offrendo prestazioni adeguate a tutti i gruppi della popolazione.\", \"label\": \"no_match\", \"rationale\": \"The affair is about gender-specific medicine and health equity, not digitalisation. It discusses diagnosis, therapy, research, and prevention in medicine, focusing on gender differences, but does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is a general health policy issue without any digital link.\"}",
    "created_at": "2026-10-18T15:42:23.995989+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6677,7 +6729,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Les dispositions applicables aux mesures provisionnelles permettent à certaines conditions d'interdire la publication d'un article de presse (art. 261 ss et 266 CPC)\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about media ethics, protection of victims in legal proceedings, and preventing secondary victimization through inappropriate media coverage. While it mentions legal measures to restrict publication (e.g., injunctions under civil procedure), these are ancillary to the core topic of media responsibility and victim protection in the judicial context, not about digitalisation itself (e.g., digital technology, data, telecommunications, or their societal/economic effects). The digital aspect is not a central part of the affair; it is merely a medium through which harm occurs, not the subject of regulation or infrastructure development.\"}",
    "created_at": "2026-10-18T15:42:24.532780+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6709,7 +6763,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Sur Internet, des réseaux d’hommes échangent des informations sur la manière de rendre les femmes sans défense grâce à l’administration de substances afin de pouvoir abuser d’elles et filmer leurs actes\", \"label\": \"no_match\", \"rationale\": \"The affair is about combating online networks facilitating sexual assault through chemical submission, which is a criminal matter related to online platforms but does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society as a central subject. The digital aspect is merely the medium for criminal activity, not a central part of what the affair asks or regulates regarding digitalisation.\"}",
    "created_at": "2026-10-18T15:42:24.542290+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6741,7 +6797,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"Eine Analyse der konkreten Erfahrungen mit der COVID-Pandemie schliesst prinzipiell auch eine vertiefte Prüfung von Finanzierungsalternativen (inkl. Versicherungslösungen) für solche Ereignisse ein.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the decision to abandon a pandemic insurance concept and the handling of large-scale risks in general. While it mentions a potential analysis of financing alternatives including insurance solutions as a possible future step, digitalisation is not a central subject of the affair. The text does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of insurance solutions is purely financial and risk-management related, not digital.\"}",
    "created_at": "2026-10-18T15:42:25.032206+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6773,7 +6831,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Die technische Systemführerschaft im Bereich der Notrufe soll auf operativer Ebene etwa der Swisscom übertragen werden.\", \"label\": \"match\", \"rationale\": \"The affair deals with the technical and organisational development of emergency call systems, which involves telecommunications infrastructure and the role of a telecom provider (Swisscom) in ensuring reliable service. This falls under the topic of digitalisation, specifically relating to mobile networks, telecommunications infrastructure, and the regulation of critical communication systems.\"}",
    "created_at": "2026-10-18T15:42:25.807646+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6805,7 +6865,9 @@
    "raw_json": "{\"confidence\": 1.0, \"evidence\": \"« Le rôle du délégué est de filtrer les demandes des citoyens pour qu'elles ne remontent pas toutes au préposé. Il est aussi chargé de sensibiliser les autres collaborateurs. [...] Aucune formation spécialisée n'est nécessaire pour être délégué à la protection des données. »\", \"label\": \"match\", \"rationale\": \"The affair deals with the role, requirements, and implementation of data protection officers (DPOs) under the Data Protection Act (LIPDA). It specifically addresses data protection regulations, the qualifications and training required for DPOs, and the organizational measures needed to ensure their independence. This falls squarely under the topic of data protection, which is explicitly listed as a sub-topic under Digitalisation.\"}",
    "created_at": "2026-10-18T15:42:26.930971+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6837,7 +6899,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"La nouvelle stratégie informatique permet de concevoir des processus plus efficaces, ce qui doit également se traduire par des possibilités d'économie en termes de personnel.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair explicitly addresses the impact of an IT strategy on human resources, focusing on how digital processes can lead to personnel cost savings, process simplification, and workforce planning. This directly relates to the use of digital technology (IT strategy) to affect government operations (human resources management), fitting the definition of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:26.948335+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6869,7 +6933,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"Die Lehrpersonen unterrichten ihre Klasse vor Ort und bieten Alternativen für die anderen (besonders gefährdete Personen) an: Selbststudium, Videos usw.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the implementation of COVID-19 measures in vocational education, specifically the use of Microsoft Teams for remote learning. While it involves digital technology (online learning platform), it is a passing mention within a broader discussion about education policy, pandemic response, and vocational training. The central subject is the questionable implementation of an official decision by the vocational education authority regarding in-person vs. remote learning during the pandemic, not digitalisation itself as a main topic.\"}",
    "created_at": "2026-10-18T15:42:27.648293+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6901,7 +6967,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Recherchen des Online-Magazins \\\"Reflekt\\\" zeigen jedoch, dass es auf vielen Polizeiposten an grundlegendem Wissen über die Diskriminierungsstrafnorm nach Art. 261bis StGB fehlt\", \"label\": \"match\", \"rationale\": \"The affair deals with the handling of hate crimes on the internet by law enforcement agencies, which is a direct consequence of digital technology and online communication. It addresses the need for training and awareness regarding cybercrime and hate speech facilitated by digital platforms, making digitalisation a central part of the affair.\"}",
    "created_at": "2026-10-18T15:42:28.307013+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6933,7 +7001,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"La tecnologia 5G, come le tecnologie 2, 3, e 4G che l’hanno preceduta, costituisce l’ultima evoluzione nel campo della trasmissione radio mobile a scopo prevalentemente commerciale.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about the installation of 5G antennas, specifically addressing the technology itself, its deployment, regulatory framework (ORNI), health concerns, and cantonal responses. This directly falls under 'Mobile networks, 5G, broadband, fibre, including antenna permits and 5G health concerns' from the COUNTS AS THIS TOPIC list.\"\n}",
    "created_at": "2026-10-18T15:42:28.310835+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6965,7 +7035,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Le dossier totalement informatisé du résident d'EMS doit entrer en vigueur en 2022. Il est d'autant plus urgent de se poser des questions quant à la confidentialité des données en EMS\", \"label\": \"match\", \"rationale\": \"The affair deals with the introduction of a fully digitized patient record system in nursing homes (EMS) starting in 2022, which directly involves digital technology and data management. It specifically addresses data protection, confidentiality of medical data, and the legal framework surrounding the handling of sensitive health information in a digital context, making digitalisation a central part of the affair.\"}",
    "created_at": "2026-10-18T15:42:28.836144+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -6997,7 +7069,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Seit Anfang September 2026 bietet Tesla dort öffentliche Fahrten mit dem zweisitzigen Cybercab ohne Lenkrad und Pedale an.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about the introduction and regulation of autonomous vehicles (Robotaxis) in the Canton of Bern. It explicitly addresses the technology (autonomous vehicles), its potential effects on mobility and society, and the need to adapt regulations and remove barriers to enable their operation. This directly falls under the topic of digitalisation, specifically concerning the use of digital technology in transportation and its regulatory framework.\"\n}",
    "created_at": "2026-10-18T15:42:29.675091+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7029,7 +7103,9 @@
    "raw_json": "{\n  \"confidence\": 0.7,\n  \"evidence\": \"Il convient de rappeler que si près de 1500 personnes pratiquaient régulièrement le télétravail en 2019, la pandémie de COVID-19 qui nous a frappés en 2020 a conduit, du jour au lendemain, pas moins de 5’000 collaboratrices et collaborateurs à se connecter chaque jour à distance au réseau de l’Administration.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the use of digital technology (video conferencing software) in the context of telework, discussing its impact on state neutrality, privacy, and the duty of loyalty of public employees. It addresses digital tools and their social consequences in a governmental setting, fitting the topic of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:29.728732+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7061,7 +7137,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Regierungsrat beantragt die Ablehnung des Postulats, da er Mobilitätsmanagement als kantonale Aufgabe und mit Blick auf die finanziellen Mittel nicht als angebracht erachtet.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting mobility management in private companies, focusing on traffic flow, public transport, and sustainable mobility. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no central digital aspect; it is purely about physical mobility and transport policy.\"}",
    "created_at": "2026-10-18T15:42:31.061351+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7093,7 +7171,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Wie viel Strom fressen beispielsweise 5G-Antennen, Kinos, Freizeitparks, Server- und Datenzentren?\", \"label\": \"match\", \"rationale\": \"The affair explicitly asks about the electricity consumption of digital infrastructure (5G-antennas, server and data centres) and their environmental impact, which falls under the topic of digitalisation as it deals with the energy use of digital technology and its effects on society and the environment.\"}",
    "created_at": "2026-10-18T15:42:31.675049+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7125,7 +7205,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Ausgaben für Projekte, Weiterentwicklung, Beratung, Betrieb und Wartung für die ICT-Grundversorgung der Kantonsverwaltung, für Fach- und Konzernapplikationen sowie für weitere Produkte und Dienstleistungen des Amtes für Informatik und Organisation (KAIO) im Jahr 2021.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the financial approval of a framework credit for ICT infrastructure, development, operation, and maintenance within the cantonal administration. It explicitly mentions ICT (Information and Communication Technology) services, which falls under digitalisation as defined, covering infrastructure, operation, and services related to digital technology.\"\n}",
    "created_at": "2026-10-18T15:42:31.728961+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7157,7 +7239,9 @@
    "raw_json": "{\n  \"confidence\": 0.85,\n  \"evidence\": \"Nella fase immediata di crisi del Coronavirus chiediamo in particolare di dare ai funzionari dirigenti la possibilità di accordare il telelavoro (in tutto o in parte) alle/ai dipendenti\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the promotion of telework (telelavoro) within the cantonal administration and subsidized entities, which is a direct application of digital technology in the context of work organization and government administration. It addresses the use of digital tools to enable remote work, a central part of digitalisation in the public sector.\"\n}",
    "created_at": "2026-10-18T15:42:32.379189+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7189,7 +7273,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Die Revision betrifft die Limitierung von Abfragen von Grundeigentümerdaten auf der Geodatendrehscheibe GeoGR und die Anpassung des Schutzes vor Serienabfragen.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt eine Anpassung der Zugangsbeschränkungen zu Grundbuchdaten im Kanton Graubünden. Obwohl sie sich mit einem elektronischen System (Geodatendrehscheibe) befasst, ist der Hauptfokus auf Datenschutz, Zugangsbeschränkungen und Bürokratieabbau im Grundbuchwesen. Es fehlt ein zentraler Bezug zu digitalen Technologien, Daten oder Telekommunikation im Sinne der Definition von Digitalisation (z. B. Nutzung von KI, E-Government-Funktionen, digitale Infrastruktur, digitale Bildung oder digitale Gesundheitsdienste). Die digitale Komponente ist hier lediglich ein Mittel zur Umsetzung von Datenschutzbestimmungen und nicht ein Hauptthema der Digitalisierung.\"}",
    "created_at": "2026-10-18T15:42:33.477474+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7221,7 +7307,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Le Bureau du Grand Conseil a reçu l'instruction de recenser tous les documents s'apparentant à une directive ou à un règlement afin de déterminer ceux qui peuvent être rendus publics en application de la Loi sur l'information du canton de Vaud (Linfo).\", \"label\": \"no_match\", \"rationale\": \"The affair concerns access to official documents and transparency under the cantonal information law (Linfo), but it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of the information law is incidental to the core issue of document access, not a central focus on digitalisation.\"}",
    "created_at": "2026-10-18T15:42:33.818604+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7253,7 +7341,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"« Le droit fédéral dispose à l’article 9 alinéa 2 LEMO : « De plus, ils [les registres cantonaux des tumeurs] complètent et actualisent les données visées à l’art. 3, al. 1, let. a à e, en les comparant avec les données des registres cantonaux et communaux des habitants dans leur zone de compétence et saisissent à cet égard le lieu de naissance, l’état civil, la nationalité, le numéro de la commune selon l’Office fédéral de la statistique (OFS) et, éventuellement, la date du décès. »\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about granting access to a population register for cancer registry management and public health tasks, which involves data access and interoperability but does not centrally address digitalisation as a main subject. The digital aspect is a means to an end (data access) rather than the central focus of the affair, which is about legal access to a specific database for health administration purposes.\"}",
    "created_at": "2026-10-18T15:42:34.498999+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7285,7 +7375,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Tatsache ist aber, dass die Schuldirektoren seit mehreren Jahren vom Datenschutzbeauftragten ein Dokument verlangen, in dem die Grundzüge des Datenschutzes für Schulen festgehalten werden. Herr Fanti hatte sich verpflichtet, innert nützlicher Frist eine solche Anleitung zur Verfügung zu stellen. Seit mehr als drei Jahren warten die Schulleiter darauf, ohne Resultat.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about data protection (a core component of digitalisation) concerning the role and responsibilities of the cantonal data protection officer, specifically regarding the provision of guidelines for schools and the handling of student data. It deals with data protection obligations, the impact on public administration (schools), and the consequences of the officer's actions on the functioning of public services.\"\n}",
    "created_at": "2026-10-18T15:42:34.501046+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7317,7 +7409,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die Übergangsfinanzierung gemäss revidiertem EPDG (REV-EPDG) sieht vor, dass der Bund während fünf Jahren die Stammgemeinschaften für den Betrieb und die Weiterentwicklung des EPD mit Finanzhilfen unterstützen kann, falls sich die Kantone in gleichem Umfang beteiligen.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the electronic patient record (EPD), which is a digital health system. It involves the use of digital technology in healthcare, specifically concerning electronic patient records, their infrastructure, and the financial support for their implementation and development. This falls under the topic of digitalisation, particularly within the subcategory of digital health.\"\n}",
    "created_at": "2026-10-18T15:42:35.209217+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7349,7 +7443,9 @@
    "raw_json": "{\"confidence\": 1.0, \"evidence\": \"Entsprechend wird vorgeschlagen: Die Regierung wird aufgefordert die notwendigen Massnahmen zu ergreifen, welche sicherstellen, dass in von grossen Katastrophen/Krisen betroffenen Gebieten des Kantons schnell eine redundante, von erdgebundenen Netzen unabhängige Internet-Versorgung aufgebaut werden kann.\", \"label\": \"match\", \"rationale\": \"The affair is entirely about ensuring a redundant, satellite-based internet infrastructure in disaster scenarios, which falls under the topic of digitalisation as it deals with telecommunications infrastructure, its availability, and its role in crisis management.\"}",
    "created_at": "2026-10-18T15:42:35.211652+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7381,7 +7477,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Bezug zu digitaler Technologie, Daten oder Telekommunikation.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the revision of the cantonal transparency law (Öffentlichkeitsgesetz) to extend its scope to municipal authorities, economic entities, and to modernize procedures such as electronic requests and data protection roles. It does not deal with digital technology, data infrastructure, telecommunications, or their effects on government, economy, education, media, or society. The topic is transparency and administrative law, not digitalisation.\"}",
    "created_at": "2026-10-18T15:42:35.304625+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7413,7 +7511,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Ausgaben für Projekte, Weiterentwicklung, Beratung, Betrieb und Wartung für die ICT-Grundversorgung der Kantonsverwaltung, für Fach- und Konzernapplikationen sowie für weitere Produkte und Dienstleistungen des Amtes für Informatik und Organisation (KAIO) im Jahr 2020.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the financial approval of a framework credit for ICT infrastructure, development, operation, and maintenance within the cantonal administration. It explicitly mentions ICT (Information and Communication Technology) services, which falls under digitalisation as defined, specifically relating to e-government, digital administration, and ICT infrastructure.\"\n}",
    "created_at": "2026-10-18T15:42:36.380187+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7445,7 +7545,9 @@
    "raw_json": "{\"confidence\": 0.5, \"evidence\": \"Il Dipartimento delle Istituzioni ha annunciato la nascita di un numero verde per la sicurezza informatica, uno strumento, stando alle parole di Norman Gobbi, per aiutare le aziende vittime di attacchi informatici e fare prevenzione.\", \"label\": \"no_match\", \"rationale\": \"The affair primarily concerns the prioritization of cybersecurity initiatives over a proposed helpline for women victims of domestic violence. While cybersecurity is mentioned, it is not the main subject of the affair; the central issue is the perceived disparity in governmental response to cybersecurity versus domestic violence, with digitalisation serving only as a point of comparison rather than a central regulatory or infrastructural focus.\"}",
    "created_at": "2026-10-18T15:42:37.748624+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7477,7 +7579,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Où en sommes-nous dans l’implémentation du dossier électronique du patient (DEP) dans notre canton ?\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair directly concerns the implementation of the electronic patient record (DEP), which is a core component of digital health infrastructure. It asks about the progress of digital health technology deployment and its adoption by medical practices, clearly fitting the 'Digital health - electronic patient record, health data' category listed under COUNTS AS THIS TOPIC.\"\n}",
    "created_at": "2026-10-18T15:42:37.811619+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7509,7 +7613,9 @@
    "raw_json": "{\n  \"confidence\": 0.95,\n  \"evidence\": \"Der Staat Wallis subventioniert 30 Prozent des Medien und IKT-Materials, das die Gemeinden für den Bedarf der Schülerinnen und Schüler in obligatorischen Schulen anschaffen.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the provision of ICT equipment and digital materials in schools, including state subsidies for hardware and software (Microsoft 365 licenses), which falls under digitalisation in the context of digital education and infrastructure.\"\n}",
    "created_at": "2026-10-18T15:42:38.604811+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7541,7 +7647,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"§ 32 g. 1 Die Polizei kann auf Anordnung einer Polizeioffizierin oder eines Polizeioffiziers die Daten gemäss § 32 f zur Erstellung von Bewegungsprofilen analysieren\", \"label\": \"match\", \"rationale\": \"The affair deals with data processing and analysis for law enforcement purposes, including the creation of movement profiles from data collected via automated vehicle search systems and traffic monitoring systems. This falls under the topic of digitalisation as it involves the use of digital technology (automated systems, data analysis) to process and analyze data for policing activities, which is explicitly covered by the definition.\"}",
    "created_at": "2026-10-18T15:42:38.845098+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7573,7 +7681,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Zudem sollen neue Technologien laufend beobachtet, evaluiert und sinnvolle technische Neuentwicklungen übernommen werden.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about financing the operation of electronic monitoring (EM) in the Canton of Bern, a criminal justice measure. While it mentions monitoring \\\"new technologies\\\" in passing, this is not a central part of the affair's subject matter (which is budget allocation for a specific criminal justice program). The digital aspect is not a central part of what the affair asks or regulates; it is merely a minor operational note about future technology evaluation within the EM system, not a core focus on digitalisation itself.\"}",
    "created_at": "2026-10-18T15:42:39.513668+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7605,7 +7715,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Les recommandations de la DTAP prévoient deux options à choix pour les autorités compétentes. La première, plus restrictive, prévoit que le remplacement d’une antenne conventionnelle par une antenne adaptative doit faire l’objet d’une mise à l’enquête, tandis que la seconde, plus permissive, considère ce cas de figure comme une modification mineure ne nécessitant pas de demande de permis.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the deployment of 5G adaptive antennas, specifically addressing the regulatory procedure for their installation, the application of correction factors affecting emission power, and the requirement for building permits following a Federal Tribunal ruling. This directly relates to telecommunications infrastructure, regulation, and the technical aspects of mobile network technology, which are central to the topic of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:40.671727+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7637,7 +7749,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Die bisherige Einführung der Software hat sich mehrfach verzögert. Bei der neusten Version von NFFS fehlen offenbar weiterhin wesentliche Funktionen.\", \"label\": \"match\", \"rationale\": \"Das Vorstoss thematisiert zentral die digitale Fallführungssoftware NFFS für Sozialdienste, deren Entwicklung, Einführung, Verzögerungen und Abhängigkeiten von externen Firmen. Dies fällt unter den Themenbereich Digitalisation, da es um den Einsatz von digitaler Technologie in der Verwaltung und deren Auswirkungen auf die Arbeitsprozesse und Dienstleistungen geht.\"}",
    "created_at": "2026-10-18T15:42:41.019817+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7669,7 +7783,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Ein ähnliches Vorgehen hat bereits im vergangenen Jahr die Swiss Ice Hockey Federation (SIHF) festgelegt und in ihrem Reglement Ordnung und Sicherheit ein Kaskadenmodell eingeführt, das u.a. auch eine Identitätskontrolle vorsieht.\", \"label\": \"match\", \"rationale\": \"The affair discusses the introduction of technical person identification measures at sports stadiums, which involves digital systems for identity verification and access control. This falls under the topic of digitalisation, specifically relating to e-government, digital administration, and electronic identity (E-ID) as listed in the COUNTS AS THIS TOPIC criteria.\"}",
    "created_at": "2026-10-18T15:42:41.212649+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7701,7 +7817,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die beauftragte Person für Datenschutz bzw. deren Stellvertretung ist das kantonale Kontrollorgan für Datenschutz (Art. 24 Abs. 1 KDSG).\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the election of the deputy cantonal data protection officer in the Canton of Uri, which is a central part of data protection governance. It explicitly references the cantonal data protection law (KDSG), the role of the data protection officer, data protection tasks, and the legal framework for data protection, all of which fall under the topic of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:41.331241+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7733,7 +7851,9 @@
    "raw_json": "{\"confidence\": 1, \"evidence\": \"Le Conseil fédéral est chargé d'examiner dans un rapport comment il serait possible de créer une identité numérique mobile destinée aux organisations et aux personnes morales à partir de bases uniformes, en élargissant l’infrastructure conçue pour l’e-ID et ses mécanismes visant à établir la confiance\", \"label\": \"match\", \"rationale\": \"The affair deals with the creation of a digital identity system for organizations and legal entities, extending existing e-ID infrastructure. It covers digital identity, infrastructure, security, and interoperability, which are central to digitalisation as defined.\"}",
    "created_at": "2026-10-18T15:42:41.605355+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7765,7 +7885,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Il Consiglio federale è incaricato di esaminare le possibilità di istituire un servizio di contatto e consulenza per le vittime di violenza digitale\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with establishing a contact and advisory service for victims of digital violence, which falls under the topic of digitalisation as it addresses the social consequences and regulation of digital technology (online hate speech, cyberbullying, cyberstalking) and proposes a specific digital infrastructure (a contact service) to address these issues.\"\n}",
    "created_at": "2026-10-18T15:42:42.018190+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7797,7 +7919,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Elektronisches Gesundheitsdossier. Bundesgesetz\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the electronic health dossier, which falls under 'Digital health - electronic patient record, health data' from the COUNTS AS THIS TOPIC list.\"\n}",
    "created_at": "2026-10-18T15:42:42.096048+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7829,7 +7953,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Die Gemeinden liefern ihre Daten direkt an das eidgenössische GWR. Der Kanton bezieht sodann eine Kopie dieser Daten vom eidgenössischen GWR und stellt diese im Rahmen des künftigen ObjektwesenZH für die kantonalen Nutzerinnen und Nutzer bereit\", \"label\": \"match\", \"rationale\": \"The affair deals with the digital transmission and management of building and housing data, involving the integration of data from federal registers into a cantonal system, the use of digital infrastructure for data exchange, and the adaptation of regulations to align with federal digital standards (eCH, VGWR). This falls under digitalisation, specifically concerning data logistics, e-government, and the digital transformation of administrative processes.\"}",
    "created_at": "2026-10-18T15:42:43.145277+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7861,7 +7987,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Le monete virtuali sono oramai uno strumento nelle mani delle mafie, che le utilizzano soprattutto per riciclare denaro e finanziare il terrorismo.\", \"label\": \"match\", \"rationale\": \"The affair deals with cryptocurrencies as a digital technology used by criminal organizations for money laundering and terrorism financing. It explicitly asks for legislative and technological measures to combat this digital phenomenon, making digital technology a central part of the affair.\"}",
    "created_at": "2026-10-18T15:42:43.630709+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7893,7 +8021,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"digitale Lösungen, einschliesslich der Problematik eines möglichen digitalen Grabens\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the situation of older people during the Covid-19 crisis, including health, social aspects, care facilities, and support services. While it mentions 'digital solutions' and the 'digital divide' as one of several topics to be covered in the report, digitalisation is not a central part of the affair; it is only mentioned in passing as one of many points to be addressed.\"}",
    "created_at": "2026-10-18T15:42:44.160197+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7925,7 +8055,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"Seront assujettis à la redevance les exploitants de réseaux sociaux, de services d'information, de services de divertissement ou d'autres plateformes de communication sur Internet qui, gratuitement, signalent des contenus journalistiques élaborés par des tiers ou y donnent accès.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with a digital levy on online platforms to support media, which directly involves digital technology (online platforms) and their regulation to address economic and social consequences for the media sector.\"\n}",
    "created_at": "2026-10-18T15:42:44.390093+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7957,7 +8089,9 @@
    "raw_json": "{\n  \"confidence\": 0.95,\n  \"evidence\": \"Le Conseil fédéral est chargé d'examiner l'opportunité de légiférer sur les pratiques d'acteurs avec des positions fortes ou dominantes dans le domaine des technologies de l'information, en particulier réseaux sociaux, plateformes onlines, aggrégateurs de contenus, moteurs de recherche.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the regulation of dominant actors in information technology, specifically addressing their practices on social networks, online platforms, content aggregators, and search engines. It focuses on preventing censorship, ensuring access to information, and managing the impact of these private entities on public interest, which falls under the topic of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:44.406707+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -7989,7 +8123,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"In particolare l'integrità delle forniture digitali (accessi non documentati, malfunzionamenti impiantati) destano preoccupazioni.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with cybersecurity and the integrity of digital components in military procurement, which is a central part of digitalisation as defined. It specifically addresses cybersecurity standards, vendor risk management, and the security of digital systems in the context of national defence.\"\n}",
    "created_at": "2026-10-18T15:42:44.486365+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8021,7 +8157,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die Digitalisierung in der Bildung hat in den vergangenen Jahren dazu geführt, dass bereits im Kindergarten zunehmend digitale Instrumente wie Tablets und Computer eingesetzt werden.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair explicitly addresses the impact of digital instruments (tablets, computers) on learning in schools, evaluates their effectiveness, and discusses monitoring and strategies related to digitalisation in education, which aligns with the topic of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:44.718118+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8053,7 +8191,9 @@
    "raw_json": "{\n  \"confidence\": 0.95,\n  \"evidence\": \"Jedes Kind erhält neu einen physischen SwissPass anstelle eines Papiertickets. Die Kontrolle im Zug findet über den persönlichen SwissPass des Kindes statt.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the digital transformation of a public transport ticketing system (SBB-Juniorkarte), including the shift from physical to digital accounts, user management, and technical implementation of electronic identity and administration. This falls under 'E-government, digital administration' and 'digital identity' as listed in the COUNTS AS THIS TOPIC criteria.\"\n}",
    "created_at": "2026-10-18T15:42:45.313929+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8085,7 +8225,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Le app che utilizzano l'intelligenza artificiale per generare nudi da immagini esistenti di bambini o adulti.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with digital services that employ artificial intelligence to generate synthetic nude images, which falls under the topic of digitalisation, specifically concerning the regulation of AI applications, their effects on society, and the need for legal measures to prevent misuse.\"\n}",
    "created_at": "2026-10-18T15:42:46.223208+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8117,7 +8259,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Cette situation a entraîné un développement dans ces domaines avec le développement d’Internet et sous l’effet de la transition numérique (réseaux sociaux, applis et communication audiovisuelle).\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the costs and staffing of federal media relations and public communication, not about digitalisation as a central subject. The mention of digital transition is incidental and does not constitute a central part of the affair, which focuses on budgetary questions, justification of staff growth, and response times to media inquiries.\"}",
    "created_at": "2026-10-18T15:42:46.241569+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8149,7 +8293,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Modernisierung der Aufsicht\", \"label\": \"no_match\", \"rationale\": \"The title mentions 'Modernisierung' (modernisation), but there is no explicit reference to digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. Without further context, it is unclear whether the modernisation refers to digital transformation or other forms of administrative or regulatory modernisation.\"}",
    "created_at": "2026-10-18T15:42:46.303728+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8181,7 +8327,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"2. Il encouragera le développement des compétences numériques au sein des pouvoirs législatif, exécutif et judiciaire, afin de garantir en particulier l'exercice des droits que nous confère notre démocratie directe.\", \"label\": \"match\", \"rationale\": \"The affair explicitly addresses the development of digital competencies within government branches to ensure the exercise of democratic rights, which falls under the topic of digitalisation as it involves digital skills and their impact on governance and democratic processes.\"}",
    "created_at": "2026-10-18T15:42:47.232885+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8213,7 +8361,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Les inconvénients découlant de l’abandon des OUC restent importants : - Premièrement, aucun des pays qui nous entourent n'abandonnera les OUC dans les années à venir.\", \"label\": \"match\", \"rationale\": \"The affair deals with the continuation of OUC (analogue radio) concessions, directly addressing telecommunications infrastructure and its regulation, which is a central part of the topic of digitalisation as it concerns the transition from analogue to digital radio (DAB+) and the role of telecommunications infrastructure in media distribution.\"}",
    "created_at": "2026-10-18T15:42:47.810291+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8245,7 +8395,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Mit dem Ausschöpfen der heute vorhandenen technischen Möglichkeiten können diese Probleme erheblich reduziert werden. Auch für gehörlose Menschen muss es möglich sein, über einen Videoanruf, eine Chatfunktion oder eine Kombination von Video, Audio und Text direkt einen Notruf auszulösen.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the digitalisation of emergency calls (Notrufe), including the use of new technologies such as video calls, chat functions, and mobile platforms to improve accessibility and efficiency, which falls under the topic of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:47.899432+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8277,7 +8429,9 @@
    "raw_json": "{\n  \"confidence\": 0.9,\n  \"evidence\": \"Una copia del documento d’identità è tuttavia indispensabile per verificare l’identità della persona, dato che conformemente all’articolo 16 capoverso 5 dell’ordinanza del 31 agosto 2022 sulla protezione dei dati il titolare del trattamento deve adottare le misure appropriate per identificare la persona richiedente. La corrispondenza avviene pertanto già oggi in forma digitale.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair deals with the digital administration of passport photos, including digital request procedures, data protection requirements for electronic identity verification, and the use of digital infrastructure for document processing, which falls under e-government and digital administration.\"\n}",
    "created_at": "2026-10-18T15:42:49.047164+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8309,7 +8463,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the adoption and implementation of an EU directive on information exchange between law enforcement authorities within the Schengen area. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic of digitalisation is not a central part of this affair.\"}",
    "created_at": "2026-10-18T15:42:49.243947+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8341,7 +8497,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il servizio di polizia aerea contribuisce a salvaguardare la sovranità sullo spazio aereo e quindi a proteggere quest'ultimo.\", \"label\": \"no_match\", \"rationale\": \"L'affare tratta esclusivamente di aspetti operativi, di sorveglianza dello spazio aereo e di interventi delle Forze aeree svizzere in ambito di polizia aerea. Non vi è alcun riferimento a digitalizzazione, tecnologia digitale, dati, telecomunicazioni, infrastrutture digitali, sicurezza informatica o impatti digitali su governo, economia, educazione, media o società. L'argomento principale riguarda la sicurezza aerea tradizionale e non include l'uso di tecnologie digitali come elemento centrale.\"}",
    "created_at": "2026-10-18T15:42:50.309358+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8373,7 +8531,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"« La récente décision des États-Unis de restreindre l’accès de la Suisse aux puces d’IA en est une illustration frappante. Elle pose une question centrale : disposons-nous d’une stratégie claire et coordonnée pour sécuriser notre approvisionnement en composants numériques critiques ? »\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about securing Switzerland's supply of critical digital components, evaluating digital supply chain resilience, and developing a coordinated strategy for digital infrastructure and technology. It explicitly addresses digital technology, supply chain dependencies, regulation, and national security implications, which are core aspects of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:50.972855+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8405,7 +8565,9 @@
    "raw_json": "{\"confidence\": 1, \"evidence\": \"Es entspricht einem grossen und wachsenden Bedürfnis der Bevölkerung und der Unternehmen, Geschäfte mit Behörden sicher elektronisch abzuwickeln.\", \"label\": \"match\", \"rationale\": \"The affair is about creating a legal framework for digital administration, explicitly mentioning electronic handling of government affairs, digital service provision, and the use of information and communication technologies to modernize administrative processes, which aligns with the core definition of digitalisation.\"}",
    "created_at": "2026-10-18T15:42:51.128889+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8437,7 +8599,9 @@
    "raw_json": "{\"confidence\": 0.2, \"evidence\": \"Die steigende Nachfrage nach Mobilität führt dazu, dass das Strassennetz vielerorts die Kapazitätsgrenze erreicht hat. Gleichzeitig lassen die engen Platzverhältnisse im urbanen Raum nur noch punktuelle Infrastrukturausbauten zu, während im ländlichen Raum die Bedeutung des Autos aufgrund der tieferen Erschliessung mit dem öffentlichen Verkehr hoch bleibt.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about transport infrastructure and multimodal mobility (Park & Ride, public transport integration, traffic hubs). While it mentions digitalisation in passing as a means to find efficient mobility solutions, the main subject is transport policy, infrastructure planning, and multimodal hubs, not digitalisation itself. The digital aspect is not a central part of the affair but a brief mention of how digitalisation enables mobility choices.\"}",
    "created_at": "2026-10-18T15:42:52.030101+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8469,7 +8633,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Loin de n'être qu'une réponse aux contraintes de distance, le digital est un pilier central d'une expérience enrichie d'apprentissage et de collaboration.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about a cantonal investment credit to support digital integration for users of public integration establishments. It explicitly discusses using digital technology as a central tool for social and professional inclusion, improving access to information, ensuring accessibility for people with disabilities, and enhancing digital skills among users and staff. This directly aligns with the topic of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:52.812156+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8501,7 +8667,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Bericht 2025 der Datenschutzaufsichtsstelle des Kantons Bern\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is a report from the cantonal data protection supervisory authority, which directly concerns data protection, a central aspect of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:52.891652+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8533,7 +8701,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Kompetenz im Bereich der Informations- und Kommunikationstechnologien • Digitale Bild- und Bild-Text-Medien reflektiert handhaben • Digitale Bilder gezielt bearbeiten\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about revising school curricula for the Gymnasium and Fachmittelschule, with a focus on traditional subjects and general educational goals. While the curriculum mentions digital media as part of the ICT competency, this is a minor component within a broader educational framework and not a central subject of the affair. The main focus is on curriculum structure, subject content, and educational standards, not digitalisation as a core topic.\"}",
    "created_at": "2026-10-18T15:42:53.677310+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8565,7 +8735,9 @@
    "raw_json": "{\n  \"confidence\": 0.95,\n  \"evidence\": \"Die Studie untersucht systematisch die Potenziale von KI, Automatisierung und digitalen Bauwerksmodellen (BIM) entlang der gesamten Prozesskette des Baubewilligungsverfahrens.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about the application of artificial intelligence and automation within the building permit process, which is a core aspect of digitalisation in government administration. It explicitly discusses digital tools, process optimisation, and the integration of AI to improve efficiency, which aligns with the definition of digitalisation in the public sector.\"\n}",
    "created_at": "2026-10-18T15:42:53.979906+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8597,7 +8769,9 @@
    "raw_json": "{\"confidence\": 0.6, \"evidence\": \"In diesem Zusammenhang ist auch bei Wahlen in richterliche Behörden, bei denen heute vorgedruckte Wahlzettel verteilt werden, zu prüfen, ob digitale/elektronische Verfahren möglich wären.\", \"label\": \"match\", \"rationale\": \"The affair proposes examining the feasibility of digital/electronic voting procedures as a means to reduce material consumption and simplify counting processes, which directly relates to digitalisation in the context of government administration and voting systems.\"}",
    "created_at": "2026-10-18T15:42:54.702168+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8629,7 +8803,9 @@
    "raw_json": "{\"confidence\": 1, \"evidence\": \"Als Highlight dieser Strategie ermöglicht das elektronische Patientendossier den Zugriff auf die richtigen Gesundheitsinformationen zum richtigen Zeitpunkt und am richtigen Ort.\", \"label\": \"match\", \"rationale\": \"The affair is about the introduction of the electronic patient record (EPD) in the Canton of Fribourg, which is a digital health initiative involving data management, digital infrastructure for healthcare, and the use of digital technology to improve healthcare delivery. This directly falls under the topic of digitalisation, specifically within the subcategory of digital health as listed in the COUNTS AS THIS TOPIC section.\"}",
    "created_at": "2026-10-18T15:42:55.527634+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8661,7 +8837,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Le logement du SIEN est réparti de la façon suivante : À Neuchâtel : – Cadolles 7 (80 ETP) : Accueil, direction du service, salles de conférences, CSET, une partie du Centre des télécommunications (CTEL) et du Centre d’exploitation des systèmes d’information (CESI) ;\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the consolidation and operation of the cantonal IT service (SIEN), including infrastructure, systems, data centres, and IT governance. It explicitly discusses IT infrastructure, systems management, data centres, and the digital services provided to the state and its partners, which falls under the definition of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:55.568363+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8693,7 +8871,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Baumoratorium für 5G\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about a moratorium on 5G, which falls under the topic of digitalisation as it concerns mobile networks, 5G technology, and related infrastructure (antenna permits and 5G health concerns).\"\n}",
    "created_at": "2026-10-18T15:42:55.959484+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8725,7 +8905,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die Datenschutzbeauftragte berichtet über die Einhaltung des Datenschutzes bei der Bearbeitung von Personendaten, insbesondere im Zusammenhang mit der Digitalisierung und der Nutzung digitaler Kommunikations- und Zusammenarbeits-Systeme in der Verwaltung und an den Schulen seit Pandemiebeginn.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about the annual report of the Data Protection Officer of the Canton of Zurich, which explicitly discusses data processing in the context of digitalization (e.g., digital communication systems used in administration and schools during the pandemic), data protection law, and the effects of digital technology on privacy and information security. This falls under the topic of digitalisation as defined.\"\n}",
    "created_at": "2026-10-18T15:42:57.205452+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8757,7 +8939,9 @@
    "raw_json": "{\"confidence\": 0.95, \"evidence\": \"Der Regierungsrat hat dem Kantonsrat zwei zentrale Gesetzesvorlagen unterbreitet, die genau die Anliegen der Motion aufnehmen, einerseits das elektronische Baugesuch – das läuft –, aber die Gesetzesgrundlagen sind noch nicht so; die müssen Sie noch beschliessen, damit das Ganze ausschliesslich elektronisch abgewickelt werden kann.\", \"label\": \"match\", \"rationale\": \"The affair is about making official publications accessible digitally, which is a core aspect of digitalisation in public administration. It explicitly mentions digitalisation of administrative processes, electronic handling of documents, and the need for legal frameworks to enable digital access, aligning with the topic of digitalisation as defined.\"}",
    "created_at": "2026-10-18T15:42:57.811039+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8789,7 +8973,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Der Kanton stellt sicher, dass alle kantonalen Schulen mit einem leistungsfähigen, zuverlässigen WLAN-Netz ausgestattet sind. Die Kapazitäten sollen hoch genug sein auch in Fällen von Fernunterricht und in den Unterrichtsphasen (z.B. zu Beginn der Lektionen).\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair focuses on improving IT infrastructure, including WLAN networks and cloud storage solutions, for cantonal schools. It explicitly addresses digital technology (WLAN, cloud solutions), data (storage, security), and their effects on education (digital teaching materials, remote learning). The measures involve infrastructure development, data security protocols (Boxcryptor), and support systems, all central to digitalisation in the educational sector.\"\n}",
    "created_at": "2026-10-18T15:42:58.102634+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8821,7 +9007,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die Digitalisierung ist im Bildungswesen Chance und Herausforderung zugleich. Um den Herausforderungen zu begegnen und die Chancen zu nutzen, haben Bund, Kanton und Gemeinden auf allen Bildungsstufen in den letzten Jahren vielfältige Strategien und Programme ausgerollt, und umfangreich in Infrastruktur, Applikationen sowie Aus- und Weiterbildungen investiert.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is explicitly about the digitalization of schools in the canton of Aargau, covering infrastructure, digital devices for students, teacher training, and policy frameworks to ensure equal access to digital tools in education. This directly falls under the topic of digitalisation as defined, particularly relating to digital education and e-government/digital administration aspects.\"\n}",
    "created_at": "2026-10-18T15:42:58.866380+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8853,7 +9041,9 @@
    "raw_json": "{\"confidence\": 1.0, \"evidence\": \"Das baurechtliche Verfahren wird elektronisch durchgeführt. Alle Verfahrensbeteiligten müssen elektronisch am Verfahren teilnehmen.\", \"label\": \"match\", \"rationale\": \"The affair proposes amendments to the administrative law to introduce and regulate electronic procedures, including electronic submissions, signatures, record-keeping, and communication channels. This directly addresses the topic of digitalisation by mandating the use of digital technology in government administration and defining the technical and procedural requirements for electronic interactions between authorities and citizens.\"}",
    "created_at": "2026-10-18T15:42:59.112885+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8885,7 +9075,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Demande de procédure accéléré pour le traitement de la motion relative à la loi sur le développement des infrastructures numériques\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair explicitly concerns a motion for a law on the development of digital infrastructures, which falls under the topic of digitalisation as it deals with digital infrastructure and its regulation.\"\n}",
    "created_at": "2026-10-18T15:42:59.948762+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8917,7 +9109,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Spätestens seit der Veröffentlichung von ChatGPT ist die künstliche Intelligenz (KI) in der Mitte der Bevölkerung angekommen. Das erste Mal die Rede von künstlicher Intelligenz war bereits schon im Jahr 1956 an einer Konferenz namens \\\"Dartmouth Summer Research Project on Artificial Intelligence\\\".\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is centrally about artificial intelligence, including its use, regulation, and impact on government administration. It discusses AI applications in the Aargau administration, potential areas for AI deployment, and monitoring of AI development and regulation, all of which are core aspects of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:42:59.973421+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8949,7 +9143,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Das übergeordnete Ziel des Umsetzungsprogramms DV2022 ist die Vision gemäss der Digitalisierungsstrategie: «Die Verwaltung des Kantons Basel-Landschaft entwickelt sich zu einer agilen Dienstleistungsorganisation, die den Anforderungen des technologischen Wandels gerecht wird und mit künftigen Entwicklungen Schritt halten kann»\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is a comprehensive report on the implementation of a cantonal digital administration program (Digitale Verwaltung 2022). It details the program's goals, progress, challenges, costs, and outcomes related to digital transformation in government services, infrastructure, and administration. The central subject is the use, regulation, and effects of digital technology within the public sector, which directly matches the definition of digitalisation.\"\n}",
    "created_at": "2026-10-18T15:43:00.581663+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -8981,7 +9177,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"l’introduction de la signature électronique\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about revising the legal framework for surety agreements (cautionnement), specifically addressing outdated formal requirements such as handwritten amounts, electronic signatures, and spousal consent. While electronic signatures are mentioned as a potential modernization point, digitalisation is not a central subject of the affair; it is merely one of several proposed changes to an existing legal instrument, not a focus on digital technology, data, telecommunications, or their broader societal/economic effects as defined.\"}",
    "created_at": "2026-10-18T15:43:01.087941+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9013,7 +9211,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Gemäss einer Schätzung der Universität Cambridge verbrauchen die Serverfarmen aller Kryptowährungen weltweit mehr Strom als die Niederlande mit über 17 Mio. Einwohnerinnen und Einwohnern.\", \"label\": \"match\", \"rationale\": \"Die Affäre befasst sich zentral mit Kryptowährungen und deren Auswirkungen auf die Energieversorgung, was unter den Themenbereich Digitalisation fällt, insbesondere im Hinblick auf die Energieeffizienz von digitalen Technologien und deren Infrastruktur.\"}",
    "created_at": "2026-10-18T15:43:01.266719+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9045,7 +9245,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about energy policy, specifically the federal council's strategy regarding gas power plants and energy supply security in the context of the Ukraine crisis. There is no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not mentioned and is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:01.346288+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9077,7 +9279,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about greenhouse gas emissions, climate change, and agricultural policy in Switzerland. While it mentions the long-term climate strategy and agricultural targets, there is no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a main subject of this affair.\"}",
    "created_at": "2026-10-18T15:43:02.371554+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9109,7 +9313,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"La Costituzione federale è modificata come segue: Art. 116 ... Cpv. 5 La Confederazione e i Cantoni promuovono la conciliabilità tra famiglia e attività lucrativa e insieme provvedono a un'offerta di custodia dei figli esterna alla famiglia adeguata alla necessità.\", \"label\": \"no_match\", \"rationale\": \"The affair deals with childcare and work-life balance, focusing on funding and regulation of external childcare services. It does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no mention of digitalisation or related topics such as e-government, digital administration, AI, data protection, or digital infrastructure.\"}",
    "created_at": "2026-10-18T15:43:02.795524+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9141,7 +9347,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair discusses the employment rate of immigrant women in Switzerland, focusing on cultural reasons and comparisons with Swiss women and EU citizens. It does not mention digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. Digitalisation is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:03.196417+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9173,7 +9381,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about housing promotion and a framework credit for housing policy (2021-2027), with no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:03.222124+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9205,7 +9415,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Domande 1, 5 e 6 L'organizzazione del settore delle esecuzioni compete in linea di principio ai Cantoni (art. 1 e 2 della legge federale sull'esecuzione e sul fallimento, LEF; RS 281.1).\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the independence of authorities in the enforcement and bankruptcy sector, focusing on organizational and legal structures of cantonal and federal oversight bodies. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is entirely unrelated.\"}",
    "created_at": "2026-10-18T15:43:03.793834+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9237,7 +9449,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Der Regierungsrat beantragt dem Kantonsrat einen Sonderkredit von 8,76 Millionen Franken für die Beschaffung einer einheitlichen Schuladministrationssoftware an den Luzerner Volksschulen sowie für deren Betrieb während der nächsten zehn Jahre.\", \"label\": \"match\", \"rationale\": \"The affair is about the procurement, implementation, and operation of a unified school administration software system for primary schools in the Canton of Lucerne. This involves the use of digital technology (software) to modernize and centralize administrative processes in education, which falls under the topic of digitalisation as it pertains to the use of digital tools in government services and education.\"}",
    "created_at": "2026-10-18T15:43:04.166731+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9269,7 +9483,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Für die obligatorische Schule sind die Kantone zuständig (Art. 62 BV) und es ist nicht Aufgabe des Bundes, diesbezüglich Forderungen an die Konferenz der kantonalen Erziehungsdirektorinnen und -direktoren (EDK) zu stellen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the timing of foreign language instruction in primary schools and the distribution of educational responsibilities between the federal government and the cantons. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no mention of digitalisation, e-learning, digital infrastructure, or related topics.\"}",
    "created_at": "2026-10-18T15:43:04.193266+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9301,7 +9517,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns amendments to medical licensing requirements under the KVG to address undersupply of doctors, with no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:04.775856+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9333,7 +9551,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"null\", \"label\": \"no_match\", \"rationale\": \"The affair focuses on counter-espionage, the expulsion of foreign intelligence agents, and enhancing the capacity of the Swiss intelligence service (SRC) to counter foreign intelligence threats. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of intelligence operations does not constitute a central digitalisation topic.\"}",
    "created_at": "2026-10-18T15:43:04.781316+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9365,7 +9585,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about pension security and retirement income (initiative on pensions), with no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:04.813129+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9397,7 +9619,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Direktion der DEZA befindet sich in einem Reorganisationsprozess, um die DEZA für die künftigen Herausforderungen adäquat aufzustellen.\", \"label\": \"no_match\", \"rationale\": \"Das Geschäft behandelt einen Stellenabbau und eine Reorganisation der Direktion für Entwicklung und Zusammenarbeit (DEZA). Es thematisiert Personalmanagement, Verwaltungsreformen und die Aufrechterhaltung von Fachkompetenz im Bereich der Entwicklungszusammenarbeit. Es fehlt ein zentraler Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen auf Regierung, Wirtschaft, Bildung, Medien oder Gesellschaft. Die Reorganisation ist administrativ und personell, nicht digital geprägt.\"}",
    "created_at": "2026-10-18T15:43:05.161730+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9429,7 +9653,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about double taxation and an agreement with Iran. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:05.763329+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9461,7 +9687,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale è incaricato di sottoporre all’Assemblea federale un disegno di atto legislativo che preveda un referendum finanziario facoltativo e, in via opzionale, un referendum finanziario obbligatorio, per le nuove uscite e, in via opzionale, per le uscite annuali ricorrenti che presentano un importo appropriato ancora da determinare.\", \"label\": \"no_match\", \"rationale\": \"The affair is about introducing a financial referendum at the federal level, focusing on fiscal policy, spending limits, and democratic participation in budget decisions. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; there is no mention or implication of digital aspects.\"}",
    "created_at": "2026-10-18T15:43:06.919194+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9493,7 +9721,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Chaque demande de protection fait l’objet d’un examen individuel et approfondi, qui tient compte non seulement de la situation générale du pays d’origine, mais également du profil de la personne concernée et des risques concrets encourus par celle-ci.\", \"label\": \"no_match\", \"rationale\": \"The affair is about asylum policy, forced returns, and human rights compliance in the context of Burundi, with no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:07.533738+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9525,7 +9755,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La réponse du Conseil fédéral indique que les offres d'orientation professionnelle relèvent de la compétence des cantons et que la Confédération soutient les cantons dans ce domaine, sans introduire de nouvelles mesures numériques ou technologiques.\", \"label\": \"no_match\", \"rationale\": \"L'affaire porte sur l'orientation professionnelle et la pénurie de main-d'œuvre qualifiée, mais ne traite pas de la digitalisation, des technologies numériques, des données, des télécommunications ou de leurs effets sur l'administration, l'économie, l'éducation, les médias ou la société. Il n'y a pas de mention de l'utilisation, de la régulation, de l'infrastructure, de la sécurité ou des conséquences sociales liées au numérique.\"}",
    "created_at": "2026-10-18T15:43:07.621596+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9557,7 +9789,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Nel quadro della revisione in corso della legge sulle epidemie, il Consiglio federale è disposto a esaminare in modo approfondito le basi legali riguardanti la sorveglianza epidemiologica, compresi il monitoraggio delle acque reflue e il sequenziamento degli agenti patogeni.\", \"label\": \"no_match\", \"rationale\": \"The affair is about wastewater surveillance and pathogen sequencing for early detection of infectious diseases, including antibiotic resistance monitoring. While it involves data collection and analysis, it does not deal with digital technology, data infrastructure, telecommunications, or their effects on government, economy, education, media, or society. The digital aspect is not present as a central part of the affair; it is purely a public health and epidemiological surveillance measure using biological sampling and sequencing, not digitalisation.\"}",
    "created_at": "2026-10-18T15:43:07.937989+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9589,7 +9823,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"die schriftliche Zustellung der Steuerakten lässt sich im Übrigen auch auf digitalem Wege problemlos bewerkstelligen\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the right to receive tax records in written form and the obligation of tax authorities to provide them. While it mentions that digital delivery is possible, digitalisation is not a central part of the affair; it is merely an ancillary point about how the requested service could be delivered. The main subject is administrative transparency and access to personal documents, not digital technology, data, or telecommunications as a central theme.\"}",
    "created_at": "2026-10-18T15:43:08.229684+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9621,7 +9857,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Zuckerrübenernte ist in Gefahr, und der diesjährige Ertrag wird um die Hälfte geringer ausfallen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about agricultural policy, specifically the re-approval of a pesticide to protect sugar beet crops from viral yellows disease transmitted by aphids. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of agricultural research developing resistant varieties is biological, not digital.\"}",
    "created_at": "2026-10-18T15:43:08.855890+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9653,7 +9891,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è incaricato di reintrodurre nell’ordinanza del DFGP sulle indicazioni di quantità nella vendita di merce sfusa e sugli imballaggi preconfezionati (OIQ-DFGP) la regola abrogata il 1° gennaio 2025 secondo cui nella vendita di merce sfusa pesata dal consumatore il peso netto più il peso del sacchetto o di un altro imballaggio, purché non superi i due grammi, determina la quantità.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the regulation of packaging weight in the sale of loose goods and does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The issue is purely about physical measurement standards and retail practices, with no central digital aspect.\"}",
    "created_at": "2026-10-18T15:43:09.683353+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9685,7 +9925,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about protecting journalists from self-censorship and strategic threats from third parties. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. Digital aspects are not mentioned or central to the subject.\"}",
    "created_at": "2026-10-18T15:43:10.072271+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9717,7 +9959,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il y a lieu de modifier la loi sur la chasse afin de permettre la régulation préventive des populations de loups par les gardes-chasse, comme on le fait déjà pour les bouquetins (qui sont eux aussi protégés).\", \"label\": \"no_match\", \"rationale\": \"The affair deals with wildlife management, hunting law, and livestock protection, with no mention or relevance to digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:10.112293+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9749,7 +9993,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Ausgenommen sind die Leistungen bei Mutterschaft sowie Impfungen.\", \"label\": \"no_match\", \"rationale\": \"The affair deals exclusively with the scope of medical benefits under the compulsory health insurance (OKP) for asylum seekers and irregular migrants. It does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is entirely unrelated.\"}",
    "created_at": "2026-10-18T15:43:11.521608+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9781,7 +10027,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Il programma Formazione professionale 2030 indica l'orientamento strategico generale della formazione professionale in Svizzera e non definisce contenuti formativi. Le sue linee guida stabiliscono, tra l'altro, che la formazione professionale trasmette una serie di competenze trasversali in grado di rispondere alle esigenze richieste, è sufficientemente flessibile per recepire rapidamente nuovi contenuti, fissa parametri qualitativi ed è costantemente al passo con i tempi.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about sustainability integration in vocational education and whether the program aligns with sustainability goals. While it mentions that the program's guidelines aim to keep the vocational training up-to-date and flexible to incorporate new content (which could include digital aspects), digitalisation is not a central subject. The affair does not deal with digital technology, data, telecommunications, their effects on government/economy/education/media/society, or related regulation/infrastructure/security/consequences as its main focus. Digitalisation is not a central part of what the affair asks or regulates; it is only mentioned in passing as part of the broader 'keeping up with times' without specific digital topics like e-voting, digital education tools, data protection, AI, or digital infrastructure being discussed.\"}",
    "created_at": "2026-10-18T15:43:11.931750+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9813,7 +10061,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Antwort des Bundesrates behandelt ausschliesslich die temporäre Umnutzung von Pannenstreifen zur Verkehrsflüssigkeit und Kapazitätssteigerung auf Nationalstrassen. Es wird nicht auf digitale Technologien, Daten, Telekommunikation oder deren Auswirkungen eingegangen.\", \"label\": \"no_match\", \"rationale\": \"Das Thema des Affairs ist die Umnutzung von Pannenstreifen im Strassenverkehr zur Kapazitätssteigerung und Verkehrsmanagement. Es fehlt jeglicher Bezug zu digitalen Technologien, Daten, Telekommunikation oder deren Auswirkungen auf Regierung, Wirtschaft, Bildung, Medien oder Gesellschaft. Die Massnahme ist rein verkehrstechnisch und infrastrukturell, ohne digitalen Aspekt.\"}",
    "created_at": "2026-10-18T15:43:11.953849+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9845,7 +10095,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Il examine comment intégrer ce processus dans l'Espace suisse des données de santé, tout en répondant aux exigences de la transformation numérique du système de santé.\", \"label\": \"match\", \"rationale\": \"The affair deals with the digitalisation of health data management, specifically the creation of a fully digitised national cancer registry and its integration into the Swiss health data space, addressing issues of data infrastructure, digital transformation, and the use of digital tools for public health policy.\"}",
    "created_at": "2026-10-18T15:43:12.435418+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9877,7 +10129,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine digitale Thematik erkennbar.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt ausschliesslich die Zuständigkeit und die gesetzlichen Grundlagen für Kriegsmaterialexporte, ohne jeglichen Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen auf Verwaltung, Wirtschaft, Bildung, Medien oder Gesellschaft.\"}",
    "created_at": "2026-10-18T15:43:12.441891+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9909,7 +10163,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Nel quadro del processo legislativo, le misure proposte dal Consiglio federale a livello di legge o precisate a livello di ordinanza vengono esaminate, illustrate tenendo anche conto nel processo decisionale delle ripercussioni sull'ambiente, la società e l'economia.\", \"label\": \"no_match\", \"rationale\": \"The affair is about water protection, micro-pollutants, pesticide regulation, and the scientific basis for water quality limits. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The text mentions environmental, economic, and social repercussions in the context of water protection legislation, but this is not a digitalisation topic.\"}",
    "created_at": "2026-10-18T15:43:12.469325+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9941,7 +10197,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Lo scopo della LDFR è promuovere le aziende familiari, rafforzare la coltivazione diretta e combattere la speculazione sul suolo agricolo (art. 1 LDFR).\", \"label\": \"no_match\", \"rationale\": \"The affair is about agricultural succession law and land ownership regulations (specifically the Federal Act on Rural Real Property). While it mentions existing laws (LDFR, LAgr), it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is purely an agricultural and legal matter regarding land transfer and family succession.\"}",
    "created_at": "2026-10-18T15:43:13.775319+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -9973,7 +10231,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Da anni la Svizzera occupa il primo posto nel Global Innovation Index ed è pertanto considerata un polo di innovazione leader a livello mondiale. La ricerca e lo sviluppo sono pilastri dell’economia svizzera e contribuiscono in maniera determinante a creare valore aggiunto.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the interpretation and application of trademark law regarding the use of \\\"Swiss\\\" branding on products manufactured outside Switzerland, specifically concerning the \\\"Swissness\\\" criteria and the role of the IPI. While it mentions innovation and R&D as part of the broader economic context and justification for the IPI's new practice, digitalisation (digital technology, data, telecommunications, their effects on government/economy/education/media/society, regulation, infrastructure, security, social consequences) is not a central subject. The affair does not deal with digital technology, data protection, e-government, AI, e-voting, digital education, digital health, media platforms, or the energy use of data centres. The mention of innovation is incidental to the core debate on trademark law and industrial policy, not a central part of a digitalisation topic.\"}",
    "created_at": "2026-10-18T15:43:13.850614+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10005,7 +10265,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The title 'Anpassung des Verfahrensrechts' (Adaptation of procedural law) does not mention digital technology, data, telecommunications, or any related concepts. Without further text, it cannot be determined if digitalisation is a central part of the affair, and the title alone does not indicate a digital link.\"}",
    "created_at": "2026-10-18T15:43:14.391452+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10037,7 +10299,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the renewal of the Federal Prosecutor and Deputy Federal Prosecutors for the period 2024-2027. It does not mention digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic of digitalisation is not a central part of this affair.\"}",
    "created_at": "2026-10-18T15:43:14.680695+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10069,7 +10333,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"L'offre de cases postales est une prestation facultative de la Poste suisse. Le service universel légal ne l'exige pas de la Poste.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the closure of physical post office boxes and the broader strategy of Swiss Post regarding branch closures and service reductions. While it mentions the postal service, there is no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The issue is about physical infrastructure and service accessibility, not digitalisation.\"}",
    "created_at": "2026-10-18T15:43:14.784208+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10101,7 +10367,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Das Parlamentsrecht ist so anzupassen, dass Entschädigungen für Mandate, die Parlamentarierinnen und Parlamentarier ausserhalb des eidgenössischen Parlamentsbetriebes ausüben, maximal der Höhe der Parlamentsentschädigung entsprechen dürfen.\", \"label\": \"no_match\", \"rationale\": \"The affair deals with parliamentary compensation rules and conflict of interest prevention, but does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no central digital aspect to the affair.\"}",
    "created_at": "2026-10-18T15:43:15.131430+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10133,7 +10401,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La reprise dynamique du droit n’entraînera pas de suppression de tâches ni de fonctions au sein de l’administration fédérale.\", \"label\": \"no_match\", \"rationale\": \"The affair discusses institutional relations with the EU, legislative procedures, and personnel planning in the federal administration. While it mentions efficiency gains and participation in EU agencies, it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society as a central subject. The digital aspect is not present.\"}",
    "created_at": "2026-10-18T15:43:15.387618+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10165,7 +10435,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"I Servizi del Parlamento hanno già messo in pratica la proposta e prima del 1° agosto 2020 hanno pubblicato sul sito Internet ufficiale dell'Assemblea federale il testo dell'inno nazionale svizzero nelle quattro lingue nazionali unitamente alla base musicale.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the publication of the Swiss national anthem and organizing a youth choir contest on the Parliament's website, which involves digital infrastructure (website publication) but only as a means to achieve a cultural and symbolic goal. The digital aspect is not a central part of the affair itself; it is merely a tool for dissemination. The topic of digitalisation is not a main subject of the affair.\"}",
    "created_at": "2026-10-18T15:43:15.908742+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10197,7 +10469,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about defining equality policy standards for funding of higher education and allocation of third-party funds. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic is purely about funding and equality policy in higher education, with no digital link.\"}",
    "created_at": "2026-10-18T15:43:16.150203+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10229,7 +10503,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the composition of sucrose from sugar beet or cane sugar and whether the federal council sees a difference in the final product. It does not mention digital technology, data, telecommunications, or their effects on any sector. Digitalisation is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:16.674937+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10261,7 +10537,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Satz im Text behandelt digitale Technologie, Daten, Telekommunikation oder deren Auswirkungen auf Regierung, Wirtschaft, Bildung, Medien oder Gesellschaft.\", \"label\": \"no_match\", \"rationale\": \"The affair is about health insurance premium increases, investment losses of insurers, refugee costs, cantonal disparities, and federal compensation mechanisms. None of these topics relate to digitalisation, data, telecommunications, or their societal/economic impacts as defined.\"}",
    "created_at": "2026-10-18T15:43:17.134037+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10293,7 +10571,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"null\", \"label\": \"no_match\", \"rationale\": \"The affair deals exclusively with criminal law, sentencing, and the protection of society from serious criminals. It does not mention digital technology, data, telecommunications, or any effects related to digitalisation.\"}",
    "created_at": "2026-10-18T15:43:17.452601+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10325,7 +10605,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale condivide il parere che gli scambi scolastici apportino un importante contributo alla comprensione tra le comunità culturali e linguistiche e quindi alla coesione sociale, alla qualità e all'ulteriore sviluppo dello spazio formativo svizzero, nonché alla salvaguardia della competitività e della capacità innovativa del Paese.\", \"label\": \"no_match\", \"rationale\": \"The affair is about promoting linguistic and cultural exchanges through school stays and language learning, with no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a main subject; it is not mentioned at all.\"}",
    "created_at": "2026-10-18T15:43:17.667020+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10357,7 +10639,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"La Confédération a pleinement conscience du défi qui consiste à former suffisamment de main-d'oeuvre qualifiée dans le domaine du solaire, c'est pourquoi elle a adopté plusieurs mesures à cet effet.\", \"label\": \"no_match\", \"rationale\": \"The affair is about vocational training and workforce development in the solar energy sector. While it touches on energy policy, it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no mention of digitalisation, e-government, AI, data protection, or any other digital topic listed under COUNTS AS THIS TOPIC.\"}",
    "created_at": "2026-10-18T15:43:18.624460+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10389,7 +10673,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die heute vorhandenen individuellen Daten beschränken sich auf den Status und das beitragspflichtige Erwerbseinkommen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about the reform of the retirement age in the AHV system, specifically regarding the collection of data on occupation, education level, and employment status for potential future models. While it mentions data collection and processing, it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society as a central subject. The discussion is about social security policy and administrative data collection within the existing legal framework, not digitalisation.\"}",
    "created_at": "2026-10-18T15:43:18.636145+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10421,7 +10707,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Mit einem Bundesbeschluss werden die Strafurteile aufgehoben, die zwischen 1968 und 1996 gegen Personen ergangen sind, die aus Gewissensgründen den Militärdienst verweigert haben.\", \"label\": \"no_match\", \"rationale\": \"The affair deals with the rehabilitation of conscientious objectors to military service and human rights violations related to past convictions. It does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic of digitalisation is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:19.181426+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10453,7 +10741,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about the amendment of the Narcotics Act (Betäubungsmittelgesetz), which concerns drug regulation and does not mention digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:19.183548+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10485,7 +10775,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Il Consiglio federale è incaricato di notificare il rifiuto degli emendamenti al Regolamento sanitario internazionale (RSI) del 1° giugno 2024 e di garantire il processo democratico.\", \"label\": \"no_match\", \"rationale\": \"L'affare riguarda esclusivamente la procedura democratica e la sovranità nazionale in relazione agli emendamenti del Regolamento sanitario internazionale dell'OMS. Non tratta di digitalizzazione, tecnologia digitale, dati, telecomunicazioni, infrastrutture digitali, sicurezza informatica, intelligenza artificiale, protezione dei dati, e-government, e-voting, educazione digitale, salute digitale, media digitali o impatto digitale sull'economia o sulla società. Il tema centrale è la politica sanitaria internazionale e la procedura costituzionale svizzera, non la digitalizzazione.\"}",
    "created_at": "2026-10-18T15:43:19.241304+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10517,7 +10809,9 @@
    "raw_json": "{\"confidence\": 0.85, \"evidence\": \"Dans certaines régions, le réseau de téléphonie mobile est resté en panne pendant des heures, voire des jours.\", \"label\": \"match\", \"rationale\": \"The affair deals with mobile telecommunications infrastructure and its reliability, specifically addressing the need for backup power supply for mobile networks following a power outage. This falls under the topic of digitalisation as it concerns telecommunications infrastructure and its resilience, which is explicitly listed in the COUNTS AS THIS TOPIC criteria.\"}",
    "created_at": "2026-10-18T15:43:20.315080+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10549,7 +10843,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair asks about measures to stop the increase in non-communicable diseases, which is a health topic without any mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:20.613551+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10581,7 +10877,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Il Consiglio federale è incaricato di adattare le basi legali che regolano l'immatricolazione dei veicoli affinché anche i certificati rilasciati da importatori svizzeri, autorità o costruttori stranieri siano equiparati ai certificati di conformità UE se riportano le corrispondenti informazioni.\", \"label\": \"no_match\", \"rationale\": \"The affair deals with vehicle registration procedures and administrative barriers to trade, specifically concerning the recognition of conformity certificates for imported vehicles. It does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic of digitalisation is not a central part of the affair; it is purely about vehicle regulation and trade policy.\"}",
    "created_at": "2026-10-18T15:43:21.230751+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10613,7 +10911,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"En raison des chaînes de production fortement interconnectées, il est essentiel que les principes actifs et les préparations vaccinales soient commercialisés de manière ouverte et sans barrières.\", \"label\": \"no_match\", \"rationale\": \"The affair is about Switzerland's COVID-19 vaccination strategy, its contracts with pharmaceutical companies, and its relationship with the EU regarding vaccine access and cohesion contributions. While vaccines involve biotechnology and data, the central subject is diplomatic and economic relations with the EU, vaccine procurement policy, and domestic vaccination rollout logistics. Digitalisation (digital technology, data, telecommunications, or their effects on society/government/economy/education/media) is not a central part of the affair; it is not about digital infrastructure, e-government, data protection, AI, or digital education. The mention of supply chains is incidental to the vaccine procurement and trade policy discussion, not a focus on digitalisation itself.\"}",
    "created_at": "2026-10-18T15:43:21.311610+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10645,7 +10945,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Einführung eines Jugendvorstosses Antrag: Der Gemeinderat wird beauftragt, einen Jugendvorstoss einzuführen.\", \"label\": \"no_match\", \"rationale\": \"The affair is about introducing a youth initiative mechanism in local government, focusing on political participation rights for minors. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no mention of digitalisation or related topics.\"}",
    "created_at": "2026-10-18T15:43:21.620042+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10677,7 +10979,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Zuständigkeit für den Luftverkehr liegt beim Bund und dort beim Bundesamt für Zivilluftfahrt.\", \"label\": \"no_match\", \"rationale\": \"The affair is about helicopter noise in a recreational area and the division of responsibilities between federal and cantonal authorities regarding air traffic. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of federal authorities is administrative and related to aviation law, not digitalisation.\"}",
    "created_at": "2026-10-18T15:43:22.339760+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10709,7 +11013,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine digitalen Inhalte oder Technologien erwähnt.\", \"label\": \"no_match\", \"rationale\": \"The affair is about supplementary and additional credits for 2020, specifically detailing financial allocations for various budget categories within the Canton of Solothurn. There is no mention of digital technology, data, telecommunications, or any related topics such as cybersecurity, e-government, digital education, or other digitalisation aspects. The document is purely financial and administrative in nature, with no central focus on digitalisation or its effects.\"}",
    "created_at": "2026-10-18T15:43:22.381666+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10741,7 +11047,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Konkrete Festlegung von minimalen Anteilen für preisgünstige Wohnungen\", \"label\": \"no_match\", \"rationale\": \"The affair concerns housing policy and zoning regulations for affordable housing, with no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:22.705473+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10773,7 +11081,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the validation of a mandate for a parliamentary successor, which is a procedural matter related to personnel and succession in parliament. There is no mention or implication of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:22.994560+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10805,7 +11115,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine digitale Technologie, kein Daten- oder Telekommunikationsbezug.\", \"label\": \"no_match\", \"rationale\": \"Der Text behandelt ausschliesslich die Interkantonale Vereinbarung über das öffentliche Beschaffungswesen (IVöB). Es geht um die Definition von Begriffen, den Geltungsbereich, die Auftraggeber, das anwendbare Recht und Ausnahmen. Es wird kein Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen hergestellt. Die Thematik ist rein verwaltungsrechtlich und beschaffungsrechtlich, ohne jeglichen digitalen Aspekt.\"}",
    "created_at": "2026-10-18T15:43:23.797391+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10837,7 +11149,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Keine digitale Technologie, kein Daten- oder Telekommunikationsaspekt zentral thematisiert.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the optimization and cost-saving of Aargauer Kantonsschulen, focusing on school organization, infrastructure, teacher salaries, and educational strategy. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of introducing the compulsory subject of informatics in 2016 is incidental and not a central part of the affair's main subject, which is school consolidation and cost efficiency.\"}",
    "created_at": "2026-10-18T15:43:25.231546+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10869,7 +11183,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Infolge Rücktritt von Regierungsrätin Dr. Eva Herzog wurde Regierungsrätin Dr. Tanja Soland als Präsidentin in die Verwaltungskommission der Gebäu- deversicherung Basel-Stadt, als Mitglied in die Kommission für die Gewährung von Bürgschaften im Interesse der Schaffung von Arbeitsplätzen und als Mitglied in den Verwaltungsrat der Rimas Insurance-Broker AG gewählt.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns personnel changes and appointments to various commissions and boards following a resignation, with no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:25.631948+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10901,7 +11217,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"abstain\", \"rationale\": \"The provided affair text is only a title 'Landrechtsgesuche 25.10.2021' (Land law requests 25.10.2021) with no further content. There is insufficient information to determine if the affair deals with digitalisation or any other topic.\"}",
    "created_at": "2026-10-18T15:43:25.769930+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10933,7 +11251,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"§ 11a (neu) Informatik 1 Das Kantonsgericht koordiniert den Einsatz von Informatikmitteln in den Betreibungs- und den Konkursämtern.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the organisational structure and supervision of the land registry, debt enforcement, and bankruptcy inspectorates in the Canton of Schwyz. While it mentions the coordination of IT resources in debt enforcement and bankruptcy offices, this is a minor administrative detail within a broader legal and organisational reform. The central subject is not digitalisation, but rather the institutional framework for civil law and enforcement procedures. The mention of IT coordination is incidental and does not constitute a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:25.839549+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10965,7 +11285,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Bezug zu digitaler Technologie, Daten oder Telekommunikation.\", \"label\": \"no_match\", \"rationale\": \"Das Postulat und der Regierungsratsbericht behandeln ausschliesslich die psychische Gesundheit von Jugendlichen im Kanton Zug, die Bereitstellung von Beratungsstellen, psychiatrischer Versorgung und Prävention psychischer Erkrankungen. Es wird kein Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen hergestellt. Die Thematik fällt somit nicht unter den definierten Bereich der Digitalisierung.\"}",
    "created_at": "2026-10-18T15:43:26.763660+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -10997,7 +11319,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Bezug zu digitaler Technologie, Daten oder Telekommunikation.\", \"label\": \"no_match\", \"rationale\": \"Die Interpellation und die Antwort des Regierungsrates behandeln ausschliesslich die ambulante Versorgung, Langzeitpflege, Finanzierung von Pflegeleistungen und Betreuungsangebote. Es wird nicht auf digitale Technologie, Daten, Telekommunikation, E-Government, E-Voting, künstliche Intelligenz oder ähnliche Aspekte eingegangen. Die Thematik fällt nicht unter den definierten Bereich der Digitalisierung.\"}",
    "created_at": "2026-10-18T15:43:26.786845+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11029,7 +11353,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Motion verlangt die wöchentliche Veröffentlichung der Standorte von stationären und semistationären Geschwindigkeitsmessanlagen.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt die Veröffentlichung von Radarstandorten zur Verkehrssicherheit. Sie thematisiert keine digitalen Technologien, Daten, Telekommunikation oder deren Auswirkungen auf Regierung, Wirtschaft, Bildung, Medien oder Gesellschaft. Es geht um physische Messgeräte und deren Standorte, nicht um digitale Infrastruktur, Datenverarbeitung, E-Government, KI, Datenschutz oder ähnliche Aspekte der Digitalisierung.\"}",
    "created_at": "2026-10-18T15:43:27.404709+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11061,7 +11387,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Interpellation und die Antwort des Regierungsrates befassen sich ausschliesslich mit der Präsenz des Wolfes, der Nutztierhaltung, Herdenschutzmassnahmen und den Auswirkungen auf die Alpwirtschaft. Es wird kein Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen hergestellt.\", \"label\": \"no_match\", \"rationale\": \"Das Thema des Affairs ist die Wolfspräsenz und deren Auswirkungen auf die Nutztierhaltung im Kanton Glarus. Es geht um Herdenschutz, Alpwirtschaft und Entschädigungen für Tierverluste. Es wird kein digitaler Aspekt wie Technologie, Daten, E-Government, Cybersecurity oder ähnliche Themen behandelt, die unter Digitalisation fallen würden.\"}",
    "created_at": "2026-10-18T15:43:28.143189+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11093,7 +11421,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Solide Finanzen – Ausgaben kontrollieren\", \"label\": \"no_match\", \"rationale\": \"The affair is about municipal budget control and expenditure limits, not about digitalisation. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:28.817647+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11125,7 +11455,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Austrasse sowie die öffentlichen Parkplätze Austrasse weisen massive Schäden im Belag und den Strassenabschlüssen auf.\", \"label\": \"no_match\", \"rationale\": \"The affair is about road and street lighting infrastructure repair and construction, with no mention or focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:29.475176+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11157,7 +11489,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Interpellation und die Antwort des Stadtrates behandeln ausschliesslich bauliche und sicherheitstechnische Aspekte der Bahnunterführung, insbesondere Geländer und Beleuchtung, ohne jeglichen Bezug zu digitaler Technologie, Daten oder Telekommunikation.\", \"label\": \"no_match\", \"rationale\": \"Das Thema Digitalisation ist in diesem Affair nicht zentral. Es geht um physische Infrastruktur, Sichtzonen und Beleuchtung im Strassenverkehr, ohne digitale Technologien, Datenverarbeitung oder Telekommunikation einzubeziehen.\"}",
    "created_at": "2026-10-18T15:43:29.840247+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11189,7 +11523,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine digitale Technologie, kein Daten- oder Telekommunikationsaspekt.\", \"label\": \"no_match\", \"rationale\": \"The affair deals exclusively with gender representation in the teaching profession, gender equality, and the social perception of the teaching career. It does not address digital technology, data, telecommunications, their use, regulation, infrastructure, security, or social consequences related to digitalisation.\"}",
    "created_at": "2026-10-18T15:43:29.877606+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11221,7 +11557,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Kein Nutzen entsteht für die Anrainer entlang der Bahnhofstrasse im Bereich zwischen Bahnhofring bis zu deren Kreuzung mit der Kasernenstrasse.\", \"label\": \"no_match\", \"rationale\": \"The affair is about urban planning, traffic management, and infrastructure development related to a railway station and surrounding streets. It discusses road connections, bus routes, parking, and pedestrian zones, but does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:30.665902+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11253,7 +11591,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Keine digitalen Inhalte im Text.\", \"label\": \"no_match\", \"rationale\": \"Die Staatsrechnung 2022 des Kantons Nidwalden behandelt ausschliesslich finanzielle Aspekte wie Budgetabweichungen, Personalaufwand, Sachaufwand, Fonds und Transferaufwand. Es werden keine Themen der Digitalisierung wie Cybersecurity, E-Government, Daten, KI, E-Voting, digitale Infrastruktur oder ähnliche Aspekte behandelt. Die Erwähnung von \\\"Informatik\\\" im Personalamt (2115.3614.80) ist ein sehr marginaler, nicht zentraler Hinweis und stellt keine digitale Kernthematik dar.\"}",
    "created_at": "2026-10-18T15:43:31.288489+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11285,7 +11625,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine Wortmeldungen.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the processing of naturalisation applications, decisions on citizenship, and administrative procedures related to the Einbürgerungskommission. There is no mention of digital technology, data, telecommunications, or any digitalisation-related subject such as e-government, data protection, AI, or digital infrastructure. The topic 'Digitalisation' is not a central part of the affair; it is purely an administrative and citizenship matter with no digital link.\"}",
    "created_at": "2026-10-18T15:43:31.291270+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11317,7 +11659,9 @@
    "raw_json": "{\"confidence\": 0.3, \"evidence\": \"Der Technopark Winterthur ist der wichtigste Ort für Unternehmensgründungen (Start-ups) in Winterthur und leistet einen wertvollen Beitrag für das Start-up Ökosystem.\", \"label\": \"no_match\", \"rationale\": \"The affair is primarily about the allocation of office space between the Regional Employment Office (RAV) and start-ups within the Technopark Winterthur, focusing on real estate, employment policy, and economic development. While start-ups are mentioned, the central subject is the conflict over physical space and the operational needs of the RAV, not digitalisation itself (e.g., no mention of digital infrastructure, data, AI, e-government, or digital services). The topic is only a secondary element related to the location of start-ups, not a central part of the regulation or question regarding digital technology or its effects.\"}",
    "created_at": "2026-10-18T15:43:32.091559+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11349,7 +11693,9 @@
    "raw_json": "{\"confidence\": 0.1, \"evidence\": \"Tätigkeitsbericht 2025 der Geschäftsprüfungskommission; Kenntnisnahme\", \"label\": \"no_match\", \"rationale\": \"The title only mentions a committee's activity report and its adoption without indicating any specific digitalisation topic such as technology, data, e-government, cybersecurity, AI, or digital infrastructure. There is no central digital subject identified.\"}",
    "created_at": "2026-10-18T15:43:32.591451+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11381,7 +11727,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"In der aktuellen Phase der Verfahren wird nicht von Einsprachen, sondern von Rekursen gesprochen. Es sind drei Rekurse gegen die Ortsplanungsrevision bzw. zwei Rekurse gegen den Gestaltungsplan Riva beim zuständigen Departement eingereicht worden.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns administrative procedures, planning, and legal appeals related to local zoning revisions and development plans. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of appeals is procedural and not related to digitalisation.\"}",
    "created_at": "2026-10-18T15:43:33.006912+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11413,7 +11761,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die betrieblichen Auswirkungen der Zusatzbelastung der WB-Busse auf den Einspurbetrieb in der Poststrasse (LSA-Steuerung) müssen noch untersucht werden.\", \"label\": \"no_match\", \"rationale\": \"The affair is about optimizing bus operations during railway construction and traffic management, but it does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of traffic management systems (LSA-Steuerung) is incidental to the primary subject of bus replacement and road infrastructure planning, not a central focus on digitalisation.\"}",
    "created_at": "2026-10-18T15:43:33.620608+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11445,7 +11795,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the abolition of the Latin subject at a cantonal school, which is an educational policy matter without any central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:34.651135+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11477,7 +11829,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair title 'Konzessionsgebühren für private Entsorgungsfirmen?' refers to concession fees for private waste disposal companies. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic is about waste management and fees, which does not count as digitalisation.\"}",
    "created_at": "2026-10-18T15:43:34.654452+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11509,7 +11863,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Motion fordert eine Anpassung der Bemessungsmethode für Abwassergebühren, ohne dass digitale Technologie, Daten oder Telekommunikation eine zentrale Rolle spielen.\", \"label\": \"no_match\", \"rationale\": \"Das Geschäft behandelt ausschliesslich die Bemessung von Abwassergebühren und deren Anpassung an aktuelle Empfehlungen. Es geht um Wasser- und Abwasserentsorgung, Gebührenmodelle und kommunale Reglemente. Digitale Technologie, Daten, Telekommunikation oder deren Auswirkungen auf Verwaltung, Wirtschaft, Bildung, Medien oder Gesellschaft sind nicht zentral oder überhaupt nicht Teil des Themas.\"}",
    "created_at": "2026-10-18T15:43:35.029245+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11541,7 +11897,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Schriftliche Anfrage und die Antwort des Regierungsrats behandeln ausschliesslich die Schaffung einer polizeilichen Fachstelle für Tierdelikte, die Zuständigkeiten im Tierschutz, Statistiken zu Tierschutzverstössen und die Zusammenarbeit zwischen Veterinäramt und Kantonspolizei. Es wird kein Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen hergestellt.\", \"label\": \"no_match\", \"rationale\": \"Das Thema der Anfrage und der Antwort bezieht sich ausschliesslich auf den Tierschutz, die Polizeiarbeit im Bereich von Tierdelikten und die Zusammenarbeit zwischen Veterinäramt und Kantonspolizei. Es gibt keinerlei Bezug zu digitaler Technologie, Daten, Telekommunikation oder deren Auswirkungen auf Gesellschaft, Wirtschaft, Verwaltung oder Bildung.\"}",
    "created_at": "2026-10-18T15:43:35.104558+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11573,7 +11931,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Modifica degli art. 3 cpv. 1 e 1bis, 8 cpv. 2, 3 e 4 e 22. cpv. 2 e 3 della Legge sulla Chiesa cattolica (Agevolazione nell’accesso alle cariche parrocchiali e alle aggregazioni parrocchiali)\", \"label\": \"no_match\", \"rationale\": \"The affair concerns modifications to the Catholic Church Law in Ticino, focusing on parish structures, voting rights, territorial organization, and administrative procedures within the church. There is no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not relevant to this affair.\"}",
    "created_at": "2026-10-18T15:43:36.557814+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11605,7 +11965,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Motion fordert eine Anpassung der Rückliefertarife und Vergütungsmodelle für Solarstrom durch die ewb, um den Ausbau von privaten Solaranlagen zu fördern.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt primär die Förderung von Solarenergie und die Stromtarifpolitik der ewb im Bereich erneuerbarer Energien. Zwar werden Stromtarife und Vergütungsmodelle thematisiert, jedoch liegt der Fokus auf der physischen Energieerzeugung (Solarstrom) und deren wirtschaftlichen Rahmenbedingungen, nicht auf digitalen Technologien, Daten, Telekommunikation oder deren Auswirkungen auf Gesellschaft, Wirtschaft oder Verwaltung. Es gibt keinen zentralen Bezug zu digitalen Aspekten wie E-Government, E-Voting, Dateninfrastruktur, KI, Cybersicherheit oder ähnlichem.\"}",
    "created_at": "2026-10-18T15:43:37.318476+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11637,7 +11999,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Verkehrlich wird an der Saumackerstrasse eine Einbahnstrasse eingerichtet, sodass nur noch von der Hohlstrasse in Richtung Süden in die Badenerstrasse gefahren werden kann.\", \"label\": \"no_match\", \"rationale\": \"The affair is about urban traffic management, road construction, parking space reduction, and public transport efficiency in a specific neighborhood of Zurich. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of traffic flow and road infrastructure is not related to digitalisation.\"}",
    "created_at": "2026-10-18T15:43:37.320241+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11669,7 +12033,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"L137 Bereitstellung von modernen Infrastrukturen und Basisdiensten FD 5050 Amt für Informatik und Organisation\", \"label\": \"no_match\", \"rationale\": \"The document is a budget report for the Canton of Zug covering fiscal planning, expenditures, and strategic goals. While it mentions digital transformation as one of the strategic goals (L137), this is a passing reference within a broader budget and policy document. The main subject of the affair is the financial plan and budget approval, not digitalisation or its effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:38.434789+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11701,7 +12067,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about anti-competitive practices and cartels in the market, with no central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:39.148474+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11733,7 +12101,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Das kantonale Planungs- und Baugesetz (PBG) sagt klar, dass das Parken grundsätzlich auf privatem Grund erfolgen muss.\", \"label\": \"no_match\", \"rationale\": \"The affair is about parking space policy, road construction, and urban planning related to a cycling priority route. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of the cantonal planning and building law regarding parking on private ground is incidental to the main subject of road construction and parking policy, not a central part of a digitalisation topic.\"}",
    "created_at": "2026-10-18T15:43:39.219317+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11765,7 +12135,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Titel: Sozialhilfebehörde, Konstituierung für die Legislaturperiode 2023 - 2027\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the election of members to the social welfare authority (Sozialhilfebehörde) in Arbon, focusing on personnel appointments, party representation, and administrative procedures. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. There is no mention of digitalisation or related topics such as e-government, data protection, AI, or digital infrastructure.\"}",
    "created_at": "2026-10-18T15:43:39.263480+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11797,7 +12169,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Antwort des Stadtrats beschreibt die räumliche Umverteilung eines Quartierteams und die damit verbundene Entlastung des Sozialzentrums Dorflinde sowie die zukünftige Standortplanung für die Sozialregion Zürich-Nord.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt die räumliche Organisation und Kapazitätsplanung von Sozialzentren, die Bevölkerungsentwicklung und die Standortlogistik. Sie thematisiert keine digitalen Technologien, Daten, Telekommunikation, deren Regulierung, Infrastruktur, Sicherheit oder soziale Konsequenzen im Sinne der Definition. Es handelt sich um eine rein administrative und soziale Angelegenheit ohne digitalen Bezug.\"}",
    "created_at": "2026-10-18T15:43:39.562492+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11829,7 +12203,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Domicile des employés de l'Etat : faisons le point !\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the domicile of state employees and tax residency, with no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. It does not match the topic of digitalisation.\"}",
    "created_at": "2026-10-18T15:43:41.081481+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11861,7 +12237,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Bevölkerungsfreundliche Schalteröffnungszeiten\", \"label\": \"no_match\", \"rationale\": \"The affair concerns adjusting physical office opening hours to improve accessibility for working people, with no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:42.030282+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11893,7 +12271,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Der Vergleich der Arbeitslosenquoten von 2008 bis 2018 der Altersklassen der 15 – 24-Jährigen, der 25 – 49-Jährigen und der über 50-Jährigen (50+) zeigt, dass die 50+ bis ins Jahr 2015 die am wenigsten stark betroffene Alterskategorie war.\", \"label\": \"no_match\", \"rationale\": \"The affair deals with unemployment statistics and labour market support for older workers, but it does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of the affair; it is purely about labour market policy and demographics.\"}",
    "created_at": "2026-10-18T15:43:42.032667+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11925,7 +12305,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Betriebsbewilligung des Regierungsstatthalters\", \"label\": \"no_match\", \"rationale\": \"The affair concerns the temporary expansion of outdoor seating for restaurants during COVID-19 restrictions, focusing on public space usage, permits, and local regulations. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of permits is administrative and not related to digitalisation.\"}",
    "created_at": "2026-10-18T15:43:42.657238+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11957,7 +12339,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Nicht klassifiziert | Letzte Bearbeitung: 13.02.2023 | Version: 2 | Dok.-Nr.: 265751 | Geschäftsnummer: 2023.WEU.661 1/1 0 2 |0 8 |D |v 0 2 Regierungsratsbeschluss RRB Nr.: 489/2023 Datum RR-Sitzung: 3. Mai 2023 Direktion: Wirtschafts-, Energie- und Umweltdirektion Geschäftsnummer: 2023.WEU.661 Klassifizierung: Nicht klassifiziert Bericht des Regierungsrates zur Umsetzung der als Postulat angenommenen Motion 166-2019 Gabi Schönenberger (Schwarzenburg, SP): Rauchfreie öffentliche Kinderspiel- plätze und Schulareale im Kanton Bern\", \"label\": \"no_match\", \"rationale\": \"The affair concerns smoke-free public playgrounds and school areas in the Canton of Bern, focusing on public health and environmental policy. There is no mention or central focus on digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:43.040529+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -11989,7 +12373,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Keine digitale Technologie, kein Daten- oder Telekommunikationsaspekt.\", \"label\": \"no_match\", \"rationale\": \"The affair deals exclusively with the revision of cantonal family allowance legislation, specifically increasing the amount of financial benefits for children and apprentices. There is no mention of digital technology, data, telecommunications, e-government, digital infrastructure, cybersecurity, AI, data protection, or any other element that would constitute digitalisation as defined.\"}",
    "created_at": "2026-10-18T15:43:44.146586+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12021,7 +12407,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Der Regierungsrat lehnt die Motion mit folgender Begründung ab beziehungsweise ist bereit, die Motion als Postulat entgegenzunehmen: Die von der Motionärin und den Motionären geforderte Erarbeitung einer gesetzlichen Grundlage, welche für Angestellte der öffentlichen Hand in Ausübung ihrer amtlichen Tätigkeit das Tragen auffällig religiös geprägter Kleidungsstücke und Symbole untersagt, soll für sämtliche Mitarbeitende staatlicher Behörden und Institutionen gelten...\", \"label\": \"no_match\", \"rationale\": \"The affair deals with religious clothing regulations for public employees and the balance between religious freedom and state neutrality. It does not address digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic of digitalisation is not a central part of the affair.\"}",
    "created_at": "2026-10-18T15:43:44.584531+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12053,7 +12441,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"\", \"label\": \"no_match\", \"rationale\": \"The affair is about littering in public places and city facilities in Arbon. There is no mention of digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of this affair.\"}",
    "created_at": "2026-10-18T15:43:44.603205+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12085,7 +12475,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Die Interpellation behandelt die Reduktion von Ammoniakemissionen, die Messung von Luftschadstoffen und die Umsetzung von Massnahmen im Massnahmenplan Luftreinhaltung 2008.\", \"label\": \"no_match\", \"rationale\": \"Die Affäre behandelt primär Umwelt- und Landwirtschaftsthemen (Ammoniakemissionen, Luftreinhaltung, Stickstoffeinträge) und nicht Digitalisierung. Es gibt keinen Bezug zu digitaler Technologie, Daten, Telekommunikation, E-Government, E-Voting, KI, Daten­schutz oder anderen digitalen Aspekten, die unter den definierten Digitalisierungs­themen fallen. Die Erwähnung eines Massnahmenplans aus dem Jahr 2008 ist kein digitaler Bezug.\"}",
    "created_at": "2026-10-18T15:43:44.663864+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12117,7 +12509,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Keine digitale Technologie, kein Daten- oder Telekommunikationsaspekt.\", \"label\": \"no_match\", \"rationale\": \"The affair deals exclusively with the revision of provisions on initiatives in the municipal organisation law, specifically addressing the handling of repeated initiatives, validity periods, and procedural rules for communal projects. It does not involve digital technology, data, telecommunications, or their effects on government, economy, education, media, or society.\"}",
    "created_at": "2026-10-18T15:43:46.958373+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12149,7 +12543,9 @@
    "raw_json": "{\"confidence\": 0, \"evidence\": \"Die Präsenz von Grossraubwild birgt de facto ein Risikopotenzial. Wolfsattacken sind nicht vorhersehbar und lassen sich deshalb auch nicht präventiv verhindern.\", \"label\": \"no_match\", \"rationale\": \"The affair is about wolf attacks on humans, wolf population monitoring, and management strategies related to wildlife. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The mention of risk management is in the context of wildlife, not digitalisation.\"}",
    "created_at": "2026-10-18T15:43:46.960816+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12181,7 +12577,9 @@
    "raw_json": "{\"confidence\": 0.95, \"evidence\": \"Selon Swiss eMobility (voir Moyens d’orientation pour procédures d’autorisation de construire des stations de recharge), Fribourg est l’un des rares cantons avec Schwyz, Zoug et Zurich à poser une telle exigence cantonale, trois autres ayant des solutions communales ad hoc.\", \"label\": \"match\", \"rationale\": \"The affair deals with the regulation of electric vehicle charging stations, specifically the requirement for a building permit under the cantonal law on spatial planning and construction. This falls under the topic of digitalisation as it concerns the infrastructure for electric mobility, a key component of digital and sustainable transport technology, and involves the use of digital/technological infrastructure in society.\"}",
    "created_at": "2026-10-18T15:43:47.037980+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12213,7 +12611,9 @@
    "raw_json": "{\"confidence\": 0.0, \"evidence\": \"Keine Erwähnung von digitaler Technologie, Daten oder Telekommunikation.\", \"label\": \"no_match\", \"rationale\": \"The affair concerns transparency in political financing, disclosure obligations for political organisations and elected officials, and sanctions for non-compliance. It does not deal with digital technology, data, telecommunications, or their effects on government, economy, education, media, or society. The topic 'Digitalisation' is not a central part of this affair.\"}",
    "created_at": "2026-10-18T15:43:47.080716+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12245,7 +12645,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Der Bundesrat wird beauftragt, der Bundesversammlung Gesetzesänderungen in den Bereichen des Zivil-, Straf- und Verwaltungsrechts vorzulegen, um die Verwendung von Deepfakes im öffentlichen Raum zu regulieren.\",\n  \"label\": \"match\",\n  \"rationale\": \"The affair is about regulating the use of deepfakes, which is a specific application of artificial intelligence. It addresses legal frameworks, civil and criminal liability, and regulatory measures related to this digital technology, making digitalisation a central subject.\"\n}",
    "created_at": "2026-10-18T15:43:48.095076+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12277,7 +12679,9 @@
    "raw_json": "{\n  \"confidence\": 1,\n  \"evidence\": \"Die Bundesverfassung wird so geändert, dass sie garantiert, dass das Gesetz den freien, universellen, gleichen und diskriminierungsfreien Zugang zu allen offenen digitalen Netzen gewährleistet.\",\n  \"label\": \"match\",\n  \"rationale\": \"Die Affäre fordert die verfassungsrechtliche Verankerung der Netzneutralität, die den diskriminierungsfreien und gleichberechtigten Zugang zu digitalen Netzen regelt. Dies betrifft zentrale Aspekte der Digitalisierung wie die Infrastruktur, den Zugang zu Inhalten und die Regulierung von Fernmeldedienstanbietern.\"\n}",
    "created_at": "2026-10-18T15:43:48.860896+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12309,7 +12713,9 @@
    "raw_json": "{\n  \"confidence\": 1.0,\n  \"evidence\": \"Die Algorithmen sortieren, organisieren und empfehlen Inhalte für jede Nutzerin und jeden Nutzer, womit diese ihren Interessen entsprechende Inhalte, Produkte und Informationen vorgeschlagen erhalten. Die Algorithmen entscheiden ausserdem darüber, was den Nutzerinnen und Nutzern nicht gezeigt wird. Dies bringt problematische Aspekte mit sich.\",\n  \"label\": \"match\",\n  \"rationale\": \"Die Affäre behandelt zentrale Aspekte von Algorithmen in sozialen Netzwerken, insbesondere deren Auswirkungen auf die psychische Gesundheit von Jugendlichen, die Personalisierung von Inhalten und die damit verbundenen Risiken wie Suchtverhalten, Polarisierung und Ausnutzung von Daten. Dies fällt unter die Definition von Digitalisation, da es sich um die Nutzung, die Risiken und die Regulierung von digitalen Technologien (Algorithmen) und deren gesellschaftlichen Folgen handelt.\"\n}",
    "created_at": "2026-10-18T15:43:49.812661+00:00",
    "evidence_retried": 0,
-   "evidence_recovered": 0
+   "evidence_recovered": 0,
+   "scheme_code": null,
+   "rank": null
   },
   {
    "run_id": "20261018T154211287752Z",
@@ -12341,7 +12747,9 @@
    "raw_json": "{\"confidence\": 0.95, \"evidence\": \"Mit der ZGB-Revision vom 15. Dezember 2017 hat das Parlament in Artikel 43a Absatz 4 Ziffer 6 nZGB eine neue gesetzliche Grundlage geschaffen, die es den kantonalen und kommunalen Einwohnerdiensten erlaubt, in Infostar mittels eines Abrufverfahrens auf Daten zuzugreifen, die für die Überprüfung der Identität einer Person notwendig sind.\", \"label\": \"match\", \"rationale\": \"The affair deals with the replacement of a physical document (Heimatschein) with an electronic data retrieval system (Infostar) for civil status authorities. This involves digital administration, electronic identity verification, and the use of digital infrastructure to streamline government services, which falls under the topic of digitalisation.\"}",
    "created_at": "2026-10-18T15:43:53.661524+00:00",
    "evidence_retried": 1,
-   "evidence_recovered": 1
+   "evidence_recovered": 1,
+   "scheme_code": null,
+   "rank": null
   }
  ]
 }

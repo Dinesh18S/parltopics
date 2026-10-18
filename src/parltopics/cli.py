@@ -412,13 +412,21 @@ def demo_export(pool: Path = Path("data/samples/demo_pool.csv")) -> None:
     from parltopics import demo
 
     store = Store(get_settings().db_path)
+    n_pool = len(pd.read_csv(pool))
     for preset_id, (_, topic) in web.presets().items():
-        run = store.latest_run(web.topic_sha(topic), str(pool))
+        run = store.latest_run(web.topic_sha(topic), str(pool), n_pool)
         if run is None:
             typer.echo(f"{preset_id}: no finished run on {pool}")
             continue
         n = demo.export_run(store, run["id"], RESULTS_DIR / "demo" / f"{preset_id}.json")
         typer.echo(f"{preset_id}: run {run['id']} ({run['prompt_template']}, {n} predictions) → results/demo/{preset_id}.json")
+    for scheme_id in web.SCHEMES:
+        run = store.latest_run(web.scheme_sha(scheme_id), str(pool), n_pool)
+        if run is None:
+            typer.echo(f"scheme {scheme_id}: no finished run on {pool}")
+            continue
+        n = demo.export_run(store, run["id"], RESULTS_DIR / "demo" / f"scheme_{scheme_id}.json")
+        typer.echo(f"scheme {scheme_id}: run {run['id']} ({n} label records) → results/demo/scheme_{scheme_id}.json")
 
 
 @eval_app.command("curia-vista")
