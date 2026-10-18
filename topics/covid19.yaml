@@ -1,0 +1,10 @@
+name: Covid-19
+definition: >
+  Affairs whose main subject is the Covid-19 pandemic, its health measures, or its economic
+  and social consequences and support measures.
+include: ""
+exclude: ""
+keywords:
+  de: [Covid, Corona, Pandemie]
+  fr: [Covid, coronavirus, pandémie]
+  it: [Covid, coronavirus, pandemia]

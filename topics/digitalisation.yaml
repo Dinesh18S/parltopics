@@ -1,0 +1,12 @@
+# Draft. Partner replaces definition/include/exclude with data/gold/digitalisation_definition.md
+name: Digitalisation
+definition: >
+  Affairs whose main subject is the use, regulation, infrastructure or societal effects of
+  digital technology, including e-government, electronic identity, e-voting, digital
+  services, data and data infrastructure, and digital skills.
+include: ""
+exclude: ""
+keywords:
+  de: [Digitalisierung, digital]
+  fr: [numérique, numérisation, digital]
+  it: [digitalizzazione, digitale]

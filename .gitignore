@@ -25,3 +25,15 @@ build/
 .DS_Store
 .idea/
 .vscode/
+# Append these lines to the template's .gitignore (create one if it has none)
+.env
+.env.*
+!.env.example
+__pycache__/
+.venv/
+*.gguf
+*.safetensors
+data/raw/
+data/cache/
+*.db
+results/runs/
