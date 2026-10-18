@@ -82,7 +82,7 @@
 - Why: your rules on D7. Data source: `/v1/bodies/` `type`, `languages`, `lang`. Sample of 100 PolitMonitor affairs (federal ×3 languages): 4/132 lang_missing, 3/128 federal mismatches (Curia Vista IT fields that contain French: 160584, 162433, 155310), 0/56 cantonal mismatches.
 - Alternatives rejected: a detector library (langdetect/lingua) — extra dependency; a 30-word stopword list per language is deterministic, testable and enough for ≥ a few sentences. Title-only texts (< ~150 chars) stay undetected (`null`), never guessed.
 - Affects: `sources/assemble.py`, `sources/langcheck.py`, `data/stopwords.json`, `sources/api.py` (Body), docs/03 §6, `src/tests/test_langcheck.py`.
-- Open question: should `lang_mismatch=true` also count as `lang_missing` in metrics (the IT text is really French)? Proposed: yes.
+- Decided (2026-10-18, your OK): `lang_mismatch=true` counts as `lang_missing` in metrics.
 
 ### D13 — Federal affairs use Curia Vista texts only, not attached docs (slice S1, 2026-10-18)
 - Decision: for translated (federal) affairs the assembler ignores `/docs`.
@@ -95,3 +95,22 @@
 - Decision: `MAX_INPUT_CHARS` stays 12,000 for S4. `SourceText` records `cut_section` (header of the section where the cut falls) and `chars_lost`; S4 output lists them per truncated affair. After S4, re-run only the truncated affairs with `MAX_INPUT_CHARS=40000`; if ≥ 2 labels or evidence results change, raise the limit. Result logged as a new decision.
 - Why: your call; 27/100 sampled affairs are truncated.
 - Affects: `sources/assemble.py`, S4 report.
+
+### D15 — JSON mode: server-side `json_schema` on the Keera gateway; parse + repair kept as fallback (slice S2, 2026-10-18)
+- Decision: `LLM_JSON_MODE=json_schema` (default). The pydantic schema (`extra=forbid` → `additionalProperties: false`, `strict: true`) is sent as `response_format`. The output is always re-validated with pydantic; if invalid: parse the first JSON object, one repair retry, then `status=parse_error`. API errors → `status=llm_error`.
+- Why: probe on both models: with a schema forcing `{"fruit": "banana", "n": 41}` on the prompt "Say hello.", both 70B and 8B returned exactly that, so the gateway enforces the schema (guided decoding), not just "tries". Without a schema the model answered `"label": "Yes"` (outside our enum). The fallback is unit-tested with a fake client (`src/tests/test_llm.py`), since the gateway never triggers it.
+- Alternatives rejected: `json_object` mode — valid JSON but not our enum.
+- Affects: `llm.py`, `classify.py` (AdhocOutput), docs/04 §3.
+- Revisit if: a judge's local server lacks `response_format` → set `LLM_JSON_MODE=none`.
+
+### D16 — Prompt files and prompt SHA (slice S2, 2026-10-18)
+- Decision: each prompt version is two files, `prompts/<version>.system.txt` and `<version>.user.txt` (docs/05 text verbatim). `prompt_sha` = sha256 of the two raw templates; every prediction also stores `source_sha256` of the exact assembled text.
+- Why: docs/05 says "SHA of the rendered template"; a fully rendered prompt differs per affair, so it can't identify a prompt version. Template SHA + source SHA together pin down exactly what the model saw. Topic text is in the YAML (versioned in git).
+- Alternatives rejected: one file with a separator — easier to break.
+- Affects: `prompts/`, `classify.py`, `runlog.py`. Proposed docs/05 §0 wording: "the SHA of the template files is stored on every run".
+- Revisit if: we need the topic definition hashed into the run id (S5 manifests can add the topic YAML SHA).
+
+### D17 — Observed in S2, not changed yet: confidence semantics and rationale length (slice S2, 2026-10-18)
+- Observation: on `no_match` the 70B model returns `confidence: 0.0` (e.g. 70435, also Covid-19 topic on 235308). It treats confidence as "probability of the topic", not "confidence the label is correct" (docs/05 §2). Rationales run ~35–40 words vs the 25-word rule.
+- Decision: no prompt change before S4; one example is not evidence. If S4 confirms it, either (a) redefine confidence in docs/05 as "probability the topic is a main subject" (it works better as a ranking score anyway) or (b) bump to `adhoc_v2`. Rationale length is cosmetic; add `maxLength` only if it costs tokens.
+- Affects: threshold tuning and calibration (S6).

@@ -58,6 +58,7 @@ make dev               # same without Docker (needs uv)
 make data              # download challenge files to data/raw and check checksums
 make test              # unit tests
 uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
+uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # one model call
 ```
 
 ## 📦 Submission Requirements & Deliverables

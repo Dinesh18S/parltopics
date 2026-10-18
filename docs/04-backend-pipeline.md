@@ -26,7 +26,7 @@ src/parltopics/
     bulk.py        # challenge files + bulk exports readers
     assemble.py    # build the exact text the model sees
   topics.py        # Topic / Scheme models; loaders for ad-hoc, APS xlsx, Curia Vista
-  prompts/         # versioned templates: adhoc_v1.txt, standard_v1.txt …
+  prompts/         # versioned templates: adhoc_v1.system.txt + adhoc_v1.user.txt, standard_v1.* …
   classify.py      # one affair × one topic/scheme → Prediction
   verify.py        # evidence check (pure functions, no model)
   store.py         # SQLite schema + read/write
@@ -51,7 +51,7 @@ LLM_API_KEY=...                                 # local vLLM/Ollama: LLM_NAME=sw
 LLM_TEMPERATURE=0
 LLM_MAX_TOKENS=400
 LLM_CONCURRENCY=4
-LLM_JSON_MODE=json_schema      # json_schema | json_object | none (fallback: parse + repair)
+LLM_JSON_MODE=json_schema      # json_schema | json_object | none (fallback: parse + repair). Keera gateway: json_schema enforced (verified S2)
 MAX_INPUT_CHARS=12000
 TITLE_ONLY_CONF_CAP=0.6
 OPD_API_BASE=https://api.openparldata.ch

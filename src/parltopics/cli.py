@@ -1,10 +1,17 @@
+from pathlib import Path
+
 import typer
 import uvicorn
 
+from parltopics.classify import classify_adhoc
 from parltopics.config import get_settings
+from parltopics.llm import LLMClient
+from parltopics.prompts import load_prompt
+from parltopics.runlog import log_call, new_run_id
 from parltopics.sources import bulk
 from parltopics.sources.api import OPDClient
 from parltopics.sources.assemble import LangMissing, assemble
+from parltopics.topics import load_topic
 
 app = typer.Typer(no_args_is_help=True)
 data_app = typer.Typer(no_args_is_help=True, help="Challenge data files.")
@@ -45,6 +52,28 @@ def fetch(affair_id: int, lang: str | None = typer.Option(None, help="de|fr|it, 
         f"url={source.url}\nsha256={source.sha256}\n---"
     )
     typer.echo(source.text)
+
+
+@app.command()
+def classify(
+    affair: int = typer.Option(..., help="OpenParlData affair id"),
+    topic: Path = typer.Option(..., help="topic YAML, e.g. topics/<name>.yaml"),
+    lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only"),
+    prompt_version: str = "adhoc_v1",
+) -> None:
+    """Classify one affair against one ad-hoc topic and log the call."""
+    settings = get_settings()
+    try:
+        source = assemble(OPDClient(settings).get_affair(affair), settings.max_input_chars, lang)
+    except LangMissing as e:
+        typer.echo(f"status=lang_missing {e}")
+        raise typer.Exit(2)
+    prompt = load_prompt(prompt_version)
+    prediction = classify_adhoc(LLMClient(settings), prompt, source, load_topic(topic))
+    run_id = new_run_id()
+    log_path = log_call(Path("results"), run_id, prediction)
+    typer.echo(prediction.model_dump_json(indent=2))
+    typer.echo(f"logged: {log_path}")
 
 
 @data_app.command("download")
