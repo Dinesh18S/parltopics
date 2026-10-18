@@ -6,6 +6,10 @@ Goal: numbers a judge can reproduce and a Swiss-politics expert can't easily pok
 
 - [ ] Every eval set is a frozen CSV of affair IDs in `data/samples/` (committed), built with a fixed seed.
 - [ ] Each set is split **dev** (prompt/threshold tuning, few-shot examples) and **test** (reported numbers). Nothing tuned on test. Default split 30/70.
+- [ ] Split by group, not by row: affairs with identical `title_de` (e.g. the same motion filed in both chambers, or a canton's standard question) always land in the same split.
+- [ ] Few-shot examples come only from dev; never a test-split affair.
+- [ ] The first-loop affairs (§1) are looked at by humans and drive prompt revisions, so they count as **dev** and are excluded from every test set.
+- [ ] Like-for-like digitalisation set: `begin_date ≥ 2018-01-01` (see §2.1).
 - [ ] Each run writes a manifest: model, endpoint host, prompt version + SHA, git commit, sample file, date, threshold.
 - [ ] Report `n`, and 95% confidence intervals (Wilson for proportions; bootstrap 1,000× for F1).
 - [ ] Count and report every failure status: `parse_error`, `evidence_failed`, `llm_error`, `invalid_label`, truncated inputs. Failures count as wrong predictions (no silent drops).
@@ -14,7 +18,7 @@ Goal: numbers a judge can reproduce and a Swiss-politics expert can't easily pok
 
 - [ ] 20 PolitMonitor positives, mixed DE/FR/IT and affair types → expect mostly `match`
 - [ ] 20 in-scope non-tagged affairs → expect mostly `no_match`
-- [ ] Table: id, lang, gold, label, confidence, evidence_ok, keyword_absent, latency
+- [ ] Table: id, lang, gold, label, confidence, evidence_ok, keyword_absent, latency (+ truncation report: per truncated affair, the cut section and characters lost)
 - [ ] Evidence-verified rate ≥ 90% on matches, else fix prompt/verify before scaling
 - [ ] Eyeball every error with the partner (10 min) → first prompt revision
 
@@ -38,9 +42,11 @@ Population = federal affairs (`body_key=CHE`), `begin_date ≥ 2018-01-01`, insi
 - [ ] Same metrics for keyword search (`Digitalisierung|numérique|digitale` in title/text) on the same slice — a second, intuitive baseline.
 
 ### 2.4 Adjudication
-- [ ] All test-set FPs (model match, PolitMonitor not tagged) go to the partner **blind** to model confidence and rationale; she sees text + definition and decides digital yes/no.
-- [ ] Also send an equal-sized random sample of FNs and TPs mixed in, so adjudication isn't one-directional and she can't infer the source.
-- [ ] Report precision/recall **before** and **after** adjudication; the "after" table counts adjudicated-yes FPs as TPs and adjudicated-no FNs as TNs.
+- [ ] Rules fixed **before** results are seen: the reviewer decides by `data/gold/digitalisation_definition.md` as committed (record its git hash in the adjudication file). No rule changes after the review starts.
+- [ ] Review **both directions**: all test-set disagreements where model = yes / PolitMonitor = no (FP) **and** model = no / PolitMonitor = yes (FN). If there are more than the review budget, a seeded random sample per direction, and the after-numbers are re-weighted by the sampling rate (stated in the report).
+- [ ] Mix in an equal number of random agreements (TP and TN) so the reviewer can't infer anything from being asked.
+- [ ] The reviewer sees **only the affair text** (title + text + link), in shuffled order: never the model label, confidence, evidence or rationale, and never the PolitMonitor label.
+- [ ] Report precision/recall **before** and **after** review. In the after-table the reviewer's label replaces the PolitMonitor label for every reviewed affair (so FPs can become TPs, FNs can become TNs, and reviewed TPs/TNs can flip too).
 - [ ] Headline line: "N affairs the model found that the manual list missed (confirmed by expert)".
 
 ### 2.5 Breakdowns

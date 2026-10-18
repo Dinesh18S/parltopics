@@ -137,3 +137,25 @@
 - Added beyond your list: `MAX_INPUT_CHARS` (changes the text the model sees; needed so the D14 40k re-run is a separate version) and `TITLE_ONLY_CONF_CAP` (changes stored confidence). Topic hash is over the parsed YAML content, so comment/whitespace edits don't create a new version but any field change (incl. keywords, which feed the keyword-absent flag) does.
 - Alternatives rejected: hashing the YAML bytes — a reformatted comment would make identical prompts look different.
 - Affects: `runlog.py` (fingerprint, start_run, manifest), `classify.py` (Prediction: `run_id`, no prompt fields), `cli.py`, docs/05 "Prompt versioning", docs/04 §4.4/§7.
+
+### D21 — Partner's definition adopted; include/exclude rendered as bullet lists; template → adhoc_v2 (step 1, 2026-10-18)
+- Decision: `topics/digitalisation.yaml` now follows `data/gold/digitalisation_definition.md` (11 include, 3 exclude rules, PolitMonitor's broad reading incl. media/SRG, Swiss Post, telecom). `Topic.include/exclude` are lists (a plain string is still accepted); the renderer prints them as `COUNTS AS THIS TOPIC:` / `DOES NOT COUNT:` bullet lists. Template renamed `adhoc_v1` → `adhoc_v2` and the template name is now part of the template hash.
+- Why: your instruction; the old loader rejected the list YAML (pydantic `string_type` error). The rule layout is a prompt change, so it gets a new template name even though the .txt text is identical (the rendering lives in code). No number was ever reported under adhoc_v1.
+- Alternatives rejected: joining list items into one line — 11 rules on one line are hard for the model to read.
+- Affects: `topics.py`, `prompts/__init__.py`, `prompts/adhoc_v2.*`, tests, docs/05 §2 + changelog. New `prompt_version` for every digitalisation run (topic + template parts changed).
+- Note: the new keyword lists add broad words (`Daten`, `données`, `dati`, `elektronisch`). They never enter the prompt; they only make the keyword-absent flag stricter (fewer affairs count as "keyword-absent"), which makes that demo claim more conservative.
+- Revisit if: S4 shows the model over-tagging via the broad include list (e.g. any Post or SRG affair).
+
+### D22 — Sampling rules: ≥ 2018 for like-for-like, grouped split by title_de, few-shot only from dev, first loop = dev (step 1, 2026-10-18)
+- Decision: (1) like-for-like set: `begin_date ≥ 2018-01-01`; (2) dev/test split is by group — affairs with identical `title_de` land in the same split; (3) few-shot examples only from dev, never a test affair; (4) the first-loop affairs are dev (humans read their errors to revise the prompt) and are excluded from every test set.
+- Why: your rules; identical titles (same motion in both chambers, cantonal standard questions) would leak between dev and test. (4) is my addition: the same leakage risk via human eyeballing.
+- Affects: docs/06 §0 and §2.4, docs/05 few-shot; implemented in `evaluate/samples.py` when the samples are built (S4 first loop, S6 like-for-like), with tests for the grouped split.
+- Revisit if: titles are missing for many cantonal affairs (then group by `title_fr`/`title_it` too).
+
+### D23 — Adjudication in both directions, blind, rules frozen first (step 1, 2026-10-18)
+- Decision: review all test disagreements in both directions (model yes / PolitMonitor no and model no / PolitMonitor yes; seeded sample per direction if over budget, re-weighted), plus an equal number of random agreements mixed in. The reviewer sees only the affair text, shuffled, never any label. Rules = `digitalisation_definition.md` at a recorded git hash, fixed before results. Before/after metrics; in "after" the reviewer label replaces PolitMonitor's for every reviewed affair.
+- Why: your instruction and the partner's note; one-directional review would only ever raise precision.
+- Affects: docs/06 §2.4; the adjudication export (S6).
+
+### D24 — Status of D16/D20 (step 1, 2026-10-18)
+- `prompt_version` already hashes template + topic YAML content + few-shot + model params (D20, committed in bd7350e); D21 adds the template name to the template hash. Nothing else pending.

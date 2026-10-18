@@ -4,7 +4,7 @@ Two prompts, one engine. Prompt templates are versioned files in `src/parltopics
 
 ### Prompt versioning (what makes two numbers comparable)
 
-- **Run level** (stored on every run manifest / `runs` row): `prompt_version` = sha256 over the hashes of **every input that shapes the prompt or the stored result**: template files, topic YAML content (or the scheme file in standard mode), few-shot examples (if any), and model params (model id, temperature, max_tokens, json mode, `MAX_INPUT_CHARS`, `TITLE_ONLY_CONF_CAP`). The individual part hashes (`template`, `topic`, `fewshot`, `params`) are stored too, so a diff shows which part changed. The human-readable template name (`adhoc_v1`) is stored as `prompt_template`.
+- **Run level** (stored on every run manifest / `runs` row): `prompt_version` = sha256 over the hashes of **every input that shapes the prompt or the stored result**: template files, topic YAML content (or the scheme file in standard mode), few-shot examples (if any), and model params (model id, temperature, max_tokens, json mode, `MAX_INPUT_CHARS`, `TITLE_ONLY_CONF_CAP`). The individual part hashes (`template`, `topic`, `fewshot`, `params`) are stored too, so a diff shows which part changed. The human-readable template name (e.g. `adhoc_v2`) is stored as `prompt_template` and is part of the template hash.
 - **Call level** (stored on every prediction): `source_sha256` of the exact assembled affair text, plus `run_id`.
 - Consequence: when the partner edits `topics/digitalisation.yaml`, every later run gets a new `prompt_version`; numbers from different `prompt_version`s are never reported as comparable.
 
@@ -19,10 +19,10 @@ Two prompts, one engine. Prompt templates are versioned files in `src/parltopics
 7. **Short rationale last.** A ≤25-word reason helps debugging; it comes after the label so it doesn't steer it, and it is never shown as evidence.
 8. **Temperature 0.** Max output ~400 tokens.
 
-## 2. Ad-hoc mode — `adhoc_v1`
+## 2. Ad-hoc mode — `adhoc_v2`
 
 ### Inputs
-- `topic.name`, `topic.definition` (one or a few sentences), optional `topic.include` / `topic.exclude` borderline rules (from the partner's definition doc)
+- `topic.name`, `topic.definition` (one or a few sentences), optional `topic.include` / `topic.exclude` borderline rules as lists (from the partner's definition doc)
 - `affair.text` (assembled, see data doc), `affair.lang`
 
 ### Output schema
@@ -59,8 +59,10 @@ Rules:
 ```
 TOPIC: {topic.name}
 DEFINITION: {topic.definition}
-{if include}COUNTS AS THIS TOPIC: {topic.include}{/if}
-{if exclude}DOES NOT COUNT: {topic.exclude}{/if}
+{if include}COUNTS AS THIS TOPIC:
+- {each topic.include item}{/if}
+{if exclude}DOES NOT COUNT:
+- {each topic.exclude item}{/if}
 
 AFFAIR (language: {affair.lang}):
 <<<
@@ -71,22 +73,11 @@ Return JSON: {"label": "match"|"no_match"|"abstain", "confidence": number 0-1,
 "evidence": string, "rationale": string}
 ```
 
-### Few-shot (optional, `adhoc_v1_fs`)
-2–3 short examples **from the dev split only** (never from the test sample): one match where the topic word never appears, one no_match where the word appears in passing, one abstain (title only, vague). Few-shot vs zero-shot is an A/B we report, not an assumption.
+### Few-shot (optional, `adhoc_v2_fs`)
+2–3 short examples **from the dev split only** (never a test-split affair, and never an affair whose `title_de` equals a test affair's): one match where the topic word never appears, one no_match where the word appears in passing, one abstain (title only, vague). Few-shot vs zero-shot is an A/B we report, not an assumption.
 
-### Digitalisation topic file (draft — partner replaces with her definition doc)
-```yaml
-name: Digitalisation
-definition: >
-  Affairs whose main subject is the use, regulation, infrastructure or societal effects of
-  digital technology, including e-government, electronic identity, e-voting, digital
-  services, data and data infrastructure, and digital skills.
-include: TBD by partner (e.g. cybersecurity? data protection? telecom/5G? media?)
-exclude: TBD by partner (e.g. affairs that only mention a website or email in passing)
-keywords: {de: [Digitalisierung, digital], fr: [numérique, numérisation, digital],
-           it: [digitalizzazione, digitale]}
-```
-The `include`/`exclude` lines must match how PolitMonitor actually tagged; otherwise we are measuring a definition mismatch, not the model.
+### Digitalisation topic file
+The source is the partner's definition `data/gold/digitalisation_definition.md` (derived from how PolitMonitor actually tagged; follows PolitMonitor where it differs from the challenge slides). Its prompt form is `topics/digitalisation.yaml`: `definition` (one paragraph), `include` and `exclude` as **lists** (rendered as bullet lists), `keywords` per language (used only for the keyword-absent flag and the keyword baseline, never in the prompt). Any edit to the YAML changes `prompt_version`.
 
 ## 3. Standard mode — `standard_v1`
 
@@ -159,5 +150,6 @@ Codes in the prompt are short local ids (`C01…C22`, `CV01…CV28`) mapped back
 
 | Version | Date | Change | Dev P/R |
 |---|---|---|---|
-| adhoc_v1 | 2026-10-18 | Initial | — |
+| adhoc_v1 | 2026-10-18 | Initial (only smoke calls, no reported numbers) | — |
+| adhoc_v2 | 2026-10-18 | include/exclude rendered as bullet lists (partner's definition has 11 include / 3 exclude rules); text otherwise unchanged | — |
 | standard_v1 | 2026-10-18 | Initial | — |

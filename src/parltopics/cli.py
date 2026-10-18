@@ -61,7 +61,7 @@ def classify(
     affair: int = typer.Option(..., help="OpenParlData affair id"),
     topic: Path = typer.Option(..., help="topic YAML, e.g. topics/<name>.yaml"),
     lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only"),
-    prompt_version: str = "adhoc_v1",
+    prompt_version: str = "adhoc_v2",
 ) -> None:
     """Classify one affair against one ad-hoc topic and log the call."""
     settings = get_settings()

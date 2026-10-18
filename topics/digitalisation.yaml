@@ -1,12 +1,29 @@
-# Draft. Partner replaces definition/include/exclude with data/gold/digitalisation_definition.md
+# Source: data/gold/digitalisation_definition.md (partner's definition, derived from
+# PolitMonitor's actual tagging of 3,433 affairs; follows PolitMonitor where it differs from the slides).
 name: Digitalisation
 definition: >
-  Affairs whose main subject is the use, regulation, infrastructure or societal effects of
-  digital technology, including e-government, electronic identity, e-voting, digital
-  services, data and data infrastructure, and digital skills.
-include: ""
-exclude: ""
+  An affair is about digitalisation if it deals with digital technology, data or
+  telecommunications, or with their effects on government, the economy, education, media
+  or society. This includes their use, regulation, infrastructure, security and social
+  consequences. The digital aspect does not have to be the only topic, but it must be a
+  central part of what the affair asks or regulates, not a passing mention.
+include:
+  - Cybersecurity and cybercrime
+  - Artificial intelligence, deepfakes, algorithms
+  - Data protection, including general data protection law and data protection officers
+  - E-voting and electronic identity (E-ID)
+  - E-government, digital administration, open data
+  - Mobile networks, 5G, broadband, fibre, including antenna permits and 5G health concerns
+  - Digital education - devices, digital teaching material, computer science, smartphone bans in schools
+  - Digital health - electronic patient record, health data
+  - Media and public broadcasting - SRG, radio/TV licence fee, online platforms, online hate speech
+  - Swiss Post - digital services, e-voting by Post, parcel deals with online platforms, changes to postal services
+  - Energy use of data centres and AI
+exclude:
+  - Energy, solar or the economy in general, with no digital link
+  - Education, labour or budgets in general, with no digital link
+  - Affairs where digital technology, data or telecom is only mentioned in passing
 keywords:
-  de: [Digitalisierung, digital]
-  fr: [numérique, numérisation, digital]
-  it: [digitalizzazione, digitale]
+  de: [Digitalisierung, digital, elektronisch, Daten, Cyber]
+  fr: [numérique, numérisation, digital, électronique, données, cyber]
+  it: [digitalizzazione, digitale, elettronico, dati, cyber]

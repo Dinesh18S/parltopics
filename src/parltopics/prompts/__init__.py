@@ -20,15 +20,15 @@ class Prompt(BaseModel):
 def load_prompt(version: str) -> Prompt:
     system = (PROMPT_DIR / f"{version}.system.txt").read_text()
     user = (PROMPT_DIR / f"{version}.user.txt").read_text()
-    sha = hashlib.sha256(f"{system}\x00{user}".encode()).hexdigest()
+    sha = hashlib.sha256(f"{version}\x00{system}\x00{user}".encode()).hexdigest()
     return Prompt(version=version, system=system, user=user, sha=sha)
 
 
 def render_adhoc(prompt: Prompt, topic: Topic, text: str, lang: str) -> tuple[str, str]:
     rules = "".join(
-        f"{label}: {value.strip()}\n"
-        for label, value in (("COUNTS AS THIS TOPIC", topic.include), ("DOES NOT COUNT", topic.exclude))
-        if value and value.strip()
+        f"{label}:\n" + "".join(f"- {item}\n" for item in items)
+        for label, items in (("COUNTS AS THIS TOPIC", topic.include), ("DOES NOT COUNT", topic.exclude))
+        if items
     )
     user = prompt.user.format(
         name=topic.name, definition=topic.definition.strip(), rules=rules, lang=lang, text=text
