@@ -123,3 +123,16 @@ def test_check_prediction_flags_inconsistency_on_raw_confidence():
     assert c.inconsistent and c.confidence == 0.6
     c = check_prediction("match", 0.9, "gesetzliche Grundlagen auszuarbeiten", TEXT, TITLE, title_only=False, cap=0.6)
     assert not c.inconsistent
+
+
+# --- locating evidence in the original text (UI highlight) --------------------
+
+def test_locate_exact_and_fuzzy_in_original_offsets():
+    from parltopics.verify import locate
+    text = "Préambule. Lorsqu'un agent nous accompagne en permanence, choisit-on encore consciemment ce qu'on lui délègue ?"
+    start, end = locate("lorsqu'un agent nous accompagne", text)
+    assert text[start:end] == "Lorsqu'un agent nous accompagne"
+    span = locate("Lorsque l'agent nous accompagne en permanence, choisit-on encore consciemment", text)
+    assert span is not None and "accompagne en permanence" in text[span[0]:span[1]]
+    assert locate("völlig anderer Satz ohne Bezug zum Text hier", text) is None
+    assert locate("", text) is None

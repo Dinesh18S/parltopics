@@ -5,7 +5,8 @@ The UI exists for one 90-second live demo and for a human to confirm labels. It 
 ## 1. Stack
 
 - FastAPI serves the API **and** one static page (`src/web/index.html`): vanilla JS + a small CSS file. No build step, no framework, no npm.
-- Fonts: system stack. Charts (if any): inline SVG or none.
+- Visual design follows the private UI reference in `designs/` (gitignored; token sheet = screen 15): light civic theme, one plum accent `#564B68`, status by text label, never colour alone.
+- Fonts: Inter + IBM Plex Mono, **served locally** from `src/web/fonts/` (OFL, licences included) so the demo works offline / air-gapped. Charts: inline SVG.
 - Must run inside the same Docker container as the backend.
 
 ## 2. Screens
@@ -90,9 +91,12 @@ Live classification of everything is impossible in a demo. The UI classifies a *
 
 ## 7. Acceptance checklist
 
-- [ ] Typing a new topic + definition and pressing Classify returns cards with no code change
-- [ ] Every visible `match` card has verified evidence + working source link
-- [ ] Keyword-absent filter (core keywords) works and shows ≥3 PolitMonitor-confirmed affairs for digitalisation
-- [ ] Confirm/Reject persists across page reload
-- [ ] With the model endpoint down, the page still demos from cache
+Verified in S8 (headless Chrome, both live and cached-from-a-fresh-DB): items 1–5 pass; item 6 (backup video) is still open.
+
+
+- [x] Typing a new topic + definition and pressing Classify returns cards with no code change (streamed; Cancel works)
+- [x] Every visible `match` card has verified evidence + working source link
+- [x] Keyword-absent filter (core keywords) works and shows ≥3 PolitMonitor-confirmed affairs for digitalisation (23 shown, 21 PolitMonitor-tagged)
+- [x] Confirm/Reject persists across page reload
+- [x] With the model endpoint down, the page still demos from cache (committed `results/demo/*.json` seed an empty DB)
 - [ ] Recorded backup video of the full demo exists in `docs/`

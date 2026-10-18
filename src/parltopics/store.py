@@ -180,3 +180,35 @@ class Store:
     def reviews(self, prediction_id: int) -> list[dict]:
         rows = self.db.execute("SELECT * FROM reviews WHERE prediction_id = ? ORDER BY id", (prediction_id,))
         return [_row(r) for r in rows]
+
+    def run_items(self, run_id: str) -> list[dict]:
+        """Predictions of a run with affair metadata and the latest review (no source text)."""
+        rows = self.db.execute(
+            "SELECT p.id AS prediction_id, p.affair_id, p.lang, p.gold, p.body_key, p.title, p.label, p.confidence, "
+            "p.evidence, p.verify_ok, p.verify_method, p.inconsistent, p.keyword_absent, p.tech_vocab_absent, "
+            "p.status, p.evidence_recovered, a.number, a.type, a.begin_date, a.body_type, s.url, s.title_only, "
+            "s.truncated, r.decision AS review_decision, r.corrected_label AS review_label, r.created_at AS reviewed_at "
+            "FROM predictions p LEFT JOIN affairs a ON a.id = p.affair_id "
+            "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 "
+            "LEFT JOIN reviews r ON r.id = (SELECT MAX(id) FROM reviews WHERE prediction_id = p.id) "
+            "WHERE p.run_id = ? ORDER BY p.id",
+            (run_id,),
+        )
+        return [_row(r) for r in rows]
+
+    def prediction_detail(self, prediction_id: int) -> dict:
+        row = self.db.execute(
+            "SELECT p.*, s.text, s.url, s.title_only, a.number, a.type, a.begin_date, a.body_type FROM predictions p "
+            "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 LEFT JOIN affairs a ON a.id = p.affair_id "
+            "WHERE p.id = ?", (prediction_id,),
+        ).fetchone()
+        if row is None:
+            raise KeyError(prediction_id)
+        return _row(row) | {"reviews": self.reviews(prediction_id)}
+
+    def latest_run(self, topic_sha: str, sample_file: str) -> dict | None:
+        row = self.db.execute(
+            "SELECT id FROM runs WHERE topic_sha = ? AND sample_file = ? AND finished_at IS NOT NULL "
+            "ORDER BY started_at DESC LIMIT 1", (topic_sha, sample_file),
+        ).fetchone()
+        return self.run(row["id"]) if row else None

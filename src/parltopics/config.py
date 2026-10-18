@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     llm_json_mode: str = "json_schema"
     max_input_chars: int = 12000
     title_only_conf_cap: float = 0.6
+    match_threshold: float = 0.9  # D45: fixed on dev by the pre-registered rule
+    demo_default_preset: str = ""  # topics/<id>.yaml shown first in the UI; empty = first preset with results
     opd_api_base: str = "https://api.openparldata.ch"
     data_dir: Path = Path("./data")
     db_path: Path = Path("./data/parltopics.db")

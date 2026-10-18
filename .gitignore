@@ -40,3 +40,6 @@ results/runs/
 
 # Personal notes, never committed
 private/
+
+# UI reference designs (private, never committed)
+designs/

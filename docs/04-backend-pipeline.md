@@ -111,13 +111,17 @@ Rules (enforced in SQLite, tested): predictions and reviews are append-only (UPD
 
 | Method | Path | Does |
 |---|---|---|
-| GET | `/health` | ok + model reachable? |
-| POST | `/classify` | `{affair_id, mode, topic?{name,definition}, scheme?}` → predictions |
-| POST | `/search` | `{topic, filters, pool}` → streams predictions for the demo pool (SSE) |
-| GET | `/predictions?topic=…&run=…` | stored results |
-| POST | `/reviews` | `{prediction_id, decision, corrected_label?, note?}` |
-| GET | `/export.csv`, `/export.json` | topic, affair, confidence, evidence, link, review status |
-| GET | `/metrics` | `results/metrics.json` |
+| GET | `/health` | ok + model reachable? (`mode: live|cached`) |
+| GET | `/api/state` | mode, model, presets (topics/*.yaml) with their latest demo-pool run, pool size, match threshold |
+| GET | `/api/runs/{run_id}` | items of a run: prediction + affair meta + latest review (no source text) |
+| GET | `/api/predictions/{id}` | one prediction with the exact source text, evidence span (for highlighting), reviews |
+| POST | `/api/search` | `{preset_id}` or `{topic:{name,definition,include,exclude}}` → classifies the demo pool live, streams NDJSON (`run`, `item`…, `done`); closing the connection cancels. 503 in cached mode |
+| POST | `/api/reviews` | `{prediction_id, decision, corrected_label?, note?}` (append-only) |
+| GET | `/api/export.csv`, `/api/export.json` | `?run_id=` topic, affair, confidence, evidence, link, review status |
+| GET | `/api/metrics` | `results/metrics.json` |
+| GET | `/` | the demo UI (`src/web/`) |
+
+Single-affair classification stays a CLI command (`parltopics classify --affair`); the UI works on the fixed demo pool (docs/02 §4).
 
 ## 5. CLI
 

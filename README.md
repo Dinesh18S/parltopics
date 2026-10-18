@@ -62,6 +62,7 @@ uv run parltopics data load-bulk            # once: federal bulk texts → data/
 uv run parltopics runs                      # stored runs (SQLite: data/parltopics.db)
 uv run parltopics partner files             # Excel files for the domain partner → data/gold/for_partner/
 make eval RUN="<dev_run> <test_run>"        # digitalisation like-for-like eval → results/metrics.json + metrics.md
+uv run parltopics demo export               # refresh results/demo/*.json (cached demo results for offline mode)
 uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # human review, append-only
 uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
 uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # one model call

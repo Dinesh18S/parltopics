@@ -19,6 +19,7 @@ You are building ParlTopics: an open, topic-agnostic classifier for Swiss parlia
 - Only Apertus does classification, through the OpenAI-compatible client configured by `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`. No other model in the pipeline.
 - No label without code-verified evidence. Verification is pure Python, never a model call.
 - Never commit `.env`, `data/raw/`, `data/cache/`, model weights, or files > 10 MB.
+- `designs/` holds the private UI reference (`designs/ParlTopics — Demo UI.html`, extracted screens in `designs/screens/`, readable markup in `designs/screens/markup/`). It is gitignored: never commit it, never copy it wholesale into `src/`; build the UI in `src/web/` following it.
 - Every failure gets an explicit status and is counted. No silent `except: pass`.
 - Do not tune prompts or thresholds on test samples.
 - Keep the project runnable end-to-end on a clean checkout after every slice. All code lives in `src/`. Never rename or move the template files (README.md, technical_report.md, LICENSE, src/).

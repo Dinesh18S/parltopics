@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParlTopics</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5 L14.6 9.4 L21.5 12 L14.6 14.6 L12 21.5 L9.4 14.6 L2.5 12 L9.4 9.4 Z' fill='%23564B68'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="wm">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 L14.6 9.4 L21.5 12 L14.6 14.6 L12 21.5 L9.4 14.6 L2.5 12 L9.4 9.4 Z" fill="#564B68"/></svg>
+      ParlTopics
+    </div>
+    <div class="seg" role="group" aria-label="Mode">
+      <button type="button" class="on" data-mode="adhoc" aria-pressed="true">Ad-hoc</button>
+      <button type="button" data-mode="standard" aria-pressed="false">Standard</button>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <button type="button" class="tab on" data-view="explore">Explore</button>
+      <button type="button" class="tab" data-view="metrics">Metrics</button>
+    </nav>
+    <div class="spacer"></div>
+    <div class="mbadge" id="modelBadge">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 L14.2 9.8 L21 12 L14.2 14.2 L12 21 L9.8 14.2 L3 12 L9.8 9.8 Z" fill="#8C84A0"/></svg>
+      <span id="modelName">…</span>
+      <svg width="15" height="15" viewBox="0 0 16 16" aria-label="Swiss infrastructure"><rect width="16" height="16" rx="3.5" fill="#B8443B"/><rect x="7" y="3.4" width="2" height="9.2" rx=".4" fill="#fff"/><rect x="3.4" y="7" width="9.2" height="2" rx=".4" fill="#fff"/></svg>
+    </div>
+  </header>
+
+  <main id="explore">
+    <div class="banner hidden" id="offlineBanner" role="status">
+      <div>
+        <div class="t">Model endpoint unreachable</div>
+        <div id="offlineText">Showing cached results. Live classification is paused.</div>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn" type="button" id="retryBtn">Retry connection</button>
+    </div>
+
+    <div class="row" id="standardNote" hidden>
+      <div class="banner" style="flex:1;margin:0;background:#F0ECF5;border-color:#D9D1E6;color:#473C5F">
+        <div><div class="t">Standard mode (APS / Curia Vista)</div>
+        <div>Scheme classification is built in the next slice (S7). Ad-hoc mode works now.</div></div>
+      </div>
+    </div>
+
+    <div class="row" id="queryRow">
+      <label class="inp" style="flex:0 0 auto">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#908A7E" stroke-width="1.8"/><path d="M20 20 L16 16" stroke="#908A7E" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input id="topicName" type="text" placeholder="Topic name" aria-label="Topic name" autocomplete="off">
+      </label>
+      <button class="btn" type="button" id="defToggle" aria-expanded="false" aria-controls="defBox">+ Definition</button>
+      <div class="vsep"></div>
+      <span class="cap" style="font-weight:600">Presets</span>
+      <span id="presetChips" style="display:flex;gap:8px;flex-wrap:wrap"></span>
+      <div class="spacer"></div>
+      <span class="chip chip-amber hidden" id="sampleChip" title="Results come from a stored run, not a new model call">Sample data</span>
+      <button class="btn btn-primary" type="button" id="classifyBtn">Classify <span class="kbd"><b>↵</b></span></button>
+    </div>
+
+    <div class="defbox hidden" id="defBox">
+      <label>Definition <textarea id="topicDef" placeholder="One or a few sentences: what counts as this topic?"></textarea></label>
+      <label>Counts as this topic (one per line) <textarea id="topicInclude"></textarea></label>
+      <label>Does not count (one per line) <textarea id="topicExclude"></textarea></label>
+    </div>
+
+    <div class="row" id="filterRow">
+      <label class="filter"><span class="cz">Parliament</span><select id="fParl"><option value="">All</option></select></label>
+      <label class="filter"><span class="cz">Level</span><select id="fLevel"><option value="">Federal · Cantonal · Municipal</option><option>Federal</option><option>Cantonal</option><option>Municipal</option></select></label>
+      <label class="filter"><span class="cz">Language</span><select id="fLang"><option value="">DE · FR · IT</option><option value="de">DE</option><option value="fr">FR</option><option value="it">IT</option></select></label>
+      <label class="filter"><span class="cz">Date</span><select id="fDate"><option value="">2018 → today</option></select></label>
+      <div class="spacer"></div>
+      <button class="toggle" type="button" id="kwToggle" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span id="kwLabel">Keyword absent OFF</span></button>
+    </div>
+
+    <div class="progress hidden" id="progress" role="status" aria-live="polite">
+      <span class="spin" aria-hidden="true"></span>
+      <div>Classifying pool for <strong id="progTopic"></strong></div>
+      <div class="bar"><i id="progBar"></i></div>
+      <div class="mono"><strong id="progDone">0</strong> / <span id="progTotal">0</span> classified</div>
+      <button class="btn" type="button" id="cancelBtn">Cancel</button>
+    </div>
+
+    <div class="strip" id="strip" aria-live="polite"></div>
+
+    <div class="tablewrap" id="tableWrap">
+      <table class="tbl">
+        <thead><tr><th>Parl.</th><th>Number</th><th>Date</th><th>Lang</th><th>Title</th><th>Label</th><th>Confidence</th><th>Evidence</th><th>Review</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty hidden" id="emptyState"></div>
+    </div>
+  </main>
+
+  <main id="metricsView" class="hidden">
+    <div class="metrics" id="metricsGrid"></div>
+  </main>
+
+  <footer class="foot">
+    <span class="cap">Source: <b>OpenParlData.ch</b> (CC BY 4.0) · Suggestions are AI-generated and need human confirmation.</span>
+    <div class="spacer"></div>
+    <span class="kbd"><b>↵</b> classify</span>
+    <span class="kbd"><b>C</b> confirm</span>
+    <span class="kbd"><b>R</b> reject</span>
+    <span class="kbd"><b>↑↓</b> move</span>
+  </footer>
+</div>
+
+<div class="scrim hidden" id="scrim"></div>
+<aside class="detail hidden" id="detail" aria-label="Affair detail" role="dialog" aria-modal="false"></aside>
+
+<script src="app.js"></script>
+</body>
+</html>

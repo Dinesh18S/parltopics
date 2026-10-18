@@ -247,3 +247,59 @@ def enlarge_negatives(
                      "begin_date": dates[affair_id], "title": clean_text(t.get(lang, "")), "type": types[affair_id]})
     out = pd.concat([existing, pd.DataFrame(rows)], ignore_index=True)
     return out.sort_values(["split", "gold", "affair_id"], ascending=[True, False, True])
+
+
+def build_demo_pool(settings: Settings, scan: pd.DataFrame, since: str, seed: int,
+                    n_kw_free: int, n_other_pos: int, n_neg: int) -> pd.DataFrame:
+    """Demo pool (docs/02 §4): PolitMonitor positives (keyword-free with full text, and others) plus in-scope
+    negatives from the same parliaments; federal and cantonal halves; federal languages by rotation."""
+    rng = random.Random(seed)
+    source = AffairSource(settings)
+    pm = load_positives(settings.data_dir / "raw", since)
+    pm = pm.assign(affair_id=pm.openparldata_id.astype(int)).merge(scan, on="affair_id")
+    good = pm[(pm.keyword_absent.astype(str) == "True") & (pm.title_only.astype(str) == "False")]
+    other = pm[~pm.affair_id.isin(good.affair_id)]
+    langs = sorted({lang for b in pm.body_key.unique() for lang in source.api.get_body(b).languages})
+    rows: list[dict] = []
+
+    def add(affair_ids: list[int], body_of: dict[int, str], gold: int, n: int, kind: str) -> None:
+        added = 0
+        for affair_id in affair_ids:
+            if added == n:
+                return
+            body = body_of[affair_id]
+            lang = langs[len(rows) % len(langs)] if body == BULK_BODY_KEY else None
+            try:
+                affair = source.get_affair(affair_id, body)
+                src = assemble(affair, settings.max_input_chars, lang)
+            except (LangMissing, OPDError, KeyError, ValueError):
+                continue
+            if src.lang_mismatch:
+                continue
+            rows.append({"affair_id": affair_id, "body_key": body, "lang": lang or "", "gold": gold, "set": "demo_pool",
+                         "split": kind, "begin_date": affair.begin_date, "title": src.title})
+            added += 1
+
+    for frame, n, kind in ((good, n_kw_free, "pos_keyword_free"), (other, n_other_pos, "pos_other")):
+        for federal in (True, False):
+            part = frame[(frame.body_key == BULK_BODY_KEY) == federal]
+            ids = sorted(part.affair_id)
+            rng.shuffle(ids)
+            add(ids, dict(zip(part.affair_id, part.body_key)), 1, n // 2, kind)
+    pm_ids = set(pm.affair_id)
+    bulk_db = sqlite3.connect(settings.bulk_db_path)
+    fed = [i for (i,) in bulk_db.execute("SELECT id FROM che_affairs WHERE begin_date >= ? ORDER BY id", (since,))
+           if i not in pm_ids]
+    rng.shuffle(fed)
+    add(fed, {i: BULK_BODY_KEY for i in fed}, 0, n_neg // 2, "neg")
+    cantonal_bodies = sorted(b for b in pm.body_key.unique() if b != BULK_BODY_KEY)
+    cand: list[int] = []
+    body_of: dict[int, str] = {}
+    for body in cantonal_bodies:
+        ids = [int(r["id"]) for r in source.api.list_affairs_since(body, since) if int(r["id"]) not in pm_ids]
+        picked = rng.sample(sorted(ids), min(4, len(ids)))
+        cand += picked
+        body_of |= {i: body for i in picked}
+    rng.shuffle(cand)
+    add(cand, body_of, 0, n_neg - n_neg // 2, "neg")
+    return pd.DataFrame(rows, columns=SAMPLE_COLUMNS)

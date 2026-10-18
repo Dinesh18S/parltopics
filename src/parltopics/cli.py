@@ -13,7 +13,7 @@ from parltopics.evaluate import metrics_report
 from parltopics.evaluate import report as reports
 from parltopics.evaluate.keyword_scan import scan as keyword_scan
 from parltopics.evaluate.samples import (
-    build_aps_gold, build_digi_federal, build_first_loop, enlarge_negatives, federal_slice,
+    build_aps_gold, build_demo_pool, build_digi_federal, build_first_loop, enlarge_negatives, federal_slice,
 )
 from parltopics import partner as partner_files
 from parltopics.sources.router import AffairSource
@@ -41,6 +41,8 @@ partner_app = typer.Typer(no_args_is_help=True, help="Excel files for the domain
 app.add_typer(partner_app, name="partner")
 eval_app = typer.Typer(no_args_is_help=True, help="Evaluations → results/metrics.json + metrics.md.")
 app.add_typer(eval_app, name="eval")
+demo_app = typer.Typer(no_args_is_help=True, help="Cached demo results for the UI.")
+app.add_typer(demo_app, name="demo")
 
 
 @app.callback()
@@ -203,6 +205,28 @@ def sample_enlarge(
     typer.echo(json.dumps(meta["sample"], indent=2))
 
 
+@sample_app.command("demo-pool")
+def sample_demo_pool(
+    out: Path = Path("data/samples/demo_pool.csv"),
+    since: str = "2018-01-01",
+    seed: int = 7,
+    n_keyword_free: int = 60,
+    n_other_positive: int = 40,
+    n_negative: int = 100,
+    force: bool = False,
+) -> None:
+    """Fixed demo pool for the UI (docs/02 §4); needs the PolitMonitor keyword scan (parltopics partner files)."""
+    if out.exists() and not force:
+        typer.echo(f"{out} exists (frozen); use --force to rebuild")
+        return
+    settings = get_settings()
+    scan = pd.read_csv(settings.data_dir / "cache" / "politmonitor_keyword_scan.csv", keep_default_na=False)
+    df = build_demo_pool(settings, scan, since, seed, n_keyword_free, n_other_positive, n_negative)
+    df.to_csv(out, index=False)
+    typer.echo(f"wrote {out}: {len(df)} rows; {df.split.value_counts().to_dict()}; "
+               f"federal {int((df.body_key == 'CHE').sum())}, parliaments {df.body_key.nunique()}")
+
+
 @report_app.command("first-loop")
 def report_first_loop(run_id: str, compare_to: str | None = None) -> None:
     """Table, summary, truncation report; optionally what changed vs another run on the same sample."""
@@ -277,6 +301,22 @@ def eval_digitalisation(
     typer.echo(md)
     typer.echo(f"review sheet: {len(rows)} affairs → data/gold/for_partner/adjudication.xlsx "
                f"(key: results/adjudication_key.csv)")
+
+
+@demo_app.command("export")
+def demo_export(pool: Path = Path("data/samples/demo_pool.csv")) -> None:
+    """Export the latest finished demo-pool run of every preset topic to results/demo/<preset>.json (committed)."""
+    from parltopics import api as web
+    from parltopics import demo
+
+    store = Store(get_settings().db_path)
+    for preset_id, (_, topic) in web.presets().items():
+        run = store.latest_run(web.topic_sha(topic), str(pool))
+        if run is None:
+            typer.echo(f"{preset_id}: no finished run on {pool}")
+            continue
+        n = demo.export_run(store, run["id"], RESULTS_DIR / "demo" / f"{preset_id}.json")
+        typer.echo(f"{preset_id}: run {run['id']} ({run['prompt_template']}, {n} predictions) → results/demo/{preset_id}.json")
 
 
 @partner_app.command("files")

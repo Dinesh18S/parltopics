@@ -92,3 +92,18 @@ def check_prediction(
         status=status, verify_ok=result.ok, verify_method=result.method, score=result.score, confidence=confidence,
         inconsistent=inconsistent,
     )
+
+
+def locate(evidence: str, text: str) -> tuple[int, int] | None:
+    """Span of the evidence in the *original* text (for highlighting): exact, else best fuzzy window."""
+    ev = " ".join(evidence.split()).lower()
+    if not ev:
+        return None
+    low = text.lower()
+    at = low.find(ev)
+    if at >= 0:
+        return at, at + len(ev)
+    best = fuzz.partial_ratio_alignment(ev, low)
+    if best is None or best.score < FUZZY_MIN_SCORE - 12:
+        return None
+    return best.dest_start, best.dest_end

@@ -281,3 +281,22 @@
 - Breakdowns (wide CIs, n ≈ 33–35 positives each): recall DE 57.1 %, FR 60.6 %, IT 45.5 %; federal bills (title-only) 0/7. 102 test rows had French in the Curia Vista "Italian" fields (D39) and were excluded.
 - Review sheet regenerated from this test run: 90 rows = all 5 model-yes/PM-no + 40 of 46 model-no/PM-yes + 45 agreements, shuffled, blind (`data/gold/for_partner/adjudication.xlsx`, key `results/adjudication_key.csv`). After-review numbers come from it (docs/06 §2.4).
 - Limitations to state in the report: the adhoc_v3 test numbers were seen before the threshold rule was fixed (D41); prompts were revised on dev only; dev/test come from the same frozen sample; PolitMonitor labels are a lower bound (README of the challenge files).
+
+### D47 — Demo UI follows the private reference; fonts served locally (slice S8, 2026-10-18)
+- Decision: the UI (`src/web/index.html`, `style.css`, `app.js`; vanilla JS, no build step) implements the reference screens in `designs/` (gitignored, never committed): explore table, row detail panel, live classification with progress + cancel, metrics tab, empty / model-unreachable / no-matches / rejected states, token sheet. Inter + IBM Plex Mono are served from `src/web/fonts/` (OFL, licences included).
+- Why: your reference; docs/02 said "system stack" — changed so the look matches while staying offline/air-gapped capable (no Google Fonts at runtime). docs/02 updated.
+- Standard mode shows an honest "built in S7" note; metrics cards for S7/S9 say "pending" instead of the reference's "XX%".
+
+### D48 — Demo pool and cached results (slice S8, 2026-10-18)
+- Decision: `parltopics sample demo-pool` (seed 7) → `data/samples/demo_pool.csv`: 200 affairs, ≥ 2018, 35 parliaments, half federal: 60 keyword-free PolitMonitor positives with full text, 40 other positives, 100 in-scope negatives (federal from the bulk table, cantonal 4 per parliament); `lang_mismatch` rows skipped. Both presets pre-computed with adhoc_v5 (runs 20261018T141718036138Z digitalisation, 20261018T141858835540Z covid19) and exported by `parltopics demo export` to `results/demo/<preset>.json` (≈ 1.8 MB each, committed). On start the API imports any cache whose run is not in the store, so a fresh clone without endpoint demos from cache and reviews still work.
+- The UI shows a row as "suggested" when status ok + label match + confidence ≥ `MATCH_THRESHOLD` (default 0.9, D45). Matches below the threshold and evidence-failed rows are hidden behind counters ("2 rejected (evidence not found)", "24 below threshold") that expand on click (docs/02 §3).
+- Default preset is `DEMO_DEFAULT_PRESET` (.env; `digitalisation` in .env.example) — no topic name in Python.
+
+### D49 — API shape (slice S8, 2026-10-18)
+- Decision: routes under `/api/*` (docs/04 §4.5 updated). Live search is `POST /api/search` streaming NDJSON (not SSE: EventSource cannot POST); a client abort cancels pending model calls. The batch runner became a generator (`batch.iter_classify`) shared by CLI and API. Custom UI topics get `keywords = {topic name}` so "keyword absent" still means "the topic's name never appears".
+- Evidence highlighting: `verify.locate()` finds the evidence span in the original text (exact, else the best fuzzy window), so fuzzy-verified evidence is highlighted too (test added).
+
+### D50 — S8 verification (slice S8, 2026-10-18)
+- docs/02 §7 checks automated with Playwright + local headless Chrome (script kept outside the repo): 9/9 in live mode and 9/9 in cached mode starting from an empty database with no endpoint — default preset loads (45 suggestions), every visible match has verified evidence + link, keyword-absent filter (23 shown, 21 PolitMonitor-tagged), detail panel highlights evidence, keyboard C confirm persists across reload, metrics tab renders, new topic streams + cancel (cached: Classify disabled, banner shown), 1280×720 without page overflow, no JS errors. `make run` (Docker) serves UI, fonts, presets, live mode.
+- Open: the recorded backup video (docs/02 §7 item 6).
+- Incident: my first UI check ran against the real DB and recorded 2 confirm reviews (reviewer "ui") on demo prediction 1714. Reviews are append-only; they touch no evaluation sample or metric. All later checks used throwaway DB copies. Removing them needs a DB rebuild — your call.
