@@ -224,3 +224,27 @@
 - Decision: population = `che_affairs_keywords.csv` rows with `begin_date ≥ 2018-01-01` and `type_en ≠ Consultation` (27,465 affairs). Positives = PolitMonitor rows with scope `ch` (1,396; π = 0.0508). Consultations are excluded on both sides because PolitMonitor tracks them under a separate scope (`chv`, 50 tagged); keeping them would count tagged consultations as negatives.
 - Check (docs/06 §2.2): baseline "Curia Vista area contains Medien und Kommunikation" (area id 34) → precision 40.9 %, recall 80.2 % on the full slice — reproduces the ≈ 41 % / ≈ 81 %. Identical with or without consultations (they carry no Curia Vista areas).
 - The baseline area id is passed as data (Makefile/CLI), not hard-coded in Python.
+
+### D36 — S6 sample and evaluation design (slice S6, 2026-10-18)
+- Decision: `parltopics sample digi-federal --pm-scope ch --exclude-type Consultation --exclude-sample data/samples/first_loop.csv` → `data/samples/digi_federal_2018.csv` + `.meta.json` (population counts for prevalence correction). 150 positives + 250 negatives drawn at random (seed 42) from the D35 slice; language by rotation over the title languages present (DE/FR/IT); dev/test split 30/70 grouped by normalised German title (0 titles straddle the split); first-loop affairs excluded. Result: dev 46 pos / 67 neg, test 104 pos / 183 neg.
+- Evaluation (`parltopics eval digitalisation <run> --cv-area 34`, `make eval RUN=…`): both baselines exact on the whole slice; threshold chosen on dev only; test metrics = recall (Wilson CI), FPR (Wilson CI), prevalence-corrected precision and F1 (stratified bootstrap, 1,000×, seed 42), raw sample precision labelled as such; breakdowns by language, type, title-only; `lang_missing` and `lang_mismatch` excluded and counted (D12). Writes `results/metrics.json` (key `digitalisation_federal_2018`) and `results/metrics.md`.
+- Federal texts come from the bulk table (D34); batch runs use `AffairSource`.
+
+### D37 — Threshold rule "max corrected F1 on dev" is fragile at this n (slice S6, 2026-10-18) — needs your call
+- What happened: on dev, t = 0.9 gave FP = 0/67, so corrected precision 100 % and the highest F1 → chosen. On test, 0.9 gives precision 77.6 % (CI 49–100 %) / recall 40.6 %; 0.5 gives 51.9 % (35–84 %) / 63.4 %. Corrected F1 on test is higher at 0.5 (≈ 57 %) than at 0.9 (53 %).
+- Why fragile: with π = 5 %, corrected precision is driven by FPR, and 67 dev / 159 test negatives cannot pin an FPR below ~3 % (test FPR CI 0.1–3.5 %).
+- Options: (a) more negatives (e.g. +600 → ~10 min of model time) before choosing; (b) pre-register a fixed operating point (0.5, the docs/05 default) and report the dev curve as information; (c) choose by product goal (human review favours recall). Both thresholds are in metrics.json.
+
+### D38 — S6 first result (slice S6, 2026-10-18)
+- Run 20261018T132629077874Z, apertus-v1-5-70b, adhoc_v3, prompt_version d420fc57afb3 (git commit marked -dirty: code changed during the run, prompt/topic/params did not; re-run on a clean commit before reporting).
+- Baselines, full slice (27,465): Curia Vista "Medien und Kommunikation" P 40.9 % / R 80.2 %; core-keyword search P 41.3 % / R 56.4 %.
+- Model, test (101 pos + 159 neg after exclusions): see D37. Evidence verified 69/76 model matches (3 fuzzy); 7 evidence_failed, 1 parse_error, 1 abstain, 1 inconsistent. Keyword-absent matches shown: 14, all PolitMonitor-tagged.
+- Recall by language at t = 0.9: DE 28.6 %, FR 54.5 %, IT 39.4 % (n ≈ 33–35 each; wide CIs). Title-only (federal bills): 0/7.
+- Error check (pipeline only, no tuning on test): the dev evidence failures are real paraphrases (match scores 52–71), not a verification bug.
+- Recall is the weak side. Any prompt revision must be driven by **dev** errors only (AGENTS.md), then re-run once on test.
+
+### D39 — Curia Vista "Italian" texts are often French (slice S6, 2026-10-18)
+- 27 of ~100 sampled federal rows requested in Italian had French in the IT field (title and text): `lang_mismatch`, excluded per D12. Far more than S1 suggested (3/128). Italian federal coverage is therefore thinner than the file README implies; report the exclusion count with every IT number.
+
+### D40 — Review sheet export and key (slice S6, 2026-10-18)
+- `parltopics eval digitalisation` fills `data/gold/for_partner/adjudication.xlsx` (blind: Review No., Affair ID, Title, Link, excerpt, yes/no/unsure, Note; shuffled) and writes the key to `results/adjudication_key.csv` (group, PolitMonitor label, model outcome, prediction id). Budget 40 per direction + equal number of agreements. At t = 0.9 the test split has 1 model-yes/PM-no and 60 model-no/PM-yes (40 sampled) → 82 rows. The sheet is regenerated if the threshold changes (D37). The key is committed for reproducibility; the reviewer should not open it before finishing.

@@ -71,7 +71,7 @@ def _dropdown(ws: Worksheet, col: int, first_row: int, last_row: int, formula: s
         cell.fill = INPUT_FILL
 
 
-def _excerpt(text: str) -> str:
+def excerpt(text: str) -> str:
     body = text.split("\n\n", 1)[1] if "\n\n" in text else ""
     return body[:EXCERPT_CHARS] + ("…" if len(body) > EXCERPT_CHARS else "")
 
@@ -174,7 +174,7 @@ def aps_gold(settings: Settings, sample: pd.DataFrame, out: Path) -> int:
             src = assemble(affair, settings.max_input_chars, r.lang or None)
         except LangMissing:
             continue
-        rows.append([i, int(r.affair_id), r.body_key, src.lang, src.title, src.url, _excerpt(src.text),
+        rows.append([i, int(r.affair_id), r.body_key, src.lang, src.title, src.url, excerpt(src.text),
                      "", "", "", "", "", ""])
     wb = openpyxl.Workbook()
     _readme(wb, "APS gold labels for 30 affairs (OPTIONAL)", [

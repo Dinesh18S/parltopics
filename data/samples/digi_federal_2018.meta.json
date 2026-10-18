@@ -1,0 +1,29 @@
+{
+  "population": {
+    "since": "2018-01-01",
+    "exclude_types": [
+      "Consultation"
+    ],
+    "pm_scope": "ch",
+    "n": 27465,
+    "positives": 1396,
+    "negatives": 26069,
+    "prevalence": 0.050828326961587476
+  },
+  "sample": {
+    "n_pos": 150,
+    "n_neg": 250,
+    "seed": 42,
+    "dev_share": 0.3,
+    "excluded_samples": [
+      "data/samples/first_loop.csv"
+    ],
+    "excluded_affairs": 40,
+    "counts": {
+      "dev_neg": 67,
+      "dev_pos": 46,
+      "test_neg": 183,
+      "test_pos": 104
+    }
+  }
+}

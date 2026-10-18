@@ -1,6 +1,8 @@
 """Metrics: pure functions over prediction records."""
 
+import hashlib
 import math
+import random
 from collections import Counter
 from statistics import median
 
@@ -74,3 +76,67 @@ def first_loop_summary(rows: list[dict]) -> dict:
         "latency_ms": {"p50": int(median(latencies)) if latencies else None, "p95": _pct(latencies, 0.95)},
         "tokens": {"in": sum(r.get("tok_in") or 0 for r in called), "out": sum(r.get("tok_out") or 0 for r in called)},
     }
+
+
+def corrected_precision(recall: float, fpr: float, prevalence: float) -> float | None:
+    """Precision on the population, from sample recall and FPR (docs/06 §2.3)."""
+    tp = recall * prevalence
+    fp = fpr * (1 - prevalence)
+    return tp / (tp + fp) if tp + fp > 0 else None
+
+
+def f1(precision: float | None, recall: float | None) -> float | None:
+    if precision is None or recall is None or precision + recall == 0:
+        return None
+    return 2 * precision * recall / (precision + recall)
+
+
+def _percentile(values: list[float], q: float) -> float:
+    ordered = sorted(values)
+    return ordered[min(len(ordered) - 1, max(0, int(round(q * (len(ordered) - 1)))))]
+
+
+def bootstrap_corrected(
+    pos_hits: list[bool], neg_hits: list[bool], prevalence: float, n_boot: int = 1000, seed: int = 0
+) -> dict[str, list[float]]:
+    """Stratified bootstrap (positives and negatives resampled separately): 95% percentile intervals."""
+    rng = random.Random(seed)
+    draws: dict[str, list[float]] = {"recall": [], "fpr": [], "precision": [], "f1": []}
+    for _ in range(n_boot):
+        r = sum(rng.choices(pos_hits, k=len(pos_hits))) / len(pos_hits)
+        fp = sum(rng.choices(neg_hits, k=len(neg_hits))) / len(neg_hits)
+        p = corrected_precision(r, fp, prevalence)
+        draws["recall"].append(r)
+        draws["fpr"].append(fp)
+        if p is not None:
+            draws["precision"].append(p)
+            draws["f1"].append(f1(p, r) or 0.0)
+    return {k: [_percentile(v, 0.025), _percentile(v, 0.975)] if v else [0.0, 0.0] for k, v in draws.items()}
+
+
+def _group_key(title: str) -> str:
+    return " ".join(title.lower().split())
+
+
+def grouped_split(keys: list[str], dev_share: float, seed: int) -> list[str]:
+    """'dev' or 'test' per row; rows with the same (normalised) key always share a split."""
+    def bucket(key: str) -> float:
+        digest = hashlib.sha256(f"{seed}:{_group_key(key)}".encode()).hexdigest()
+        return int(digest[:8], 16) / 0xFFFFFFFF
+    return ["dev" if bucket(k) < dev_share else "test" for k in keys]
+
+
+def threshold_curve(rows: list[dict], thresholds: list[float], prevalence: float) -> list[dict]:
+    """Recall, FPR and prevalence-corrected precision if 'shown as match' also needs confidence >= t."""
+    pos = [r for r in rows if r["gold"] == 1]
+    neg = [r for r in rows if r["gold"] == 0]
+    curve = []
+    for t in thresholds:
+        def hit(r: dict) -> bool:
+            return is_predicted_match(r) and (r.get("confidence") or 0) >= t
+        recall = sum(map(hit, pos)) / len(pos) if pos else None
+        fpr = sum(map(hit, neg)) / len(neg) if neg else None
+        precision = corrected_precision(recall, fpr, prevalence) if pos and neg else None
+        curve.append({"threshold": t, "recall": recall, "fpr": fpr, "precision_corrected": precision,
+                      "f1_corrected": f1(precision, recall), "n_pos": len(pos), "n_neg": len(neg)})
+    return curve

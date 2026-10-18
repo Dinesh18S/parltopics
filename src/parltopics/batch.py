@@ -10,8 +10,9 @@ from parltopics.config import Settings
 from parltopics.llm import LLMClient
 from parltopics.prompts import load_prompt
 from parltopics.runlog import RunManifest, log_call, start_run
-from parltopics.sources.api import OPDClient, OPDError
+from parltopics.sources.api import OPDError
 from parltopics.sources.assemble import LangMissing, assemble
+from parltopics.sources.router import AffairSource
 from parltopics.store import Store
 from parltopics.topics import keyword_absent, load_topic, tech_vocab_absent
 
@@ -25,13 +26,13 @@ def run_sample(
     prompt = load_prompt(prompt_version)
     run = start_run(results_dir, prompt, topic, topic_path, settings, sample_file=str(sample_path), notes=notes)
     store.add_run(run, topic)
-    client, llm = OPDClient(settings), LLMClient(settings)
+    source_of, llm = AffairSource(settings), LLMClient(settings)
 
     def one(row: dict) -> dict:
         base = {"run_id": run.run_id, "affair_id": int(row["affair_id"]), "body_key": row["body_key"],
                 "gold": int(row["gold"]), "title": row["title"], "lang": row["lang"] or None}
         try:
-            affair = client.get_affair(int(row["affair_id"]))
+            affair = source_of.get_affair(int(row["affair_id"]), row["body_key"])
             source = assemble(affair, settings.max_input_chars, row["lang"] or None)
         except LangMissing as e:
             return base | {"status": "lang_missing", "error": str(e)}

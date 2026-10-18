@@ -1,11 +1,14 @@
 """Build and freeze sample files (affair ids + gold labels) with fixed seeds."""
 
+import json
 import random
+import sqlite3
 from pathlib import Path
 
 import pandas as pd
 
 from parltopics.config import Settings
+from parltopics.evaluate.metrics import grouped_split
 from parltopics.sources.api import Affair, OPDClient, OPDError
 from parltopics.sources.assemble import TRANSLATED_BODY_TYPES, LangMissing, assemble, clean_text
 from parltopics.sources.bulk import BULK_BODY_KEY
@@ -171,3 +174,47 @@ def build_aps_gold(
                 continue
             added += take(affair, None)
     return pd.DataFrame(rows, columns=SAMPLE_COLUMNS)
+
+
+def federal_slice(settings: Settings, since: str, exclude_types: list[str], pm_scope: str) -> pd.DataFrame:
+    """Like-for-like population: federal affairs since `since` (bulk table), with the PolitMonitor flag."""
+    db = sqlite3.connect(settings.bulk_db_path)
+    df = pd.read_sql_query(
+        "SELECT id AS affair_id, number, type_en, begin_date, title_json, topic_ids FROM che_affairs "
+        "WHERE begin_date >= ?", db, params=(since,),
+    )
+    df = df[~df.type_en.isin(exclude_types)].copy()
+    pm = pd.read_csv(settings.data_dir / "raw" / "politmonitor_digitalisierung.csv", dtype=str)
+    positives = set(pm[(pm.body_key == BULK_BODY_KEY) & (pm.politmonitor_scope == pm_scope)]
+                    .openparldata_id.astype(int))
+    df["gold"] = df.affair_id.isin(positives).astype(int)
+    df["titles"] = df.title_json.map(json.loads)
+    df["topic_ids"] = df.topic_ids.fillna("").map(lambda s: [t.strip() for t in s.split("|") if t.strip()])
+    return df.drop(columns="title_json").reset_index(drop=True)
+
+
+def build_digi_federal(
+    population: pd.DataFrame, n_pos: int, n_neg: int, seed: int, dev_share: float, exclude: set[int],
+) -> pd.DataFrame:
+    """Stratified random sample (n_pos positives, n_neg negatives), language by rotation over the title
+    languages present, dev/test split grouped by title (identical titles share a split)."""
+    rng = random.Random(seed)
+    langs = sorted({lang for titles in population.titles for lang in titles})
+    rows = []
+    for gold, n in ((1, n_pos), (0, n_neg)):
+        pool = sorted(i for i in population[population.gold == gold].affair_id if i not in exclude)
+        picked = set(rng.sample(pool, n))
+        sub = population[population.affair_id.isin(picked)].sort_values("affair_id")
+        order = list(sub.index)
+        rng.shuffle(order)
+        for k, idx in enumerate(order):
+            r = population.loc[idx]
+            rotation = langs[k % len(langs):] + langs[:k % len(langs)]
+            lang = next(l for l in rotation if l in r.titles)
+            title_key = r.titles.get(langs[0]) or next(iter(r.titles.values()))
+            rows.append({"affair_id": int(r.affair_id), "body_key": BULK_BODY_KEY, "lang": lang, "gold": gold,
+                         "set": "digi_federal_2018", "split": "", "begin_date": r.begin_date,
+                         "title": clean_text(r.titles.get(lang, "")), "type": r.type_en, "group_key": title_key})
+    df = pd.DataFrame(rows)
+    df["split"] = grouped_split(df.group_key.tolist(), dev_share, seed)
+    return df.drop(columns="group_key").sort_values(["split", "gold", "affair_id"], ascending=[True, False, True])
