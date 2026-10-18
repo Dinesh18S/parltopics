@@ -42,7 +42,7 @@
 - Affects: `sources/api.py`; docs/04 §4.1 (pending your OK).
 - Revisit if: S6/S9 need thousands of federal texts (then add a bulk reader/index).
 
-### D7 — Affair language rule (slice S1, 2026-10-18)
+### D7 — Affair language rule (slice S1, 2026-10-18) — superseded by D12
 - Decision: requested `lang` → single title language → majority language of docs with text → first of de/fr/it. Stored as `lang_source`.
 - Why: the API has no affair language field. Multilingual titles occur for CHE (1,407), BE (171), VS (141), FR (78), GR (17) PolitMonitor rows. Pure "first of de/fr/it" picked DE for French-majority FR/VS affairs; doc majority fixes that (e.g. 236793 → fr). CHE has no docs → DE, so eval samples set `lang` per row.
 - Alternatives rejected: a language detector on the title (docs/03 §6) — extra dependency, and the title keys already tell us which languages exist.
@@ -69,3 +69,29 @@
 - Alternatives rejected: async client — nothing in S1 needs it.
 - Affects: `sources/api.py`.
 - Revisit if: we see 429s or need > 4 parallel requests.
+
+### D11 — Bulk data goes through a local SQLite table, never per-affair scans (slice S1, 2026-10-18)
+- Decision: single affairs and small runs use the API (cached). Runs above ~500 affairs load the bulk file once into a local SQLite table keyed by affair id and read from there. Never scan the file per affair. docs/04 §4.1 updated with this wording.
+- Why: your call on D6's proposed doc fix; a 232 MB gzip scan per affair would take minutes per lookup.
+- Alternatives rejected: bulk-first for every federal affair (original docs/04) — slow, and needs the index anyway.
+- Affects: docs/04 §4.1; the SQLite loader is built in the first slice that exceeds ~500 affairs (S6).
+- Revisit if: the API starts rate-limiting small runs.
+
+### D12 — Language rule: requested / body / detected, no silent fallback (slice S1, 2026-10-18)
+- Decision: federal (body `type=country`) → language must be requested; cantonal/municipal → the parliament's single official language (`body`) or, for bilingual parliaments, the language with the most doc text by a stopword detector (`detected`); cantonal never takes a language from the sample (error). Missing title/text part in the requested language → `status=lang_missing`, excluded from that language's metrics. Every text is re-checked: `lang_mismatch` when detected ≠ chosen.
+- Why: your rules on D7. Data source: `/v1/bodies/` `type`, `languages`, `lang`. Sample of 100 PolitMonitor affairs (federal ×3 languages): 4/132 lang_missing, 3/128 federal mismatches (Curia Vista IT fields that contain French: 160584, 162433, 155310), 0/56 cantonal mismatches.
+- Alternatives rejected: a detector library (langdetect/lingua) — extra dependency; a 30-word stopword list per language is deterministic, testable and enough for ≥ a few sentences. Title-only texts (< ~150 chars) stay undetected (`null`), never guessed.
+- Affects: `sources/assemble.py`, `sources/langcheck.py`, `data/stopwords.json`, `sources/api.py` (Body), docs/03 §6, `src/tests/test_langcheck.py`.
+- Open question: should `lang_mismatch=true` also count as `lang_missing` in metrics (the IT text is really French)? Proposed: yes.
+
+### D13 — Federal affairs use Curia Vista texts only, not attached docs (slice S1, 2026-10-18)
+- Decision: for translated (federal) affairs the assembler ignores `/docs`.
+- Why: federal docs are fedlex links whose extracted text is a trilingual "please enable Javascript" placeholder (e.g. 159814, 162483); it polluted the text and broke language detection. The bulk text file has no docs either, so API and future SQLite paths give identical text.
+- Alternatives rejected: filtering placeholder text by pattern — brittle, and real federal docs are not in the challenge data anyway.
+- Affects: `sources/assemble.py`. Consequence: Federal Council bills ("Government affairs") are title-only (5/44 federal affairs in the sample), confidence capped by the title-only rule.
+- Revisit if: federal recall on bills is poor in S4/S6 — then fetch the Botschaft text from fedlex.
+
+### D14 — Truncation is reported per affair; 40k re-run decides the limit (slice S1, 2026-10-18)
+- Decision: `MAX_INPUT_CHARS` stays 12,000 for S4. `SourceText` records `cut_section` (header of the section where the cut falls) and `chars_lost`; S4 output lists them per truncated affair. After S4, re-run only the truncated affairs with `MAX_INPUT_CHARS=40000`; if ≥ 2 labels or evidence results change, raise the limit. Result logged as a new decision.
+- Why: your call; 27/100 sampled affairs are truncated.
+- Affects: `sources/assemble.py`, S4 report.

@@ -37,3 +37,6 @@ data/raw/
 data/cache/
 *.db
 results/runs/
+
+# Personal notes, never committed
+private/

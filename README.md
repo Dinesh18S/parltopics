@@ -56,7 +56,8 @@ cp .env.example .env   # fill in LLM_API_KEY
 make run               # Docker; app on http://localhost:8080, check /health
 make dev               # same without Docker (needs uv)
 make data              # download challenge files to data/raw and check checksums
-uv run parltopics fetch 235308 --lang fr   # print the text the model sees for one affair
+make test              # unit tests
+uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
 ```
 
 ## 📦 Submission Requirements & Deliverables

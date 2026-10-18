@@ -57,7 +57,7 @@ A slice is **done** only when its verification passes on real data and the outpu
 - **Clean as you go:** no dead code, no commented-out blocks, no comments that restate the code, no placeholder TODOs left in shipped paths.
 - **Before submission:** a review pass that attacks the code and the evaluation: unverified claims, leakage between dev and test, silent failure paths.
 
-## Decision log and learning notes (update with every slice commit)
+## Decision log and learning notes (update with every slice)
 
 ### docs/decisions.md — every non-obvious choice
 Append one entry per decision, newest at the bottom:
@@ -71,11 +71,10 @@ Append one entry per decision, newest at the bottom:
 
 Log: library and model choices, prompt changes, thresholds, sampling, any VERIFY item resolved, any deviation from the docs, and anything that failed and what we did instead.
 
-### docs/learning.md — plain-English explanation per slice
-After each slice, add a short section (max ~150 words) written for a smart non-coder:
-- What this slice does, in one or two sentences
-- How it works: the flow in plain words, no jargon (or jargon explained)
-- What the verification showed (key numbers)
-- One thing that could go wrong and how we'd notice
+### private/learning.md — plain-English notes + jury prep (PRIVATE, gitignored)
+This file is for Dinesh only. It lives in `private/` (gitignored); never commit it, never move it into `docs/`, never mention it in README or the report. Write in simple English (short sentences, explain every technical word). Keep its three parts up to date after each slice:
+- Part 1 — the project in 60 seconds + words to know (add new terms as they appear)
+- Part 2 — per slice: what it does (one line), how it works in plain words, what verification showed (key numbers), what could go wrong and how we'd notice
+- Part 3 — jury practice: likely questions grouped by the 6 jury dimensions, each with a short answer Dinesh can say out loud. Add or update questions the new slice makes answerable; mark answers that still need numbers as *(after Sx)*; never state a number that isn't measured yet.
 
 Rules: short and factual, no filler. If you can't explain a choice simply, flag it as a question for me instead of hiding it.

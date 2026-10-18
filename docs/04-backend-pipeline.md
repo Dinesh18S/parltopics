@@ -63,8 +63,8 @@ Switching 70B ↔ 8B, or gateway ↔ local server, changes only the three `LLM_*
 ## 4. The five steps
 
 ### 4.1 Fetch
-- `get_affair(id) -> Affair` — bulk file first (CHE texts), API otherwise; cached.
-- `assemble(affair) -> SourceText(text, sha256, sections, title_only: bool, lang)`.
+- `get_affair(id) -> Affair` — single affairs and small runs: API (cached). Runs above ~500 affairs: load the bulk file once into a local SQLite table keyed by affair id, then read from there. Never scan the file per affair.
+- `assemble(affair, lang?) -> SourceText(text, sha256, sections, title_only, lang, lang_source, detected_lang, lang_mismatch, truncated, cut_section, chars_lost)`. Language rule and `lang_missing`: see docs/03 §6.
 
 ### 4.2 Classify
 - `classify_adhoc(source, topic) -> Prediction`

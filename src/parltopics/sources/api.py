@@ -32,9 +32,16 @@ class Doc(BaseModel):
     text: str | None
 
 
+class Body(BaseModel):
+    key: str
+    type: str | None
+    languages: list[str]
+    primary: str | None
+
+
 class Affair(BaseModel):
     id: int
-    body_key: str
+    body: Body
     number: str | None
     type: str | None
     begin_date: str | None
@@ -92,11 +99,24 @@ class OPDClient:
                 return rows
             offset += PAGE_LIMIT
 
+    def get_body(self, body_key: str) -> Body:
+        rows = self.get_json("/v1/bodies/", {"body_key": body_key})["data"]
+        if len(rows) != 1:
+            raise OPDError(f"body {body_key}: expected 1 row, got {len(rows)}")
+        b = rows[0]
+        listed = b.get("languages") or b.get("lang") or ""
+        return Body(
+            key=body_key,
+            type=b.get("type"),
+            languages=[x.strip().lower() for x in listed.split(",") if x.strip()],
+            primary=(b.get("lang") or "").lower() or None,
+        )
+
     def get_affair(self, affair_id: int) -> Affair:
         a = self.get_json(f"/v1/affairs/{affair_id}")
         return Affair(
             id=a["id"],
-            body_key=a["body_key"],
+            body=self.get_body(a["body_key"]),
             number=a.get("number"),
             type=(a.get("type_harmonized") or {}).get("en"),
             begin_date=(a.get("begin_date") or "")[:10] or None,

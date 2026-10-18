@@ -4,7 +4,7 @@ import uvicorn
 from parltopics.config import get_settings
 from parltopics.sources import bulk
 from parltopics.sources.api import OPDClient
-from parltopics.sources.assemble import assemble
+from parltopics.sources.assemble import LangMissing, assemble
 
 app = typer.Typer(no_args_is_help=True)
 data_app = typer.Typer(no_args_is_help=True, help="Challenge data files.")
@@ -23,16 +23,25 @@ def serve(host: str = "0.0.0.0", port: int = 8080) -> None:
 
 
 @app.command()
-def fetch(affair_id: int, lang: str | None = typer.Option(None, help="de|fr|it; default: from the title")) -> None:
+def fetch(affair_id: int, lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only")) -> None:
     """Fetch one affair and print the assembled text the model will see."""
     settings = get_settings()
     affair = OPDClient(settings).get_affair(affair_id)
-    source = assemble(affair, settings.max_input_chars, lang)
+    try:
+        source = assemble(affair, settings.max_input_chars, lang)
+    except LangMissing as e:
+        typer.echo(f"status=lang_missing {e}")
+        raise typer.Exit(2)
+    except ValueError as e:
+        typer.echo(f"error: {e}")
+        raise typer.Exit(2)
     typer.echo(
-        f"id={affair.id} body={affair.body_key} number={affair.number} type={affair.type} "
+        f"id={affair.id} body={affair.body.key} number={affair.number} type={affair.type} "
         f"date={affair.begin_date}\nlang={source.lang} ({source.lang_source}) "
-        f"sections={','.join(source.sections)} title_only={source.title_only} "
-        f"chars={len(source.text)}/{source.n_chars_full} truncated={source.truncated}\n"
+        f"detected={source.detected_lang} mismatch={source.lang_mismatch}\n"
+        f"sections={','.join(source.sections)} title_only={source.title_only}\n"
+        f"chars={len(source.text)}/{source.n_chars_full} truncated={source.truncated} "
+        f"cut_section={source.cut_section} chars_lost={source.chars_lost}\n"
         f"url={source.url}\nsha256={source.sha256}\n---"
     )
     typer.echo(source.text)

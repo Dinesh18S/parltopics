@@ -1,4 +1,4 @@
-.PHONY: run dev data
+.PHONY: run dev data test
 
 run:
 	docker compose up --build
@@ -8,3 +8,6 @@ dev:
 
 data:
 	uv run parltopics data download
+
+test:
+	uv run pytest -q
