@@ -58,7 +58,9 @@ make dev               # same without Docker (needs uv)
 make data              # download challenge files to data/raw and check checksums
 make test              # unit tests
 make first-loop        # 20 positives + 20 negatives → table, accuracy, evidence-verified rate
+uv run parltopics data load-bulk            # once: federal bulk texts → data/cache/bulk.db (needed for > ~500 affairs)
 uv run parltopics runs                      # stored runs (SQLite: data/parltopics.db)
+uv run parltopics partner files             # Excel files for the domain partner → data/gold/for_partner/
 uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # human review, append-only
 uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
 uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # one model call

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     opd_api_base: str = "https://api.openparldata.ch"
     data_dir: Path = Path("./data")
     db_path: Path = Path("./data/parltopics.db")
+    bulk_db_path: Path = Path("./data/cache/bulk.db")
 
 
 @lru_cache

@@ -96,6 +96,9 @@ results/          # committed: metrics.json + per-run summaries (not raw outputs
 |---|---|---|
 | `samples/first_loop.csv` | Dinesh | 20 PolitMonitor positives (7 DE / 7 FR / 6 IT, ≥ 2018) + 20 negatives from the same parliaments; all dev (D25) |
 | `samples/first_loop_truncated.csv` | build | the 15 first-loop affairs truncated at 12k chars, for the 40k re-run (D27) |
+| `samples/aps_gold.csv` | build | 30 affairs for blind APS labels: 15 federal (5 DE/FR/IT) + 15 cantonal from monolingual parliaments (5 per language), ≥ 2018, more than a title, first loop excluded, seed 7 (D33) |
+| `gold/for_partner/*.xlsx` | build | partner workbooks: politmonitor_list, cv_aps_mapping (AI draft to check), aps_gold_30 (optional), adjudication (template) — `parltopics partner files` |
+| `gold/cv_aps_mapping_draft.csv` | build | AI-drafted Curia Vista → APS chapter guesses that pre-fill cv_aps_mapping.xlsx; not gold until checked |
 | `samples/digi_federal_2018.csv` | Dinesh | Like-for-like sample: CHE, `begin_date ≥ 2018-01-01`, stratified pos/neg, with the population counts needed for prevalence correction |
 | `samples/curia_vista.csv` | Dinesh | Stratified sample over the 28 areas |
 | `samples/crosslang.csv` | Dinesh | Federal affairs with text in all of DE, FR, IT |

@@ -205,3 +205,22 @@
 
 ### D32 — adhoc_v3 first-loop result (slice S5, 2026-10-18) — dev observation
 - prompt_version d420fc57afb3 (adhoc_v3 + core keywords): positives 14/20, negatives 20/20, evidence 14/14, keyword-absent matches 6 (0 also tech-vocab-absent), 1 abstain, 1 inconsistent (156184 no_match at 0.6). vs adhoc_v2: 1 change (336119 fixed). Confidence now spans 0.2–0.6 for some non-matches instead of always 0.0, which the S6 threshold curve needs.
+
+### D33 — Partner workbooks (step 3, 2026-10-18)
+- Decision: `parltopics partner files` writes four workbooks to `data/gold/for_partner/`, each with a plain-English README sheet carrying the priority order (1 politmonitor_list → 2 cv_aps_mapping → 3 aps_gold_30 optional → 4 adjudication later):
+  - `politmonitor_list.xlsx`: all 3,433 rows, readable headers, real dates, clickable links, filters on every column, plus `Full text available`, `Keyword-free (core words)` and `Also no tech words`. Keyword flags are computed over the **untruncated** full text, all language versions for federal affairs (`evaluate/keyword_scan.py`, 0 errors): 1,342 keyword-free; 1,186 keyword-free **with** full text (CHE 593, BE 82, VS 70, NE 46 …). Title-only affairs (179) are keyword-free too easily, hence the extra column (my addition).
+  - `cv_aps_mapping.xlsx`: 28 Curia Vista areas, pre-filled with my best-guess APS chapters from `data/gold/cv_aps_mapping_draft.csv` (drafted by the AI coding assistant, flagged as such in the README), `Correct? (yes/no)` dropdown and `Correction`; second sheet lists the 22 APS chapters DE/FR with links.
+  - `aps_gold_30.xlsx`: 30 affairs from `data/samples/aps_gold.csv` (15 federal 5/5/5 DE/FR/IT, 15 cantonal 5 per language from monolingual parliaments, ≥ 2018, not title-only, first loop excluded, seed 7), title, link, 1,200-char excerpt, dropdowns over the 22 chapters (+ NONE) and 165 topics, optional second label, unsure flag. No model output. Marked optional.
+  - `adjudication.xlsx`: template (Review No., Affair ID, Title, Link, Text excerpt, yes/no/unsure dropdown, Note) + a Definition sheet copied from `data/gold/digitalisation_definition.md` with the author line removed (no names in files). S6 fills it.
+- Why: your step 3 and priority list. Non-Apertus help: the CV→APS draft was written by the AI coding assistant (Claude); this must be named in the technical report (docs/07).
+- Affects: `partner.py`, `evaluate/keyword_scan.py`, `evaluate/samples.py` (`build_aps_gold`), `cli.py`.
+
+### D34 — Federal bulk texts in SQLite, verified identical to the API (step 3, 2026-10-18)
+- Decision: `parltopics data load-bulk` loads `che_affairs_keywords.csv` + `che_affair_texts.ndjson.gz` once into `data/cache/bulk.db` (gitignored, 920 MB, 19 s; 70,008 affairs, 210,437 texts). `sources/router.AffairSource` reads federal affairs from it when present, everything else from the cached API (D11).
+- Why: the keyword scan (3,433 affairs) and S6 (whole federal slice) exceed ~500 affairs. Check: 30 random federal affairs × DE/FR/IT → 90/90 assembled texts byte-identical (same sha256) between bulk and API.
+- Note: bulk affairs carry only the Curia Vista DE link (the CSV has one URL); FR/IT source links fall back to it.
+
+### D35 — S6 like-for-like slice: federal affairs ≥ 2018 without consultations; baseline reproduced (S6 prep, 2026-10-18)
+- Decision: population = `che_affairs_keywords.csv` rows with `begin_date ≥ 2018-01-01` and `type_en ≠ Consultation` (27,465 affairs). Positives = PolitMonitor rows with scope `ch` (1,396; π = 0.0508). Consultations are excluded on both sides because PolitMonitor tracks them under a separate scope (`chv`, 50 tagged); keeping them would count tagged consultations as negatives.
+- Check (docs/06 §2.2): baseline "Curia Vista area contains Medien und Kommunikation" (area id 34) → precision 40.9 %, recall 80.2 % on the full slice — reproduces the ≈ 41 % / ≈ 81 %. Identical with or without consultations (they carry no Curia Vista areas).
+- The baseline area id is passed as data (Makefile/CLI), not hard-coded in Python.

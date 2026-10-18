@@ -8,6 +8,8 @@ import pandas as pd
 from parltopics.config import Settings
 from parltopics.sources.api import Affair, OPDClient, OPDError
 from parltopics.sources.assemble import TRANSLATED_BODY_TYPES, LangMissing, assemble, clean_text
+from parltopics.sources.bulk import BULK_BODY_KEY
+from parltopics.sources.router import AffairSource
 
 SAMPLE_COLUMNS = ["affair_id", "body_key", "lang", "gold", "set", "split", "begin_date", "title"]
 
@@ -109,3 +111,63 @@ def build_first_loop(settings: Settings, n_pos: int, n_federal: int, since: str,
             raise RuntimeError(f"only {added}/{count} cantonal positives for lang={lang}")
 
     return pd.DataFrame(rows, columns=SAMPLE_COLUMNS).sort_values(["gold", "affair_id"], ascending=[False, True])
+
+
+def build_aps_gold(
+    settings: Settings, per_lang_federal: int, per_lang_cantonal: int, since: str, seed: int, exclude: set[int],
+) -> pd.DataFrame:
+    """Blind APS gold sample: federal (bulk) + cantonal (monolingual parliaments of the PolitMonitor list),
+    evenly over their languages, since `since`, with more than a title, excluding `exclude`."""
+    rng = random.Random(seed)
+    source = AffairSource(settings)
+    raw_dir = settings.data_dir / "raw"
+    pm = load_positives(raw_dir, since)
+    bodies = {key: source.api.get_body(key) for key in sorted(pm.body_key.unique())}
+    mono = {k: b.languages[0] for k, b in bodies.items() if b.type not in TRANSLATED_BODY_TYPES and len(b.languages) == 1}
+    langs = sorted(set(mono.values()))
+    rows: list[dict] = []
+    used = set(exclude)
+
+    def take(affair: Affair, lang: str | None) -> bool:
+        try:
+            src = assemble(affair, settings.max_input_chars, lang)
+        except LangMissing:
+            return False
+        if src.title_only:
+            return False
+        used.add(affair.id)
+        rows.append({"affair_id": affair.id, "body_key": affair.body.key, "lang": lang or "", "gold": "",
+                     "set": "aps_gold", "split": "gold", "begin_date": affair.begin_date, "title": src.title})
+        return True
+
+    keywords = pd.read_csv(raw_dir / "che_affairs_keywords.csv", dtype=str, usecols=["openparldata_id", "begin_date"],
+                           keep_default_na=False)
+    federal_ids = sorted(int(i) for i, d in zip(keywords.openparldata_id, keywords.begin_date) if d >= since)
+    rng.shuffle(federal_ids)
+    for lang in langs:
+        added = 0
+        for affair_id in federal_ids:
+            if added == per_lang_federal:
+                break
+            if affair_id not in used and take(source.get_affair(affair_id, BULK_BODY_KEY), lang):
+                added += 1
+    for lang in langs:
+        lang_bodies = sorted(k for k, v in mono.items() if v == lang)
+        added, attempts = 0, 0
+        while added < per_lang_cantonal:
+            attempts += 1
+            if attempts > 200:
+                raise RuntimeError(f"not enough cantonal affairs for lang={lang}")
+            body = rng.choice(lang_bodies)
+            ids = sorted(int(r["id"]) for r in source.api.list_affairs_since(body, since))
+            if not ids:
+                continue
+            affair_id = rng.choice(ids)
+            if affair_id in used:
+                continue
+            try:
+                affair = source.get_affair(affair_id, body)
+            except OPDError:
+                continue
+            added += take(affair, None)
+    return pd.DataFrame(rows, columns=SAMPLE_COLUMNS)

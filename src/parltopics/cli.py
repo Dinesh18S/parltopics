@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pandas as pd
 import typer
 import uvicorn
 
@@ -7,7 +8,10 @@ from parltopics.batch import run_sample
 from parltopics.classify import classify_adhoc
 from parltopics.config import get_settings
 from parltopics.evaluate import report as reports
-from parltopics.evaluate.samples import build_first_loop
+from parltopics.evaluate.keyword_scan import scan as keyword_scan
+from parltopics.evaluate.samples import build_aps_gold, build_first_loop
+from parltopics import partner as partner_files
+from parltopics.sources.router import AffairSource
 from parltopics.llm import LLMClient
 from parltopics.prompts import load_prompt
 from parltopics.runlog import log_call, start_run
@@ -28,6 +32,8 @@ report_app = typer.Typer(no_args_is_help=True, help="Reports from stored runs.")
 app.add_typer(report_app, name="report")
 review_app = typer.Typer(no_args_is_help=True, help="Human review of stored predictions (append-only).")
 app.add_typer(review_app, name="review")
+partner_app = typer.Typer(no_args_is_help=True, help="Excel files for the domain partner.")
+app.add_typer(partner_app, name="partner")
 
 
 @app.callback()
@@ -172,6 +178,46 @@ def review_show(prediction_id: int) -> None:
     for r in Store(get_settings().db_path).reviews(prediction_id):
         typer.echo(f"{r['id']} {r['created_at']} {r['decision']} {r['corrected_label'] or ''} "
                    f"by={r['reviewer']} {r['note']}")
+
+
+@partner_app.command("files")
+def partner_build(
+    out_dir: Path = Path("data/gold/for_partner"),
+    topic: Path = Path("topics/digitalisation.yaml"),
+    aps_sample: Path = Path("data/samples/aps_gold.csv"),
+) -> None:
+    """politmonitor_list, cv_aps_mapping, aps_gold_30 and the adjudication template (all with README sheets)."""
+    settings = get_settings()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    scan_cache = settings.data_dir / "cache" / "politmonitor_keyword_scan.csv"
+    if not scan_cache.exists():
+        pm = pd.read_csv(settings.data_dir / "raw" / "politmonitor_digitalisierung.csv", dtype=str)
+        keyword_scan(AffairSource(settings), pm, load_topic(topic), settings.llm_concurrency).to_csv(scan_cache, index=False)
+    scan = pd.read_csv(scan_cache, keep_default_na=False)
+    for col in ("keyword_absent", "tech_vocab_absent", "title_only"):
+        scan[col] = scan[col].astype(str).map({"True": True, "False": False})
+    n = partner_files.politmonitor_list(settings, scan, out_dir / "politmonitor_list.xlsx")
+    typer.echo(f"politmonitor_list.xlsx: {n} rows, keyword-free {int(scan.keyword_absent.eq(True).sum())}, "
+               f"unknown {int((scan.scan_error != '').sum())}")
+    n = partner_files.cv_aps_mapping(settings, Path("data/gold/cv_aps_mapping_draft.csv"), out_dir / "cv_aps_mapping.xlsx")
+    typer.echo(f"cv_aps_mapping.xlsx: {n} rows")
+    if not aps_sample.exists():
+        first_loop = set(pd.read_csv("data/samples/first_loop.csv").affair_id)
+        build_aps_gold(settings, 5, 5, "2018-01-01", 7, first_loop).to_csv(aps_sample, index=False)
+    n = partner_files.aps_gold(settings, pd.read_csv(aps_sample, dtype={"lang": str}, keep_default_na=False),
+                               out_dir / "aps_gold_30.xlsx")
+    typer.echo(f"aps_gold_30.xlsx: {n} rows")
+    partner_files.adjudication_template(settings, Path("data/gold/digitalisation_definition.md"),
+                                        out_dir / "adjudication.xlsx")
+    typer.echo("adjudication.xlsx: template")
+
+
+@data_app.command("load-bulk")
+def data_load_bulk() -> None:
+    """Load federal affairs + texts from data/raw into data/cache/bulk.db (once; > ~500 affairs, D11)."""
+    settings = get_settings()
+    counts = bulk.load_bulk(settings.data_dir / "raw", settings.bulk_db_path)
+    typer.echo(f"loaded {counts} into {settings.bulk_db_path}")
 
 
 @data_app.command("download")
