@@ -99,6 +99,24 @@ class OPDClient:
                 return rows
             offset += PAGE_LIMIT
 
+    def list_affairs_since(self, body_key: str, since: str) -> list[dict]:
+        """All affairs of a body with begin_date >= since (newest first; the API has no date filter)."""
+        rows: list[dict] = []
+        offset = 0
+        while True:
+            page = self.get_json(
+                "/v1/affairs/",
+                {"body_key": body_key, "sort_by": "-begin_date", "fields": "id,begin_date",
+                 "limit": PAGE_LIMIT, "offset": offset},
+            )
+            for row in page["data"]:
+                if (row.get("begin_date") or "")[:10] < since:
+                    return rows
+                rows.append(row)
+            if not page["meta"]["has_more"]:
+                return rows
+            offset += PAGE_LIMIT
+
     def get_body(self, body_key: str) -> Body:
         rows = self.get_json("/v1/bodies/", {"body_key": body_key})["data"]
         if len(rows) != 1:

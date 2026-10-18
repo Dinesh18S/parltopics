@@ -3,8 +3,11 @@ from pathlib import Path
 import typer
 import uvicorn
 
+from parltopics.batch import run_sample
 from parltopics.classify import classify_adhoc
 from parltopics.config import get_settings
+from parltopics.evaluate import report as reports
+from parltopics.evaluate.samples import build_first_loop
 from parltopics.llm import LLMClient
 from parltopics.prompts import load_prompt
 from parltopics.runlog import log_call, start_run
@@ -18,6 +21,10 @@ RESULTS_DIR = Path("results")
 app = typer.Typer(no_args_is_help=True)
 data_app = typer.Typer(no_args_is_help=True, help="Challenge data files.")
 app.add_typer(data_app, name="data")
+sample_app = typer.Typer(no_args_is_help=True, help="Build frozen sample files.")
+app.add_typer(sample_app, name="sample")
+report_app = typer.Typer(no_args_is_help=True, help="Reports from run directories.")
+app.add_typer(report_app, name="report")
 
 
 @app.callback()
@@ -58,13 +65,21 @@ def fetch(affair_id: int, lang: str | None = typer.Option(None, help="de|fr|it, 
 
 @app.command()
 def classify(
-    affair: int = typer.Option(..., help="OpenParlData affair id"),
     topic: Path = typer.Option(..., help="topic YAML, e.g. topics/<name>.yaml"),
-    lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only"),
+    affair: int | None = typer.Option(None, help="one OpenParlData affair id"),
+    sample: Path | None = typer.Option(None, help="sample CSV (affair_id, body_key, lang, gold, ...)"),
+    lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only (with --affair)"),
     prompt_version: str = "adhoc_v2",
+    notes: str = "",
 ) -> None:
-    """Classify one affair against one ad-hoc topic and log the call."""
+    """Classify one affair (--affair) or a sample file (--sample) against one ad-hoc topic."""
     settings = get_settings()
+    if (affair is None) == (sample is None):
+        raise typer.BadParameter("pass exactly one of --affair or --sample")
+    if sample is not None:
+        run = run_sample(settings, sample, topic, RESULTS_DIR, prompt_version, notes)
+        typer.echo(f"run_id={run.run_id} prompt_version={run.fingerprint.prompt_version[:12]}")
+        return
     try:
         source = assemble(OPDClient(settings).get_affair(affair), settings.max_input_chars, lang)
     except LangMissing as e:
@@ -72,13 +87,48 @@ def classify(
         raise typer.Exit(2)
     prompt = load_prompt(prompt_version)
     topic_obj = load_topic(topic)
-    run = start_run(RESULTS_DIR, prompt, topic_obj, topic, settings, notes=f"single affair {affair}")
+    run = start_run(RESULTS_DIR, prompt, topic_obj, topic, settings, notes=notes or f"single affair {affair}")
     prediction = classify_adhoc(
         LLMClient(settings), prompt, source, topic_obj, settings.title_only_conf_cap, run.run_id
     )
     log_path = log_call(RESULTS_DIR, prediction)
     typer.echo(prediction.model_dump_json(indent=2))
     typer.echo(f"prompt_version={run.fingerprint.prompt_version[:12]} logged: {log_path}")
+
+
+@sample_app.command("first-loop")
+def sample_first_loop(
+    out: Path = Path("data/samples/first_loop.csv"),
+    n_pos: int = 20,
+    n_federal: int = 6,
+    since: str = "2018-01-01",
+    seed: int = 42,
+    force: bool = False,
+) -> None:
+    """20 PolitMonitor positives + 20 in-scope negatives (same parliaments, since 2018), fixed seed."""
+    if out.exists() and not force:
+        typer.echo(f"{out} exists (frozen); use --force to rebuild")
+        return
+    df = build_first_loop(get_settings(), n_pos, n_federal, since, seed)
+    df.to_csv(out, index=False)
+    typer.echo(f"wrote {out}: {len(df)} rows, gold={df.gold.value_counts().to_dict()}")
+
+
+@report_app.command("first-loop")
+def report_first_loop(run_id: str, compare_to: str | None = None) -> None:
+    """Table, summary, truncation report; optionally what changed vs another run on the same sample."""
+    manifest, rows = reports.load_run(RESULTS_DIR, run_id)
+    typer.echo(reports.table(rows))
+    typer.echo("")
+    typer.echo(reports.summary_text(manifest, rows))
+    typer.echo("")
+    typer.echo(reports.truncation_report(rows))
+    if compare_to:
+        old_manifest, old_rows = reports.load_run(RESULTS_DIR, compare_to)
+        old_fp, new_fp = old_manifest["fingerprint"]["parts"], manifest["fingerprint"]["parts"]
+        changed = [k for k in new_fp if old_fp.get(k) != new_fp[k]]
+        typer.echo(f"\nvs run {compare_to} (prompt parts changed: {changed})")
+        typer.echo(reports.compare(old_rows, rows))
 
 
 @data_app.command("download")

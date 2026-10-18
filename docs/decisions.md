@@ -159,3 +159,32 @@
 
 ### D24 — Status of D16/D20 (step 1, 2026-10-18)
 - `prompt_version` already hashes template + topic YAML content + few-shot + model params (D20, committed in bd7350e); D21 adds the template name to the template hash. Nothing else pending.
+
+### D25 — First-loop sample design (slice S4, 2026-10-18)
+- Decision: `parltopics sample first-loop` (seed 42) → `data/samples/first_loop.csv`: 20 PolitMonitor positives with `begin_date ≥ 2018-01-01` and one negative per positive from the **same parliament** and period that is not in the list. 6 federal (scope `ch`, languages spread evenly, `lang` set per row), 14 cantonal from monolingual parliaments spread evenly over their languages → 7 DE / 7 FR / 6 IT on each side, 11 parliaments. Affairs that can't be assembled in the required language (lang_missing / fetch error) are skipped at build time. All rows are `split=dev` (D22).
+- Why: docs/06 §1 (mixed DE/FR/IT, in-scope negatives). Same-parliament negatives keep level and language identical between positives and negatives. Languages come from the data (`/v1/bodies/`), not code.
+- Alternatives rejected: federal scope `chv` — those 50 rows are federal consultations, not affairs, and have no counterpart in the federal negatives pool; bilingual parliaments — their language is detected, adds noise to a smoke test.
+- Affects: `evaluate/samples.py`, `sources/api.py` (`list_affairs_since`: the API has no date filter, so we page newest-first until 2018, cached).
+- Revisit if: S6 needs stratification by affair type.
+
+### D26 — Keyword-absent flag: word-start prefix match; partner's broad keywords make it almost never true (slice S4, 2026-10-18)
+- Decision: `keyword_absent(text, keywords)` = no keyword of any language starts a word (case-insensitive), so `Daten` hits `Datenschutz` and `Cyber` hits `Cyberangriffe`, but `daten` inside `Kandidaten` does not.
+- Finding: with the partner's keyword list (adds `Daten/données/dati`, `elektronisch/électronique/elettronico`, `Cyber`) **0** first-loop matches are keyword-absent; with the old list (`Digitalisierung/digital`, `numérique/numérisation/digital`, `digitalizzazione/digitale`) there were **6** (all PolitMonitor positives, e.g. "Nachtrag zum Datenschutzgesetz", "Dossier électronique du patient"). Every one of the 6 contains a new broad keyword.
+- **Needs your/partner's call:** the pitch claim is "found affairs where *Digitalisierung / numérique / digitale* never appears" (PRD, docs/06 §2.3 keyword baseline). Proposed: keep `keywords` = the core words used in that claim and in the keyword baseline, and move the broad words to a separate optional `keywords_broad` list (reported as a stricter second count). Not changed until you decide.
+- Affects: `topics.py`, report; docs/05 §4.4 definition of the flag.
+
+### D27 — Truncation test result: 2 changes at 40k, but no gain; limit stays 12,000 pending your call (slice S4, 2026-10-18)
+- Result (rule from D14): the 15 first-loop affairs truncated at 12k were re-run at 40k (`data/samples/first_loop_truncated.csv`). Label/status changed for **2**: 77719 (gold yes) match/ok → match/evidence_failed (worse: the model's quote from the longer text failed verification), 336119 (gold no) match/evidence_failed → no_match (better). Net accuracy unchanged. Both are still truncated at 40k (49k and 189k chars). 10 more changed only their evidence sentence. Input tokens on these 15: 54,692 → 120,194 (×2.2).
+- Control: the same 15 at 12k again → **0** label changes (1 evidence, 2 confidence changes), so the model is effectively deterministic and the 2 changes are caused by the longer input.
+- All 15 cuts fall in DOCUMENT sections of cantonal affairs (government reports of 12k–391k chars); no federal affair is truncated, and title + submitted text are never cut.
+- Decision: the D14 rule is met literally (2 ≥ 2), but the changes cancel out and cost ×2.2 tokens. **Recommendation: keep 12,000**; re-test on the S6 dev set (larger n). Your call.
+
+### D28 — Confidence semantics confirmed: the model returns P(topic), not P(label correct) (slice S4, 2026-10-18)
+- Finding (D17 follow-up): 22 of 25 non-match answers have confidence 0.0; matches have 0.6–1.0. So the number behaves as "probability the topic is a main subject", which is exactly what a ranking score / threshold curve needs.
+- Proposal: change docs/05 §2 to define `confidence` that way (no prompt change, no new prompt_version). Threshold tuning (S6) then uses it directly. Pending your OK.
+
+### D29 — First-loop result and error pattern (slice S4, 2026-10-18) — dev observations, not reported numbers
+- Partner definition (prompt_version 3e7c090902c6): positives 14/20 matched (70%, CI 48–85%), negatives 19/20 not matched (95%, CI 76–99%), evidence verified 14/15 = 93% (≥ 90% gate from docs/06 §1 passed). Old draft definition: 15/20, 19/20, 15/16. 4 affairs changed between the two (1 fixed, 2 broke, 1 no_match→abstain on a negative). With n=20 the difference is noise.
+- Misses: two contradict explicit include rules (64439 media licence fee for SMEs; 229042 access to population-register data for health tasks) → prompt adherence; four are borderline/broad PolitMonitor tags (telework, culture with digital channels, transparency law, electronic water inventory). The one negative error (336119) was caught by verification (evidence_failed, never shown).
+- Rationales sometimes come back in German/Italian although the prompt asks for English (cosmetic).
+- Next: partner's 10-minute review of these errors (docs/06 §1) before any prompt revision.
