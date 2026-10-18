@@ -42,12 +42,12 @@ Population = federal affairs (`body_key=CHE`), `begin_date ≥ 2018-01-01`, insi
 - [ ] Same metrics for keyword search on the same slice — a second, intuitive baseline — using exactly the topic's **core** `keywords` (de: Digitalisierung, digital\*; fr: numérique, numérisation, digital\*; it: digitale, digitalizzazione, digital\*; word-start match in title/text).
 
 ### 2.4 Adjudication
-- [ ] Rules fixed **before** results are seen: the reviewer decides by `data/gold/digitalisation_definition.md` as committed (record its git hash in the adjudication file). No rule changes after the review starts.
+- [ ] Rules fixed **before** results are seen. Review rule (partner, D55): two questions per affair — *Digitale Technik drin?* (ja/nein/unsicher) and *Ziel oder Nebensache?* (Ziel/Nebensache/unsicher); decision = ja only if ja + Ziel, nein if nein or Nebensache, else unsicher (computed in the sheet). `data/gold/digitalisation_definition.md` is the background reference. No rule changes after the review starts. After-review metrics are reported in two pre-registered readings (D56): strict (ja + Ziel, primary) and broad (Digitale Technik drin = ja).
 - [ ] Review **both directions**: all test-set disagreements where model = yes / PolitMonitor = no (FP) **and** model = no / PolitMonitor = yes (FN). If there are more than the review budget, a seeded random sample per direction, and the after-numbers are re-weighted by the sampling rate (stated in the report).
 - [ ] Mix in an equal number of random agreements (TP and TN) so the reviewer can't infer anything from being asked.
 - [ ] The reviewer sees **only the affair text** (title + text + link), in shuffled order: never the model label, confidence, evidence or rationale, and never the PolitMonitor label.
 - [ ] Report precision/recall **before** and **after** review. In the after-table the reviewer's label replaces the PolitMonitor label for every reviewed affair (so FPs can become TPs, FNs can become TNs, and reviewed TPs/TNs can flip too).
-- [ ] Headline line: "N affairs the model found that the manual list missed (confirmed by expert)".
+- [ ] Headline line: "N affairs the model found that the manual list missed (confirmed in a blind review by a team member, MA student in political science)". Never "expert": the reviewer is on the team, not independent; state this as a limitation.
 
 ### 2.5 Breakdowns
 - [ ] By language (DE/FR/IT), by affair type, title-only vs full text

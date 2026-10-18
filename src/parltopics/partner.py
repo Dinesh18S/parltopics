@@ -143,7 +143,7 @@ def cv_aps_mapping(settings: Settings, draft_csv: Path, out: Path) -> int:
         "What this is: the 28 Curia Vista subject areas (the federal parliament's own labels, ~70,000 affairs) and, for "
         "each, the APS chapter(s) it corresponds to. We need this to score APS predictions against Curia Vista labels.",
         "The column 'Draft APS chapter(s)' is pre-filled as a starting point. It was drafted by an AI coding assistant "
-        "(Claude), not by an expert — please check every row.",
+        "(Claude), not by a person — please check every row.",
         "For each row: choose 'yes' or 'no' in 'Correct?'. If 'no', write the right chapter code(s) in 'Correction', "
         "e.g. '6.1; 4.4'. Several chapters per area are fine. If no chapter fits, write 'none'.",
         "The sheet 'APS chapters' lists all 22 chapters (DE/FR) with links. Yellow cells are for you.",
@@ -241,31 +241,44 @@ def in_review_lang(settings: Settings, rows: list[list], key: list[dict], lang: 
 
 
 def adjudication_template(settings: Settings, definition_md: Path, out: Path, rows: list[list] | None = None) -> int:
-    rows = rows or []
+    """Blind review sheet with the partner's two-question rule (D55): Entscheid = ja only if digital technology is
+    in the affair AND it is the goal (Ziel), not a side matter (Nebensache)."""
+    rows = [list(r[:5]) for r in (rows or [])]
     wb = openpyxl.Workbook()
     _readme(wb, "Review: is this affair about digitalisation? (blind)", [
         "What this is: affairs where the evaluation found a disagreement (and some where it didn't), mixed and shuffled. "
         "You don't see who said what — no model answer, no PolitMonitor tag, no hint which side flagged it. "
-        "Your answer decides the 'after review' numbers.",
-        "For each row: read the title and the excerpt (open the link for the full text if needed). Decide by your "
-        "definition (sheet 'Definition', = data/gold/digitalisation_definition.md as committed — the rules are fixed "
-        "before you start). Choose yes / no / unsure. Add a short note if useful (e.g. 'only in passing').",
+        "Your answers decide the 'after review' numbers.",
+        "Rule (fixed before you start): answer two questions per affair. "
+        "1) 'Digitale Technik drin?' — ja / nein / unsicher. "
+        "2) 'Ziel oder Nebensache?' — is the digital part the goal of the affair (Ziel) or a side matter (Nebensache)? "
+        "The column 'Entscheid' fills itself: ja only if 1 = ja AND 2 = Ziel; nein if 1 = nein or 2 = Nebensache; "
+        "otherwise unsicher. Question 2 can stay empty when 1 = nein.",
+        "Texts: federal affairs are shown in the official German version where the original is French or Italian "
+        "(marked in the excerpt). Open the link for the full text. 'Belegsatz' (optional): the sentence that decided it.",
         "About 1 minute per affair. Yellow cells are for you. Please don't change the other columns or the row order.",
-        "This file is a template until the evaluation run (S6) fills it.",
     ])
     ws = wb.create_sheet("Review")
-    _table(ws, ["Review No.", "Affair ID", "Title", "Link", "Text excerpt",
-                "Is this about digitalisation? (yes/no/unsure)", "Note"],
-           rows, [10, 10, 45, 8, 90, 18, 40], wrap={3, 5})
+    body = []
+    for i, row in enumerate(rows, start=2):
+        decision = (f'=IF(F{i}="nein","nein",IF(OR(F{i}="",G{i}=""),"",'
+                    f'IF(AND(F{i}="ja",G{i}="Ziel"),"ja",IF(G{i}="Nebensache","nein","unsicher"))))')
+        body.append(row + ["", "", decision, "", ""])
+    _table(ws, ["Review No.", "Affair ID", "Title", "Link", "Text excerpt", "Digitale Technik drin?",
+                "Ziel oder Nebensache?", "Entscheid (auto)", "Belegsatz (optional)", "Note"],
+           body, [10, 10, 40, 8, 80, 14, 16, 12, 40, 30], wrap={3, 5, 9})
     _links(ws, 4)
-    last = max(len(rows) + 1, 301)
-    _dropdown(ws, 6, 2, last, '"yes,no,unsure"')
-    for (cell,) in ws.iter_rows(min_row=2, max_row=last, min_col=7, max_col=7):
-        cell.fill = INPUT_FILL
+    last = max(len(rows) + 1, 2)
+    _dropdown(ws, 6, 2, last, '"ja,nein,unsicher"')
+    _dropdown(ws, 7, 2, last, '"Ziel,Nebensache,unsicher"')
+    for col in (9, 10):
+        for (cell,) in ws.iter_rows(min_row=2, max_row=last, min_col=col, max_col=col):
+            cell.fill = INPUT_FILL
+    for (cell,) in ws.iter_rows(min_row=2, max_row=last, min_col=8, max_col=8):
+        cell.font = Font(bold=True)
     definition = wb.create_sheet("Definition")
     text = re.sub(r"\*\*Author:\*\*[^.]*\.\s*", "", definition_md.read_text(encoding="utf-8"))
-    lines = text.splitlines()
-    for i, line in enumerate(lines, start=1):
+    for i, line in enumerate(text.splitlines(), start=1):
         definition.cell(row=i, column=1, value=line).alignment = Alignment(wrap_text=True, vertical="top")
     definition.column_dimensions["A"].width = 140
     wb.save(out)

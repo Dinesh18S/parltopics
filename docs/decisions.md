@@ -318,3 +318,19 @@
 - Cases (all federal 2018, all PolitMonitor-tagged, none in the S6 sample; 63243 is in the demo pool): partner yes on 153741 (net neutrality); no on 63243 (Amazon/Post parcel prices); no/unsure on 152976 (Post–Amazon partnership), 62615 (fake news), 62624 (civil service for cybersecurity).
 - Model (adhoc_v5, DE): 153741 match 1.00, 63243 no_match 0.20, 152976 match 0.85, 62615 match 0.70, 62624 match 0.95. At the 0.9 threshold the model agrees with the partner on 4/5; PolitMonitor agrees with her on 1/5.
 - Conflict to resolve **before the blind review** (D23: rules fixed first): her case rubric ("Ziel oder Nebensache?", "Ohne Digitales sinnvoll?") says no for 62624 and 152976, but her definition says "Cybersecurity → Yes" and counts "parcel deals with online platforms". Either the rubric or the definition must be the rule. Not used for any prompt or threshold change (no tuning on these cases).
+
+### D55 — Review rule = the partner's two questions (S8 follow-up, 2026-10-18)
+- Decision (partner, via you): in the blind review each affair gets two answers — "Digitale Technik drin?" (ja/nein/unsicher) and "Ziel oder Nebensache?" (Ziel/Nebensache/unsicher). Entscheid = ja only if ja + Ziel; nein if nein or Nebensache; otherwise unsicher. The sheet computes it (formula column), so the rule is applied identically to every row. Fixed now, before she sees any row (D23). docs/06 §2.4 updated.
+- Consequence to state in the report: this rule is **stricter than PolitMonitor's tag and than the prompt's include list** (e.g. civil service for cybersecurity, Post–Amazon partnership: digital present but a side matter → nein). The reported test numbers (D46) used the frozen adhoc_v5 prompt; "after review" numbers will measure the model against her stricter concept. "unsicher" is reported separately and not counted as either side.
+- Not changed: the prompt/topic definition (any change now is a new, separately logged evaluation — D41/D46).
+
+### D56 — Two pre-registered readings of the review (S8 follow-up, 2026-10-18) — logged before the review starts
+- The sheet records both of the partner's answers, so after-review metrics are reported twice, decided now:
+  - **Primary (strict, her rule):** reviewer yes = "Digitale Technik drin? = ja" AND "Ziel oder Nebensache? = Ziel".
+  - **Secondary (broad):** reviewer yes = "Digitale Technik drin? = ja" (closer to PolitMonitor's wide tag).
+  - "unsicher" in the deciding answer → excluded from that reading and counted.
+- Why: the partner is unsure whether the strict rule or a broad reading is right; recording both answers lets us report both without changing the rule after seeing cases. No rule, prompt or threshold change follows from either reading.
+
+### D57 — Who reviews, and how we describe it (S8 follow-up, 2026-10-18)
+- The reviewer is the team's partner, a master's student in political science — not an independent DVS/PolitMonitor expert. Wording everywhere: "blind human review by a team member (MA student, political science)", never "expert review" / "confirmed by expert" (docs/06 §2.4 headline line and the Metrics tab fixed; her own definition file still says "blind expert review" — hers to change).
+- Limitation for the report: the reviewer is not independent and knows the project's aim. Mitigations: blind sheet (no model or PolitMonitor label, shuffled, agreements mixed in), rule fixed before the review (D55), two pre-registered readings (D56). An independent second reviewer on a subset (inter-rater agreement) is the named next step.
