@@ -334,3 +334,11 @@
 ### D57 — Who reviews, and how we describe it (S8 follow-up, 2026-10-18)
 - The reviewer is the team's partner, a master's student in political science — not an independent DVS/PolitMonitor expert. Wording everywhere: "blind human review by a team member (MA student, political science)", never "expert review" / "confirmed by expert" (docs/06 §2.4 headline line and the Metrics tab fixed; her own definition file still says "blind expert review" — hers to change).
 - Limitation for the report: the reviewer is not independent and knows the project's aim. Mitigations: blind sheet (no model or PolitMonitor label, shuffled, agreements mixed in), rule fixed before the review (D55), two pre-registered readings (D56). An independent second reviewer on a subset (inter-rater agreement) is the named next step.
+
+### D58 — Rows seen outside the blind setting are excluded from after-review metrics (S8 follow-up, 2026-10-18) — logged before the review starts
+- 65590 (Velomitnahme im Zug) is one of the 90 review rows and the partner already judged it in her own worked cases ("Nein") while picking demo affairs → excluded from all after-review metrics; reported as excluded.
+- `politmonitor_list.xlsx` reveals PolitMonitor's tag. Rule: the reviewer writes "bekannt" in the Note column for any affair she recognises; such rows are excluded the same way and counted. Stated as a limitation (team-member reviewer who has seen the positive list).
+
+### D59 — Partner's demo picks added to the demo pool (S8 follow-up, 2026-10-18)
+- Added 215092 (Deepfakes regulieren), 153587 (Heimatschein), 253543 (Kinder vor manipulativen Algorithmen), 153741 (Netzneutralität) to `data/samples/demo_pool.csv` (now 204, split `pos_partner_pick`, lang de). Re-ran both presets (digitalisation 20261018T153043165005Z, covid19 20261018T153221289354Z) and re-exported `results/demo/*.json`. All four shown (match ≥ 0.95, exact evidence); 215092 and 153587 are keyword-absent — the demo's "keyword search misses it" examples. Demo now shows 49 suggestions, 25 keyword-absent.
+- The demo pool is not an evaluation set; 215092 and 253543 are S6 dev affairs (allowed), none is a test affair.
