@@ -21,6 +21,7 @@ class AdhocOutput(BaseModel):
 
 
 class Prediction(BaseModel):
+    run_id: str
     affair_id: int
     lang: str
     topic: str
@@ -33,8 +34,6 @@ class Prediction(BaseModel):
     verify_method: str
     verify_score: float
     model: str
-    prompt_version: str
-    prompt_sha: str
     source_sha256: str
     latency_ms: int
     tok_in: int
@@ -46,7 +45,7 @@ class Prediction(BaseModel):
 
 
 def classify_adhoc(
-    llm: LLMClient, prompt: Prompt, source: SourceText, topic: Topic, title_only_cap: float
+    llm: LLMClient, prompt: Prompt, source: SourceText, topic: Topic, title_only_cap: float, run_id: str
 ) -> Prediction:
     system, user = render_adhoc(prompt, topic, source.text, source.lang)
     call: LLMCall = llm.complete_json(system, user, AdhocOutput)
@@ -61,6 +60,7 @@ def classify_adhoc(
         status, confidence = check.status, check.confidence
         verify_ok, verify_method, verify_score = check.verify_ok, check.verify_method, check.score
     return Prediction(
+        run_id=run_id,
         affair_id=source.affair_id,
         lang=source.lang,
         topic=topic.name,
@@ -73,8 +73,6 @@ def classify_adhoc(
         verify_method=verify_method,
         verify_score=verify_score,
         model=call.model,
-        prompt_version=prompt.version,
-        prompt_sha=prompt.sha,
         source_sha256=source.sha256,
         latency_ms=call.latency_ms,
         tok_in=call.tok_in,

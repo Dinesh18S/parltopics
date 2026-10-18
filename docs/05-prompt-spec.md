@@ -1,6 +1,12 @@
 # 05 — Prompt Specification
 
-Two prompts, one engine. Prompts are versioned files in `src/parltopics/prompts/`; the SHA of the rendered template is stored on every run. Change a prompt → bump the version → re-run eval. Never edit a prompt that produced a reported number without re-running.
+Two prompts, one engine. Prompt templates are versioned files in `src/parltopics/prompts/` (`<name>.system.txt` + `<name>.user.txt`). Change a template → new template name → re-run eval. Never edit a prompt that produced a reported number without re-running.
+
+### Prompt versioning (what makes two numbers comparable)
+
+- **Run level** (stored on every run manifest / `runs` row): `prompt_version` = sha256 over the hashes of **every input that shapes the prompt or the stored result**: template files, topic YAML content (or the scheme file in standard mode), few-shot examples (if any), and model params (model id, temperature, max_tokens, json mode, `MAX_INPUT_CHARS`, `TITLE_ONLY_CONF_CAP`). The individual part hashes (`template`, `topic`, `fewshot`, `params`) are stored too, so a diff shows which part changed. The human-readable template name (`adhoc_v1`) is stored as `prompt_template`.
+- **Call level** (stored on every prediction): `source_sha256` of the exact assembled affair text, plus `run_id`.
+- Consequence: when the partner edits `topics/digitalisation.yaml`, every later run gets a new `prompt_version`; numbers from different `prompt_version`s are never reported as comparable.
 
 ## 1. Shared principles
 

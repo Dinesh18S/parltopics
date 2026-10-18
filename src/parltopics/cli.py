@@ -7,11 +7,13 @@ from parltopics.classify import classify_adhoc
 from parltopics.config import get_settings
 from parltopics.llm import LLMClient
 from parltopics.prompts import load_prompt
-from parltopics.runlog import log_call, new_run_id
+from parltopics.runlog import log_call, start_run
 from parltopics.sources import bulk
 from parltopics.sources.api import OPDClient
 from parltopics.sources.assemble import LangMissing, assemble
 from parltopics.topics import load_topic
+
+RESULTS_DIR = Path("results")
 
 app = typer.Typer(no_args_is_help=True)
 data_app = typer.Typer(no_args_is_help=True, help="Challenge data files.")
@@ -69,11 +71,14 @@ def classify(
         typer.echo(f"status=lang_missing {e}")
         raise typer.Exit(2)
     prompt = load_prompt(prompt_version)
-    prediction = classify_adhoc(LLMClient(settings), prompt, source, load_topic(topic), settings.title_only_conf_cap)
-    run_id = new_run_id()
-    log_path = log_call(Path("results"), run_id, prediction)
+    topic_obj = load_topic(topic)
+    run = start_run(RESULTS_DIR, prompt, topic_obj, topic, settings, notes=f"single affair {affair}")
+    prediction = classify_adhoc(
+        LLMClient(settings), prompt, source, topic_obj, settings.title_only_conf_cap, run.run_id
+    )
+    log_path = log_call(RESULTS_DIR, prediction)
     typer.echo(prediction.model_dump_json(indent=2))
-    typer.echo(f"logged: {log_path}")
+    typer.echo(f"prompt_version={run.fingerprint.prompt_version[:12]} logged: {log_path}")
 
 
 @data_app.command("download")

@@ -71,7 +71,7 @@ Switching 70B ↔ 8B, or gateway ↔ local server, changes only the three `LLM_*
 - `classify_standard(source, scheme) -> list[Prediction]`
 - Standard mode for APS is **two-stage**: stage 1 picks up to 3 of 22 chapters (or `NONE_OTHER`); stage 2 picks topics only within the chosen chapters. One stage with 165 options is too much for an 8B model and too long a prompt. Curia Vista (28 areas) is one stage.
 - Call settings: temperature 0, JSON schema enforcement when the server supports it (vLLM `response_format`/guided JSON; Ollama `format`). Otherwise: parse the first JSON object, validate with pydantic, one repair retry ("Return only valid JSON for this schema…"), then `status=parse_error`.
-- Record per call: latency, input/output tokens (from usage, or estimated), model, prompt version hash.
+- Record per call: latency, input/output tokens (from usage, or estimated), model, `source_sha256`, `run_id`. Prompt version lives on the run (docs/05).
 
 ### 4.3 Verify (no model)
 `verify_evidence(evidence, source.text, title) -> VerifyResult(ok, method, score, span)` (span = offsets in the normalised text); `check_prediction(...)` turns it into `status` + capped confidence
@@ -91,7 +91,8 @@ Unit tests cover: exact, quote variants, hyphenation, fuzzy pass, fuzzy fail, to
 affairs(id PK, body_key, number, type, begin_date, lang, title, url, level)
 sources(affair_id, text_sha256, title_only, n_chars, assembled_at)
 topics(id PK, kind[adhoc|aps|curia_vista], name, definition, scheme_code, lang)
-runs(id PK, started_at, model, base_url_host, prompt_version, prompt_sha, git_commit, sample_file, notes)
+runs(id PK, started_at, model, base_url_host, prompt_template, prompt_version, template_sha, topic_sha, fewshot_sha,
+     params_sha, params_json, topic_name, git_commit, sample_file, notes)   # prompt_version: see docs/05 "Prompt versioning"
 predictions(id PK, run_id, affair_id, topic_id, label, confidence, evidence, verify_ok, verify_method,
             status[ok|evidence_failed|parse_error|llm_error], latency_ms, tok_in, tok_out, raw_json, created_at)
 reviews(id PK, prediction_id, decision[confirm|reject|correct], corrected_label, reviewer, note, created_at)
@@ -135,6 +136,6 @@ Topics live as small YAML files (`topics/digitalisation.yaml`, `topics/covid19.y
 - Build in vertical slices; a slice is done only when its verification command passes on real data (see `AGENTS.md`).
 - No topic or scheme hard-coded. No silent fallbacks: every failure gets a status and a count.
 - Never commit `.env`, raw data, model weights, or caches.
-- Log one JSONL line per LLM call to `results/runs/<run_id>/calls.jsonl` (ids, latency, tokens, status — not full source text).
+- Each run writes `results/runs/<run_id>/manifest.json` (prompt_version + part hashes + params, git commit, endpoint host) and one JSONL line per LLM call to `calls.jsonl` (ids, latency, tokens, status — not full source text).
 - Determinism: temperature 0, sorted inputs, seeds fixed in sampling.
 - Keep functions pure where possible (`verify`, `metrics`) so they're testable without network or model.

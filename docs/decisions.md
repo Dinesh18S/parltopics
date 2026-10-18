@@ -103,7 +103,7 @@
 - Affects: `llm.py`, `classify.py` (AdhocOutput), docs/04 §3.
 - Revisit if: a judge's local server lacks `response_format` → set `LLM_JSON_MODE=none`.
 
-### D16 — Prompt files and prompt SHA (slice S2, 2026-10-18)
+### D16 — Prompt files and prompt SHA (slice S2, 2026-10-18) — SHA part superseded by D20
 - Decision: each prompt version is two files, `prompts/<version>.system.txt` and `<version>.user.txt` (docs/05 text verbatim). `prompt_sha` = sha256 of the two raw templates; every prediction also stores `source_sha256` of the exact assembled text.
 - Why: docs/05 says "SHA of the rendered template"; a fully rendered prompt differs per affair, so it can't identify a prompt version. Template SHA + source SHA together pin down exactly what the model saw. Topic text is in the YAML (versioned in git).
 - Alternatives rejected: one file with a separator — easier to break.
@@ -130,3 +130,10 @@
 ### D19 — Early signals for S4 (slice S3, 2026-10-18) — observation only
 - 247811 (GE, audiovisual fund, a PolitMonitor positive) → `no_match`: PolitMonitor's tag is broad ("covers … digital media", challenge README); our draft definition is not. Partner's include/exclude rules decide this, not a prompt tweak.
 - 159814 (federal bill "Revision EPDG", title-only, PolitMonitor positive) → `no_match` with empty evidence. Title-only bills (D13) may be systematic misses; the prompt says "abstain" when the text is too short, and the model didn't. Count both patterns in S4 before changing anything.
+
+### D20 — prompt_version fingerprints every input that shapes the prompt (slice S3, 2026-10-18)
+- Decision: run level `prompt_version` = sha256 over part hashes {template files, topic YAML content, few-shot examples, params (model id, temperature, max_tokens, json mode, MAX_INPUT_CHARS, TITLE_ONLY_CONF_CAP)}; parts stored individually. Written to `results/runs/<run_id>/manifest.json` (S5: `runs` table) with git commit (`-dirty` if uncommitted changes) and endpoint host. Call level: `source_sha256` + `run_id` on each prediction. Template name kept as `prompt_template`.
+- Why: your rule — the partner rewrites `topics/digitalisation.yaml` today; a changed definition must give a new version. Check: editing the definition changes `prompt_version` (df8e4fa22021 → e60a567845e4, changed part: topic); `MAX_INPUT_CHARS=40000` → b6800f2ccc27 (changed part: params). 4 tests in `src/tests/test_fingerprint.py`.
+- Added beyond your list: `MAX_INPUT_CHARS` (changes the text the model sees; needed so the D14 40k re-run is a separate version) and `TITLE_ONLY_CONF_CAP` (changes stored confidence). Topic hash is over the parsed YAML content, so comment/whitespace edits don't create a new version but any field change (incl. keywords, which feed the keyword-absent flag) does.
+- Alternatives rejected: hashing the YAML bytes — a reformatted comment would make identical prompts look different.
+- Affects: `runlog.py` (fingerprint, start_run, manifest), `classify.py` (Prediction: `run_id`, no prompt fields), `cli.py`, docs/05 "Prompt versioning", docs/04 §4.4/§7.
