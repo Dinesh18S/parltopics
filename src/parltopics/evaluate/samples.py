@@ -218,3 +218,32 @@ def build_digi_federal(
     df = pd.DataFrame(rows)
     df["split"] = grouped_split(df.group_key.tolist(), dev_share, seed)
     return df.drop(columns="group_key").sort_values(["split", "gold", "affair_id"], ascending=[True, False, True])
+
+
+def enlarge_negatives(
+    existing: pd.DataFrame, population: pd.DataFrame, n_new: int, seed: int, dev_share: float, exclude: set[int],
+) -> pd.DataFrame:
+    """Add n_new random negatives not yet sampled. A new row whose title group already exists keeps that split;
+    other new groups go to dev with probability dev_share (same title grouping as build_digi_federal)."""
+    rng = random.Random(seed)
+    langs = sorted({lang for titles in population.titles for lang in titles})
+    titles = population.set_index("affair_id").titles
+    key_of = {i: titles[i].get(langs[0]) or next(iter(titles[i].values())) for i in population.affair_id}
+    known = {" ".join(key_of[int(a)].lower().split()): s for a, s in zip(existing.affair_id, existing.split)}
+    taken = set(existing.affair_id.astype(int)) | exclude
+    pool = sorted(i for i in population[population.gold == 0].affair_id if i not in taken)
+    picked = sorted(rng.sample(pool, n_new))
+    rng.shuffle(picked)
+    fresh = grouped_split([key_of[i] for i in picked], dev_share, seed)
+    rows = []
+    types = population.set_index("affair_id").type_en
+    dates = population.set_index("affair_id").begin_date
+    for k, (affair_id, split) in enumerate(zip(picked, fresh)):
+        t = titles[affair_id]
+        rotation = langs[k % len(langs):] + langs[:k % len(langs)]
+        lang = next(l for l in rotation if l in t)
+        rows.append({"affair_id": affair_id, "body_key": BULK_BODY_KEY, "lang": lang, "gold": 0,
+                     "set": "digi_federal_2018", "split": known.get(" ".join(key_of[affair_id].lower().split()), split),
+                     "begin_date": dates[affair_id], "title": clean_text(t.get(lang, "")), "type": types[affair_id]})
+    out = pd.concat([existing, pd.DataFrame(rows)], ignore_index=True)
+    return out.sort_values(["split", "gold", "affair_id"], ascending=[True, False, True])

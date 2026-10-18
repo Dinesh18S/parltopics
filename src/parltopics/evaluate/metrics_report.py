@@ -27,7 +27,7 @@ def digitalisation_markdown(m: dict) -> str:
         f"Population: {pop['n']:,} federal affairs since {pop['since']} (types excluded: "
         f"{', '.join(pop['exclude_types']) or 'none'}), {pop['positives']:,} PolitMonitor-tagged "
         f"(prevalence {pop['prevalence']:.2%}). Model `{m['model']}`, prompt `{m['prompt_template']}` "
-        f"(prompt_version `{m['prompt_version'][:12]}`), run `{m['run_id']}`, commit `{m['git_commit']}`.",
+        f"(prompt_version `{m['prompt_version'][:12]}`), runs `{', '.join(m['run_ids'])}`, commit `{m['git_commit']}`.",
         f"Test split: {t['n_pos']} positives, {t['n_neg']} negatives (stratified sample, dev/test grouped by title). "
         f"Threshold {m['threshold']['chosen_on_dev']} chosen on dev ({m['threshold']['rule']}).",
         "",
@@ -47,7 +47,9 @@ def digitalisation_markdown(m: dict) -> str:
         f"{_pct(t['precision_raw_sample'])}. False-positive rate {_pct(t['fpr'])} ({_ci(t['fpr_ci95'])}). "
         f"Corrected F1 {_pct(t['f1_corrected'])} ({_ci(t['f1_corrected_ci95'])}).",
         f"Evidence verified on model matches: {q['evidence']['verified']}/{q['evidence']['model_matches']} "
-        f"({q['evidence']['fuzzy']} fuzzy). Abstain {q['abstain']}, inconsistent {q['inconsistent']}, "
+        f"({q['evidence']['fuzzy']} fuzzy); evidence-failure rate {_pct(q['evidence']['failure_rate_first_attempt'])} "
+        f"before retry → {_pct(q['evidence']['failure_rate_after_retry'])} after ({q['evidence']['recovered']}/"
+        f"{q['evidence']['retried']} recovered). Abstain {q['abstain']}, inconsistent {q['inconsistent']}, "
         f"statuses {q['status_counts']}. Excluded: {m['excluded_from_metrics']}.",
         f"Keyword-absent matches shown (core words): {q['keyword_absent_shown']['n']}, of which PolitMonitor-tagged "
         f"{q['keyword_absent_shown']['gold_positive']} (raw precision {_pct(q['keyword_absent_shown']['raw_precision'])}); "

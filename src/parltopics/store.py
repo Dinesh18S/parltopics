@@ -65,11 +65,12 @@ CREATE TRIGGER IF NOT EXISTS reviews_no_delete BEFORE DELETE ON reviews
 PREDICTION_COLUMNS = (
     "run_id", "affair_id", "source_sha256", "lang", "gold", "body_key", "title", "label", "confidence", "evidence",
     "rationale", "verify_ok", "verify_method", "verify_score", "inconsistent", "keyword_absent",
-    "tech_vocab_absent", "status", "model", "latency_ms", "tok_in", "tok_out", "tokens_estimated", "repaired",
+    "tech_vocab_absent", "evidence_retried", "evidence_recovered", "status", "model", "latency_ms", "tok_in", "tok_out", "tokens_estimated", "repaired",
     "error", "raw_json",
 )
-BOOL_COLUMNS = {"verify_ok", "inconsistent", "keyword_absent", "tech_vocab_absent", "tokens_estimated", "repaired",
+BOOL_COLUMNS = {"verify_ok", "inconsistent", "evidence_retried", "evidence_recovered", "keyword_absent", "tech_vocab_absent", "tokens_estimated", "repaired",
                 "lang_mismatch", "title_only", "truncated"}
+ADDED_PREDICTION_COLUMNS = ("evidence_retried", "evidence_recovered")  # added after S5; migrated on open
 SOURCE_FIELDS = ("lang_source", "detected_lang", "lang_mismatch", "title_only", "truncated", "cut_section",
                  "chars_lost", "n_chars_full", "url")
 
@@ -88,6 +89,10 @@ class Store:
         self.db = sqlite3.connect(path, check_same_thread=False, isolation_level=None)
         self.db.row_factory = sqlite3.Row
         self.db.executescript(SCHEMA)
+        have = {r["name"] for r in self.db.execute("PRAGMA table_info(predictions)")}
+        for column in ADDED_PREDICTION_COLUMNS:
+            if column not in have:
+                self.db.execute(f"ALTER TABLE predictions ADD COLUMN {column} INTEGER")
         self.lock = threading.Lock()
 
     def add_run(self, manifest: RunManifest, topic: Topic) -> None:

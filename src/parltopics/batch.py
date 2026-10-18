@@ -19,9 +19,12 @@ from parltopics.topics import keyword_absent, load_topic, tech_vocab_absent
 
 def run_sample(
     settings: Settings, store: Store, sample_path: Path, topic_path: Path, results_dir: Path,
-    prompt_version: str, notes: str = "",
+    prompt_version: str, notes: str = "", split: str | None = None,
 ) -> RunManifest:
     sample = pd.read_csv(sample_path, dtype={"lang": str}, keep_default_na=False)
+    if split:
+        sample = sample[sample.split == split]
+        notes = f"{notes} [split={split}]".strip()
     topic = load_topic(topic_path)
     prompt = load_prompt(prompt_version)
     run = start_run(results_dir, prompt, topic, topic_path, settings, sample_file=str(sample_path), notes=notes)

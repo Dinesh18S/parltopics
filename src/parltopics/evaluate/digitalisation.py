@@ -53,10 +53,16 @@ def baselines(settings: Settings, population: pd.DataFrame, topic: Topic, cv_are
     }
 
 
-def _rows(store: Store, run_id: str, sample: pd.DataFrame) -> tuple[list[dict], dict]:
+def _rows(store: Store, run_ids: list[str], sample: pd.DataFrame) -> tuple[list[dict], dict]:
+    versions = {store.run(r)["prompt_version"] for r in run_ids}
+    if len(versions) != 1:
+        raise ValueError(f"runs have different prompt_versions: {versions}")
     meta = sample.set_index("affair_id")[["split", "type"]].to_dict("index")
     rows, excluded = [], {"lang_missing": 0, "lang_mismatch": 0}
-    for r in store.predictions(run_id):
+    predictions = [p for run_id in run_ids for p in store.predictions(run_id)]
+    if len({p["affair_id"] for p in predictions}) != len(predictions):
+        raise ValueError("an affair appears in more than one of the runs")
+    for r in predictions:
         if r["status"] in EXCLUDED_STATUSES:
             excluded["lang_missing"] += 1
             continue
@@ -114,7 +120,14 @@ def _quality(rows: list[dict], threshold: float) -> dict:
         "inconsistent": sum(bool(r.get("inconsistent")) for r in rows),
         "evidence": {"model_matches": len(matches), "verified": sum(bool(r["verify_ok"]) for r in matches),
                      "fuzzy": sum(r.get("verify_method") == "fuzzy" for r in matches),
-                     "rate": sum(bool(r["verify_ok"]) for r in matches) / len(matches) if matches else None},
+                     "rate": sum(bool(r["verify_ok"]) for r in matches) / len(matches) if matches else None,
+                     "retried": sum(bool(r.get("evidence_retried")) for r in rows),
+                     "recovered": sum(bool(r.get("evidence_recovered")) for r in rows),
+                     "failure_rate_first_attempt": (
+                         sum(bool(r.get("evidence_retried")) or r["status"] == "evidence_failed" for r in matches)
+                         / len(matches) if matches else None),
+                     "failure_rate_after_retry": (
+                         sum(r["status"] == "evidence_failed" for r in matches) / len(matches) if matches else None)},
         "keyword_absent_shown": {"n": len(kw), "gold_positive": sum(r["gold"] == 1 for r in kw),
                                  "raw_precision": sum(r["gold"] == 1 for r in kw) / len(kw) if kw else None,
                                  "also_tech_vocab_absent": sum(bool(r.get("tech_vocab_absent")) for r in kw)},
@@ -122,14 +135,14 @@ def _quality(rows: list[dict], threshold: float) -> dict:
     }
 
 
-def evaluate(settings: Settings, store: Store, run_id: str, sample_path: Path, topic: Topic,
+def evaluate(settings: Settings, store: Store, run_ids: list[str], sample_path: Path, topic: Topic,
              cv_area_ids: list[str], thresholds: list[float], n_boot: int, seed: int) -> dict:
     sample = pd.read_csv(sample_path, keep_default_na=False)
     meta = json.loads(sample_path.with_suffix(".meta.json").read_text())
     pop_meta = meta["population"]
     prevalence = pop_meta["prevalence"]
-    run = store.run(run_id)
-    rows, excluded = _rows(store, run_id, sample)
+    run = store.run(run_ids[0])
+    rows, excluded = _rows(store, run_ids, sample)
     dev = [r for r in rows if r["split"] == "dev"]
     test = [r for r in rows if r["split"] == "test"]
 
@@ -140,9 +153,10 @@ def evaluate(settings: Settings, store: Store, run_id: str, sample_path: Path, t
     population = federal_slice(settings, pop_meta["since"], pop_meta["exclude_types"], pop_meta["pm_scope"])
     if len(population) != pop_meta["n"] or int(population.gold.sum()) != pop_meta["positives"]:
         raise RuntimeError("population differs from the sample's meta file; rebuild the sample")
+    baseline = baselines(settings, population, topic, cv_area_ids, settings.data_dir / "cache", run["topic_sha"])
     return {
         "set": "digi_federal_2018",
-        "run_id": run_id,
+        "run_ids": run_ids,
         "model": run["model"],
         "prompt_template": run["prompt_template"],
         "prompt_version": run["prompt_version"],
@@ -150,10 +164,14 @@ def evaluate(settings: Settings, store: Store, run_id: str, sample_path: Path, t
         "sample_file": str(sample_path),
         "population": pop_meta,
         "excluded_from_metrics": excluded,
-        "baselines_full_slice": baselines(settings, population, topic, cv_area_ids,
-                                          settings.data_dir / "cache", run["topic_sha"]),
+        "baselines_full_slice": baseline,
         "threshold": {"grid": thresholds, "chosen_on_dev": chosen, "rule": "max corrected F1 on dev",
                       "dev_curve": curve},
+        "test_pr_curve": {
+            "points": threshold_curve(test, [round(i / 20, 2) for i in range(21)], prevalence),
+            "baseline_point": {"name": "Curia Vista area", "precision": baseline["curia_vista_area"]["precision"],
+                               "recall": baseline["curia_vista_area"]["recall"]},
+        },
         "test": {"at_chosen_threshold": _sample_metrics(test, chosen, prevalence, n_boot, seed),
                  "at_0.5": _sample_metrics(test, 0.5, prevalence, n_boot, seed),
                  "quality": _quality(test, chosen),
@@ -165,13 +183,13 @@ def evaluate(settings: Settings, store: Store, run_id: str, sample_path: Path, t
     }
 
 
-def review_rows(store: Store, run_id: str, sample_path: Path, threshold: float, budget: int, seed: int,
+def review_rows(store: Store, run_ids: list[str], sample_path: Path, threshold: float, budget: int, seed: int,
                 excerpt) -> tuple[list[list], list[dict]]:
     """Blind review set from the test split: disagreements in both directions (up to `budget` each) plus as many
     random agreements, shuffled. Returns sheet rows (no labels) and the key (kept away from the reviewer)."""
     rng = random.Random(seed)
     sample = pd.read_csv(sample_path, keep_default_na=False)
-    rows, _ = _rows(store, run_id, sample)
+    rows, _ = _rows(store, run_ids, sample)
     test = [r for r in rows if r["split"] == "test"]
     groups = {
         "model_yes_pm_no": [r for r in test if _shown(r, threshold) and r["gold"] == 0],

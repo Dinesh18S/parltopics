@@ -1,0 +1,10 @@
+TOPIC: {name}
+DEFINITION: {definition}
+{rules}
+AFFAIR (language: {lang}):
+<<<
+{text}
+>>>
+
+Return JSON: {{"label": "match"|"no_match"|"abstain", "confidence": number 0-1,
+"evidence": string, "rationale": string}}

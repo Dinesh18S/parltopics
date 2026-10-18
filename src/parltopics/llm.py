@@ -24,6 +24,7 @@ class LLMCall(BaseModel):
     tokens_estimated: bool
     repaired: bool
     error: str | None = None
+    messages: list[dict] = []
 
 
 def extract_json(raw: str) -> dict | None:
@@ -68,7 +69,12 @@ class LLMClient:
             return None
 
     def complete_json(self, system: str, user: str, schema: type[BaseModel]) -> LLMCall:
-        messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
+        return self.complete_messages([{"role": "system", "content": system}, {"role": "user", "content": user}], schema)
+
+    def complete_messages(self, messages: list[dict], schema: type[BaseModel]) -> LLMCall:
+        """One JSON answer for a conversation; one repair retry if the JSON is invalid."""
+        messages = list(messages)
+        n_given = len(messages)
         response_format = self._response_format(schema)
         extra = {"response_format": response_format} if response_format else {}
         started = time.perf_counter()
@@ -78,8 +84,9 @@ class LLMClient:
         def result(status: Status, parsed: dict | None = None, error: str | None = None) -> LLMCall:
             return LLMCall(
                 status=status, parsed=parsed, raw=raw, model=self.settings.llm_name,
-                latency_ms=int((time.perf_counter() - started) * 1000), repaired=len(messages) > 2,
-                error=error, **usage,
+                latency_ms=int((time.perf_counter() - started) * 1000), repaired=len(messages) > n_given,
+                error=error, messages=messages + ([{"role": "assistant", "content": raw}] if raw is not None else []),
+                **usage,
             )
 
         for attempt in range(2):

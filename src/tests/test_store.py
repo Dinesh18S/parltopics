@@ -20,8 +20,8 @@ AFFAIR = Affair(
 
 def _manifest(run_id: str) -> RunManifest:
     return RunManifest(
-        run_id=run_id, started_at="2026-10-18T00:00:00", prompt_template="adhoc_v3",
-        fingerprint=fingerprint(load_prompt("adhoc_v3"), TOPIC, Settings(_env_file=None, llm_name="m")),
+        run_id=run_id, started_at="2026-10-18T00:00:00", prompt_template="adhoc_v4",
+        fingerprint=fingerprint(load_prompt("adhoc_v4"), TOPIC, Settings(_env_file=None, llm_name="m")),
         topic_name=TOPIC.name, topic_path="topics/x.yaml", base_url_host="h", git_commit="abc",
         sample_file="s.csv", notes="",
     )
@@ -95,5 +95,5 @@ def test_reviews_never_change_predictions(store):
 def test_run_manifest_round_trip(store):
     s, _ = store
     run = s.run("run1")
-    assert run["prompt_template"] == "adhoc_v3"
+    assert run["prompt_template"] == "adhoc_v4"
     assert run["manifest"]["fingerprint"]["parts"]["topic"] == run["topic_sha"]

@@ -16,7 +16,7 @@ from parltopics.topics import Topic
 
 LOGGED_FIELDS = (
     "run_id", "affair_id", "lang", "topic", "label", "confidence", "status", "verify_ok", "verify_method",
-    "verify_score", "inconsistent", "model", "source_sha256", "latency_ms", "tok_in", "tok_out",
+    "verify_score", "inconsistent", "evidence_retried", "evidence_recovered", "model", "source_sha256", "latency_ms", "tok_in", "tok_out",
     "tokens_estimated", "repaired", "error",
 )
 
