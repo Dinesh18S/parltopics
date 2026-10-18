@@ -25,6 +25,10 @@ You are building ParlTopics: an open, topic-agnostic classifier for Swiss parlia
 - Keep the project runnable end-to-end on a clean checkout after every slice. All code lives in `src/`. Never rename or move the template files (README.md, technical_report.md, LICENSE, src/).
 - When an assumption in `docs/03-data-and-api.md` marked VERIFY is checked, update that file in the same commit.
 
+## Current phase
+
+S0–S9 are done (`main` = backup). Work now follows **`docs/08-scale-up-plan.md`** on branch `scale-up`, phases 0–5, with a hard stop on **2026-10-19 12:00** (after that only pitch, report, video). Read `docs/decisions.md` (D1–D64) for everything decided so far.
+
 ## Build order (vertical slices)
 
 A slice is **done** only when its verification passes on real data and the output is pasted into the PR/commit message. "It compiles" is not done.
