@@ -12,6 +12,8 @@ You are building ParlTopics: an open, topic-agnostic classifier for Swiss parlia
 
 ## Hard rules
 
+- **Never commit or push yourself, and never to `main`.** When a slice is ready, show the verification output and a proposed commit message, then ask the human to commit. Only commit if the human explicitly says so in that moment, and then on a feature branch, never `main`.
+
 - Never hard-code a topic, scheme or language in Python. Topics are YAML in `topics/`; schemes are loaded from data files.
 - Only Apertus does classification, through the OpenAI-compatible client configured by `LLM_NAME`, `LLM_BASE_URL`, `LLM_API_KEY`. No other model in the pipeline.
 - No label without code-verified evidence. Verification is pure Python, never a model call.
@@ -43,3 +45,37 @@ A slice is **done** only when its verification passes on real data and the outpu
 - Python 3.11, type hints, pydantic models at boundaries, small pure functions.
 - Tests for `verify`, `metrics`, prompt rendering. No tests that call the live model.
 - Short, plain README updates whenever a command changes.
+
+## How we work (pstack-style)
+
+- **Plan and design are done.** The docs are the plan. Don't redesign; if a doc is wrong, say so and propose a fix.
+- **Smallest change the evidence justifies.** Each slice adds only what its verification needs.
+- **Test-first where correctness is the product:** write failing tests for verify.py and metrics.py before implementing them.
+- **"It compiles" is not evidence.** A slice is done only when its verification runs on real data and you show the output.
+- **Blast radius before changing prompts, thresholds or sampling:** list which reported numbers become stale, re-run them, and note it in the prompt changelog (docs/05 §6).
+- **Sanity-check every number** before it goes in results/metrics.json: sample size, CI, does the baseline reproduce, would a domain expert believe it?
+- **Clean as you go:** no dead code, no commented-out blocks, no comments that restate the code, no placeholder TODOs left in shipped paths.
+- **Before submission:** a review pass that attacks the code and the evaluation: unverified claims, leakage between dev and test, silent failure paths.
+
+## Decision log and learning notes (update with every slice commit)
+
+### docs/decisions.md — every non-obvious choice
+Append one entry per decision, newest at the bottom:
+
+    ### D<n> — <short title> (slice S<x>, <date>)
+    - Decision: what we chose
+    - Why: the reason, with evidence (test output, data check, doc reference)
+    - Alternatives rejected: what else we considered and why not
+    - Affects: which files, numbers or docs this touches
+    - Revisit if: what would make us change it
+
+Log: library and model choices, prompt changes, thresholds, sampling, any VERIFY item resolved, any deviation from the docs, and anything that failed and what we did instead.
+
+### docs/learning.md — plain-English explanation per slice
+After each slice, add a short section (max ~150 words) written for a smart non-coder:
+- What this slice does, in one or two sentences
+- How it works: the flow in plain words, no jargon (or jargon explained)
+- What the verification showed (key numbers)
+- One thing that could go wrong and how we'd notice
+
+Rules: short and factual, no filler. If you can't explain a choice simply, flag it as a question for me instead of hiding it.

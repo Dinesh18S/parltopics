@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./data:/app/data
+      - ./results:/app/results

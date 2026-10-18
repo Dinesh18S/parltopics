@@ -49,6 +49,14 @@ LLM_BASE_URL — endpoint base URL
 LLM_API_KEY — your API key
 ```
 
+### Run ParlTopics
+
+```bash
+cp .env.example .env   # fill in LLM_API_KEY
+make run               # Docker; app on http://localhost:8080, check /health
+make dev               # same without Docker (needs uv)
+```
+
 ## 📦 Submission Requirements & Deliverables
 
 The submission must:

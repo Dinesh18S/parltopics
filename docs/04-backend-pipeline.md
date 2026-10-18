@@ -45,9 +45,9 @@ tests/
 All via env (`.env` locally, never committed):
 
 ```
-LLM_NAME=swiss-ai/Apertus-v1.5-8B
-LLM_BASE_URL=http://localhost:8000/v1
-LLM_API_KEY=local
+LLM_NAME=apertus-v1-5-70b                      # comparison: apertus-v1-5-8b (never the -thinking variants)
+LLM_BASE_URL=https://gateway.keera.ch/api/v1    # Keera gateway (CSCS), OpenAI-compatible
+LLM_API_KEY=...                                 # local vLLM/Ollama: LLM_NAME=swiss-ai/Apertus-v1.5-8B, LLM_BASE_URL=http://localhost:8000/v1
 LLM_TEMPERATURE=0
 LLM_MAX_TOKENS=400
 LLM_CONCURRENCY=4
@@ -58,7 +58,7 @@ OPD_API_BASE=https://api.openparldata.ch
 DATA_DIR=./data
 ```
 
-Switching local 8B ↔ CSCS 70B changes only the three `LLM_*` connection vars.
+Switching 70B ↔ 8B, or gateway ↔ local server, changes only the three `LLM_*` connection vars.
 
 ## 4. The five steps
 
