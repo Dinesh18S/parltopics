@@ -78,7 +78,8 @@ Live classification of everything is impossible in a demo. The UI classifies a *
 
 ## 5. Copy rules
 
-- UI language: English. Affair content: original language, untranslated.
+- UI language: English. Affair content: original language, untranslated; the evidence is always checked and shown in the original.
+- Reading aid for reviewers who don't read the original (`REVIEW_LANG`, e.g. `de`): the parliament's **official** version when it exists (federal affairs), otherwise an **unofficial Apertus translation** on request (`TRANSLATE_MODEL`, labelled "unofficial machine translation — not evidence"). Never used for labels or evidence.
 - Never show party or author on the card (neutrality; keeps attention on the topic).
 - Use "suggested", never "classified as" or "is about".
 - Confidence is described as "model confidence", not probability.

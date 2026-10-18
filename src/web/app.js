@@ -244,8 +244,14 @@ async function openDetail(pid) {
   const d = await api(`/api/predictions/${pid}`);
   const item = S.items.find((i) => i.prediction_id === pid) || {};
   S.detailId = pid;
-  const st = reviewState(item);
   const last = d.reviews[d.reviews.length - 1];
+  const st = last ? reviewState({ review_decision: last.decision, review_label: last.corrected_label }) : "";
+  const stateChip = st === "confirmed" ? `<span class="chip chip-confirmed">✓ Confirmed by reviewer</span>`
+    : st === "rejected" ? `<span class="chip chip-grey">✕ Rejected by reviewer</span>` : `<span class="ai">✦ AI suggestion — needs confirmation</span>`;
+  const rl = S.app.review_lang;
+  const aid = rl && d.lang && d.lang !== rl
+    ? `<div class="aid" id="readingAid"><button class="btn" type="button" data-act="reading">Show ${esc(rl.toUpperCase())} version</button>
+       <span class="cap">The text above is the original (${esc(d.lang.toUpperCase())}); the evidence is checked against it.</span></div>` : "";
   const verified = d.status === "evidence_failed" ? `<span class="badge b-grey">evidence not found</span>`
     : d.verify_ok ? `<span class="badge b-green">✓ found in source text${d.verify_method === "fuzzy" ? " (fuzzy)" : ""}</span>` : "";
   $("detail").innerHTML = `
@@ -266,24 +272,46 @@ async function openDetail(pid) {
       <h1 lang="${esc(d.lang)}">${esc(d.title)}</h1>
       <div class="dgrid">
         <div><div class="meta-k">Suggested topic</div>
-          <div class="badges"><span class="chip chip-topic">${esc(S.topicName)}</span>${st ? "" : `<span class="ai">✦ AI suggestion</span>`}</div>
+          <div class="badges"><span class="chip chip-topic">${esc(S.topicName)}</span>${stateChip}</div>
           <div class="cap" style="margin-top:6px">Model label: <b>${esc(d.label || d.status)}</b></div></div>
         <div><div class="meta-k">Model confidence</div>
           <div class="conf" style="margin-top:8px"><span class="track"><span class="fill" style="width:${Math.round((d.confidence || 0) * 100)}%"></span></span><span class="num">${d.confidence == null ? "—" : d.confidence.toFixed(2)}</span></div></div>
       </div>
       <div class="badges" style="align-items:center"><span class="meta-k">Evidence</span>${verified}${item.keyword_absent ? `<span class="badge b-amber">⚑ keyword absent</span>` : ""}${d.title_only ? `<span class="badge b-grey">title only</span>` : ""}</div>
       <div class="textbox" lang="${esc(d.lang)}">${highlight(d.text || "", d.evidence_span)}</div>
+      ${aid}
       <div class="rationale"><div class="meta-k">Model rationale — not evidence</div><div class="cap" style="font-size:13.5px">${esc(d.rationale)}</div></div>
       ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">Open source page ↗</a>` : ""}
-      <div class="reviewline" id="reviewLine">${last ? `Reviewed: <b>${esc(last.decision)}</b>${last.corrected_label ? ` → ${esc(last.corrected_label)}` : ""} · ${esc(last.created_at.slice(0, 16).replace("T", " "))}` : ""}</div>
+      <div class="reviewline" id="reviewLine" role="status" aria-live="polite">${last ? `Saved: <b>${esc(last.decision)}</b>${last.corrected_label ? ` → ${esc(last.corrected_label)}` : ""} · ${esc(last.created_at.slice(11, 16))} UTC · ${d.reviews.length} review${d.reviews.length > 1 ? "s" : ""} on record (latest counts)` : ""}</div>
     </div>
     <div class="dactions">
-      <button class="btn btn-primary" type="button" data-act="confirm">Confirm <span class="kbd"><b>C</b></span></button>
-      <button class="btn" type="button" data-act="reject">Reject <span class="kbd"><b>R</b></span></button>
+      <button class="btn btn-primary" type="button" data-act="confirm" aria-pressed="${st === "confirmed"}">${st === "confirmed" ? "✓ Confirmed" : "Confirm"} <span class="kbd"><b>C</b></span></button>
+      <button class="btn${st === "rejected" ? " btn-on" : ""}" type="button" data-act="reject" aria-pressed="${st === "rejected"}">${st === "rejected" ? "✕ Rejected" : "Reject"} <span class="kbd"><b>R</b></span></button>
       <label class="filter"><span class="cz">Correct label</span><select data-act="correct"><option value="">…</option><option value="match">This topic</option><option value="no_match">Not this topic</option></select></label>
     </div>`;
   $("detail").classList.remove("hidden");
   $("scrim").classList.remove("hidden");
+}
+
+async function readingAid(pid, machine) {
+  const box = $("readingAid");
+  const lang = S.app.review_lang;
+  box.innerHTML = `<span class="cap">Loading…</span>`;
+  try {
+    const r = machine
+      ? await api(`/api/predictions/${pid}/translate?lang=${encodeURIComponent(lang)}`, { method: "POST" })
+      : await api(`/api/predictions/${pid}/reading?lang=${encodeURIComponent(lang)}`);
+    if (r.kind === "none") {
+      box.innerHTML = `<button class="btn" type="button" data-act="translate"${S.app.mode === "live" ? "" : " disabled"}>Translate to ${esc(lang.toUpperCase())} with Apertus (unofficial)</button>
+        <span class="cap">This parliament publishes no ${esc(lang.toUpperCase())} version.${S.app.mode === "live" ? "" : " Needs the model endpoint."}</span>`;
+      return;
+    }
+    const label = r.kind === "official" ? `Official ${lang.toUpperCase()} version` : `Unofficial machine translation (${esc(r.model)})`;
+    box.innerHTML = `<div class="meta-k">${label}</div><div class="cap">${esc(r.note)}${r.truncated ? " First part only." : ""}</div>
+      <div class="textbox textbox-aid" lang="${esc(lang)}">${esc(r.text)}</div>`;
+  } catch (e) {
+    box.innerHTML = `<span class="cap" role="alert">Could not load: ${esc(e.message)}</span>`;
+  }
 }
 
 function closeDetail() {
@@ -414,6 +442,8 @@ document.addEventListener("click", (e) => {
   if (t.dataset.act === "prev") return move(-1);
   if (t.dataset.act === "next") return move(1);
   if (t.dataset.act === "confirm") return review(S.detailId, "confirm");
+  if (t.dataset.act === "reading") return readingAid(S.detailId, false);
+  if (t.dataset.act === "translate") return readingAid(S.detailId, true);
   if (t.dataset.act === "reject") return review(S.detailId, "reject");
   if (t.id === "defToggle") { const open = $("defBox").classList.toggle("hidden"); t.setAttribute("aria-expanded", String(!open)); return; }
   if (t.id === "classifyBtn") return classify();

@@ -12,7 +12,8 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.worksheet import Worksheet
 
 from parltopics.config import Settings
-from parltopics.sources.assemble import LangMissing, assemble
+from parltopics.sources.assemble import TRANSLATED_BODY_TYPES, LangMissing, assemble
+from parltopics.sources.bulk import BULK_BODY_KEY
 from parltopics.sources.router import AffairSource
 
 HEADER_FILL = PatternFill("solid", fgColor="DDEBF7")
@@ -215,6 +216,28 @@ def aps_gold(settings: Settings, sample: pd.DataFrame, out: Path) -> int:
     _links(ref, 6)
     wb.save(out)
     return len(rows)
+
+
+def in_review_lang(settings: Settings, rows: list[list], key: list[dict], lang: str) -> list[list]:
+    """Show title + excerpt in the reviewer's language when the parliament publishes an official version
+    (federal affairs); otherwise keep the original. The reviewer still sees which language the original is in."""
+    source = AffairSource(settings)
+    out = []
+    for row, k in zip(rows, key):
+        row = list(row)
+        if k["lang"] != lang:
+            affair = source.get_affair(k["affair_id"], BULK_BODY_KEY)
+            try:
+                version = assemble(affair, settings.max_input_chars, lang)
+            except LangMissing:
+                version = None
+            if version is not None and affair.body.type in TRANSLATED_BODY_TYPES:
+                row[2] = version.title
+                row[4] = f"[Official {lang.upper()} version; original is {k['lang'].upper()}] " + excerpt(version.text)
+            else:
+                row[4] = f"[Original {k['lang'].upper()}; no official {lang.upper()} version] " + row[4]
+        out.append(row)
+    return out
 
 
 def adjudication_template(settings: Settings, definition_md: Path, out: Path, rows: list[list] | None = None) -> int:

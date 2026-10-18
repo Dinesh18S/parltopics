@@ -300,3 +300,21 @@
 - docs/02 §7 checks automated with Playwright + local headless Chrome (script kept outside the repo): 9/9 in live mode and 9/9 in cached mode starting from an empty database with no endpoint — default preset loads (45 suggestions), every visible match has verified evidence + link, keyword-absent filter (23 shown, 21 PolitMonitor-tagged), detail panel highlights evidence, keyboard C confirm persists across reload, metrics tab renders, new topic streams + cancel (cached: Classify disabled, banner shown), 1280×720 without page overflow, no JS errors. `make run` (Docker) serves UI, fonts, presets, live mode.
 - Open: the recorded backup video (docs/02 §7 item 6).
 - Incident: my first UI check ran against the real DB and recorded 2 confirm reviews (reviewer "ui") on demo prediction 1714. Reviews are append-only; they touch no evaluation sample or metric. All later checks used throwaway DB copies. Removing them needs a DB rebuild — your call.
+
+### D51 — Visible review state in the detail panel (S8 follow-up, 2026-10-18)
+- Problem (your test): pressing Confirm saved the review (7 reviews were recorded on one affair while testing) but the panel looked unchanged, so it seemed broken.
+- Fix: the panel shows "✓ Confirmed by reviewer" / "✕ Rejected by reviewer" next to the topic, the pressed button changes to "✓ Confirmed" / "✕ Rejected" (aria-pressed), and a status line says what was saved and how many reviews are on record (latest counts).
+
+### D52 — Reading aid in the reviewer's language (S8 follow-up, 2026-10-18)
+- Decision: `REVIEW_LANG=de` enables a reading aid in the detail panel when the affair is in another language: (1) the parliament's **official** version (federal affairs: Curia Vista DE/FR/IT), else (2) on request an **unofficial Apertus translation** of the first 2,000 characters, labelled "not evidence". Labels and evidence stay on the original text.
+- Translation model: `TRANSLATE_MODEL=apertus-v1-5-8b`. Measured on a 2,000-char French cantonal text: 70B 166 s, 8B 4.5 s, near-identical German. Still Apertus only (sovereignty rule); classification stays on 70B.
+- Affects: `api.py` (`/api/predictions/{id}/reading`, `/translate`), `llm.complete_text`, `prompts/translate_v1.system.txt`, `app.js`, docs/02 §5.
+
+### D53 — Review sheet shows official German versions (S8 follow-up, 2026-10-18)
+- Decision: `adjudication.xlsx` (same 90 affairs, same order and seed) shows title + excerpt in `REVIEW_LANG` when the parliament publishes an official version, prefixed "[Official DE version; original is IT]". Result: 27 originally DE + 61 official DE versions; 2 recent FR affairs have no DE version and stay in French, marked. No machine translation in the review sheet. metrics.json unchanged.
+- Why: the reviewer reads German only; official translations are authoritative and need no model.
+
+### D54 — The partner's 5 worked cases vs PolitMonitor and the model (S8 follow-up, 2026-10-18)
+- Cases (all federal 2018, all PolitMonitor-tagged, none in the S6 sample; 63243 is in the demo pool): partner yes on 153741 (net neutrality); no on 63243 (Amazon/Post parcel prices); no/unsure on 152976 (Post–Amazon partnership), 62615 (fake news), 62624 (civil service for cybersecurity).
+- Model (adhoc_v5, DE): 153741 match 1.00, 63243 no_match 0.20, 152976 match 0.85, 62615 match 0.70, 62624 match 0.95. At the 0.9 threshold the model agrees with the partner on 4/5; PolitMonitor agrees with her on 1/5.
+- Conflict to resolve **before the blind review** (D23: rules fixed first): her case rubric ("Ziel oder Nebensache?", "Ohne Digitales sinnvoll?") says no for 62624 and 152976, but her definition says "Cybersecurity → Yes" and counts "parcel deals with online platforms". Either the rubric or the definition must be the rule. Not used for any prompt or threshold change (no tuning on these cases).

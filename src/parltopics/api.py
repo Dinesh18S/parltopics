@@ -17,9 +17,12 @@ from pydantic import BaseModel, Field
 
 from parltopics import demo
 from parltopics.batch import iter_classify
+from parltopics.llm import LLMClient
 from parltopics.config import Settings, get_settings
 from parltopics.prompts import load_prompt
 from parltopics.runlog import fingerprint, start_run
+from parltopics.sources.assemble import TRANSLATED_BODY_TYPES, LangMissing, assemble
+from parltopics.sources.router import AffairSource
 from parltopics.store import Store
 from parltopics.topics import Topic, load_topic
 from parltopics.verify import locate
@@ -109,6 +112,7 @@ def state() -> dict:
         "prompt_template": PROMPT_TEMPLATE,
         "match_threshold": settings.match_threshold,
         "default_preset": settings.demo_default_preset,
+        "review_lang": settings.review_lang,
     }
 
 
@@ -135,6 +139,58 @@ def prediction(prediction_id: int) -> dict:
         raise HTTPException(404, "unknown prediction")
     span = locate(detail["evidence"] or "", detail["text"] or "") if detail.get("verify_ok") else None
     return detail | {"evidence_span": list(span) if span else None}
+
+
+TRANSLATE_MAX_CHARS = 2000
+_translations: dict[tuple[str, str], str] = {}
+
+
+def _official_version(detail: dict, lang: str) -> str | None:
+    """The parliament's own version of the affair in `lang` (translated bodies only), or None."""
+    affair = AffairSource(get_settings()).get_affair(detail["affair_id"], detail["body_key"])
+    if affair.body.type not in TRANSLATED_BODY_TYPES:
+        return None
+    try:
+        return assemble(affair, get_settings().max_input_chars, lang).text
+    except LangMissing:
+        return None
+
+
+@app.get("/api/predictions/{prediction_id}/reading")
+def reading_version(prediction_id: int, lang: str) -> dict:
+    """Reading aid for a reviewer: the official version in `lang` if the parliament publishes one."""
+    try:
+        detail = store().prediction_detail(prediction_id)
+    except KeyError:
+        raise HTTPException(404, "unknown prediction")
+    text = _official_version(detail, lang)
+    if text is None:
+        return {"kind": "none", "lang": lang}
+    return {"kind": "official", "lang": lang, "text": text,
+            "note": "Official version published by the parliament. The evidence above stays in the original language."}
+
+
+@app.post("/api/predictions/{prediction_id}/translate")
+def translate(prediction_id: int, lang: str) -> dict:
+    """Unofficial Apertus translation for reading only; never used as evidence or stored as a label."""
+    settings = get_settings()
+    if not check_model(settings)["reachable"]:
+        raise HTTPException(503, "model endpoint unreachable")
+    try:
+        detail = store().prediction_detail(prediction_id)
+    except KeyError:
+        raise HTTPException(404, "unknown prediction")
+    key = (detail["source_sha256"], lang)
+    if key not in _translations:
+        text = detail["text"] or ""
+        system = (Path(__file__).parent / "prompts" / "translate_v1.system.txt").read_text()
+        model = settings.translate_model or settings.llm_name
+        _translations[key] = LLMClient(settings.model_copy(update={"llm_name": model})).complete_text(
+            system, f"Target language: {lang}\n\n{text[:TRANSLATE_MAX_CHARS]}", max_tokens=1200)
+    model = settings.translate_model or settings.llm_name
+    return {"kind": "machine", "lang": lang, "text": _translations[key], "model": model,
+            "truncated": len(detail["text"] or "") > TRANSLATE_MAX_CHARS,
+            "note": f"Unofficial machine translation by {model}. Not evidence; check the original."}
 
 
 class TopicIn(BaseModel):

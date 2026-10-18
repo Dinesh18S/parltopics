@@ -68,6 +68,16 @@ class LLMClient:
         except ValidationError:
             return None
 
+    def complete_text(self, system: str, user: str, max_tokens: int) -> str:
+        """Plain-text answer (used for unofficial reading aids, never for labels or evidence)."""
+        r = self.client.chat.completions.create(
+            model=self.settings.llm_name,
+            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
+            temperature=self.settings.llm_temperature,
+            max_tokens=max_tokens,
+        )
+        return r.choices[0].message.content or ""
+
     def complete_json(self, system: str, user: str, schema: type[BaseModel]) -> LLMCall:
         return self.complete_messages([{"role": "system", "content": system}, {"role": "user", "content": user}], schema)
 
