@@ -2,7 +2,7 @@
 
 All sources are public and need no key. Data licence: OpenParlData publishes under **CC BY 4.0** — attribute as "Source: OpenParlData.ch" in the README, UI footer and report.
 
-> Items marked **VERIFY** are assumptions. The first build slice must check them against a real response and update this file.
+> Items marked **VERIFY** were assumptions; all were checked against real responses in S1 (2026-10-18) and are now ticked with the finding.
 
 ## 1. OpenParlData REST API
 
@@ -30,12 +30,12 @@ All sources are public and need no key. Data licence: OpenParlData publishes und
 
 ### VERIFY on first call
 
-- [ ] The `openparldata_id` in the PolitMonitor CSV equals the `id` in `/v1/affairs/{id}`
-- [ ] Which relation holds the full affair text (`docs`? `texts`?) and the field name of the extracted text
-- [ ] Field names for title, type, begin_date, body_key, url in nested format
-- [ ] Which URL to use as the human-facing "source link" (parliament page vs OpenParlData page)
-- [ ] How many affairs (especially municipal) have title only
-- [ ] Rate limiting headers, if any
+- [x] The `openparldata_id` in the PolitMonitor CSV equals the `id` in `/v1/affairs/{id}` — **yes**: body_key + number match the API for 142/142 sampled affairs (100 random PolitMonitor rows seed 42, all 12 municipal rows, 30 city-of-Zug affairs). All 1,448 CHE rows are also in `che_affairs_keywords.csv` with the same number.
+- [x] Which relation holds the full affair text — **both, by level**. Federal: `/v1/affairs/{id}/texts`, each row has `type` and `text` as `{de,fr,it}` objects (HTML inside); same rows/ids as `che_affair_texts.ndjson.gz`. Cantonal/municipal: `/texts` is empty; content is PDF-extracted text in `/v1/affairs/{id}/docs`, field `text` (plain text, can be 100k+ chars), plus `name`, `date`, `language` (often null), `url`. Some docs have `text: null`.
+- [x] Field names: `title` `{lang: str}` (only the languages that exist; cantonal usually one key), `type_harmonized.en` (null for some, e.g. GE), `begin_date` (`YYYY-MM-DDT00:00:00`), `body_key`, `number`, `url_external` `{lang: url}`, `url_api`. There is **no affair-level language field**; language comes from the title keys.
+- [x] Source link: `url_external[lang]` (the parliament's own page, e.g. Curia Vista `geschaeft?AffairId=…`), falling back to any `url_external`, then `url_api`.
+- [x] Title-only is rare in our pools: 3/100 random PolitMonitor affairs (1 CHE, 2 cantonal), 0/12 PolitMonitor municipal, 0/30 city of Zug. Long texts are common instead: 27/100 PolitMonitor affairs exceed `MAX_INPUT_CHARS`=12,000 after removing duplicate docs (median ~6,200 chars; city of Zug 12/30 truncated). Some cantons (GR) return the same document twice; the assembler drops exact duplicates.
+- [x] Rate limiting headers: **none** seen (only `x-cache`, `x-cache-key`). No 429s during ~450 requests at concurrency 4.
 
 ### Client rules
 
@@ -62,7 +62,7 @@ All sources are public and need no key. Data licence: OpenParlData publishes und
 
 `openparldata_id, body_key, number, begin_date, type_en, title_de, title_fr, title_it, url, politmonitor_scope, politmonitor_id, topic`
 
-- `topic` should be "Digitalisierung" on every row (VERIFY).
+- `topic` is "Digitalisierung" on all 3,433 rows (verified). `openparldata_id` is unique. Every row has ≥1 title (1,377 have DE+FR+IT). `politmonitor_scope` is the lowercase canton code, `ch` for federal; 50 CHE rows have scope `chv` (to inspect in S4).
 - `politmonitor_scope` defines which parliaments/periods PolitMonitor covers. **Negatives may only come from inside this scope.**
 - Three title columns = free multilingual test for titles (texts for CHE come from `che_affair_texts`).
 
@@ -72,10 +72,10 @@ Sheets: `Topics`, `Chapters`, `Domains`. Columns: `code, domain_de, domain_fr, c
 
 ### VERIFY
 
-- [ ] Exact file names/extensions of `che_affairs_keywords` and `cantonal_affairs_keywords` (csv? ndjson?) and their columns
-- [ ] Join key between `che_affair_texts` and `che_affairs_keywords` and the CSV (`openparldata_id`? affair number?)
-- [ ] How the text file marks language and text type
-- [ ] Sizes; anything over 100 MB never goes in `data/`
+- [x] File names: both come as `.csv` and `.jsonl` (we use `.csv`), plus `*_keywords_long.csv` and vocabularies. `che_affairs_keywords.csv`: `openparldata_id, affair_external_id, number, type_en, type_de, begin_date, title_de, title_fr, title_it, url, topic_ids, topics_de, topics_fr, topics_it, descriptors_de` (multi-values joined by ` | `). `cantonal_affairs_keywords.csv`: `openparldata_id, body_key, body_name, keyword_kind, affair_external_id, number, type_en, type_de, begin_date, title_de, title_fr, url, keywords, keyword_codes`. Also `dvs_digitalisierung.csv` (30 DVS affairs).
+- [x] Join key: `openparldata_id` everywhere (= API affair id). `affair_external_id` is the Curia Vista id.
+- [x] Text file: one row per text with `text_de`, `text_fr`, `text_it` (null if missing) and `type_de/fr/it/en`; types: `Titel des Geschäftes`, `Eingereichter Text`, `Begründung`, `Antwort BR / Büro`, `Lead`, empty. HTML inside even when `format=text`.
+- [x] Sizes: `che_affair_texts.ndjson.gz` 232 MB (715 MB unzipped), `che_affairs_keywords.csv` 35 MB, others ≤ 3.3 MB. All live in gitignored `data/raw/`; only `data/raw_files.sha256` is committed.
 
 ## 4. Local layout
 
@@ -108,4 +108,4 @@ results/          # committed: metrics.json + per-run summaries (not raw outputs
 
 Order: title → submitted text → reasoning → Federal Council answer (CHE) / other docs. Join with labelled headers (`TITLE:`, `TEXT:`, …). Truncate to `MAX_INPUT_CHARS` (config, default 12,000) from the end of the last section. Store the exact assembled string per affair (hash it) so evidence verification runs against what the model actually saw.
 
-Language per affair: from the data; if missing, detect from title with a cheap detector and flag `lang_detected=true`.
+Language per affair (no language field exists in the API, see §1): explicit `lang` if the sample file gives one (`lang_source=requested`); else the only title language (`title_single`); else, among the title languages, the one most docs with text are written in (`doc_majority`); else first of de, fr, it (`default_order`). Multilingual titles occur for CHE, BE, VS, FR, GR. Federal affairs have official DE/FR/IT texts and no docs, so they fall to `default_order` (DE); eval samples therefore set `lang` explicitly per row. Doc `language` labels are occasionally wrong (e.g. affair 236793: a `de_…` file labelled French); we accept this as source noise.

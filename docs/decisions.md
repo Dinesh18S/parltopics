@@ -34,3 +34,38 @@
 - Alternatives rejected: `environment:` passthrough only — clumsier for judges.
 - Affects: `docker-compose.yml`, `.dockerignore`.
 - Revisit if: judges' compose version lacks `required: false` (needs Compose ≥ 2.24).
+
+### D6 — Single affairs come from the API (cached), not the bulk file (slice S1, 2026-10-18)
+- Decision: `get_affair` uses the OpenParlData API for every level, including CHE. The bulk text file is downloaded but not read yet.
+- Why: for affair 235308 the API `/texts` returns the same 4 text ids and content as `che_affair_texts.ndjson.gz`; scanning the 232 MB gzip for one affair takes far longer than one cached API call. Cantonal content exists only in the API (`/docs`).
+- Alternatives rejected: bulk-first as docs/04 §4.1 says — needs an index over 210k rows that S1 doesn't need. **Proposed doc fix:** docs/04 §4.1 → "API with disk cache for single affairs; bulk files when a step touches > ~500 affairs" (matches docs/03 §2).
+- Affects: `sources/api.py`; docs/04 §4.1 (pending your OK).
+- Revisit if: S6/S9 need thousands of federal texts (then add a bulk reader/index).
+
+### D7 — Affair language rule (slice S1, 2026-10-18)
+- Decision: requested `lang` → single title language → majority language of docs with text → first of de/fr/it. Stored as `lang_source`.
+- Why: the API has no affair language field. Multilingual titles occur for CHE (1,407), BE (171), VS (141), FR (78), GR (17) PolitMonitor rows. Pure "first of de/fr/it" picked DE for French-majority FR/VS affairs; doc majority fixes that (e.g. 236793 → fr). CHE has no docs → DE, so eval samples set `lang` per row.
+- Alternatives rejected: a language detector on the title (docs/03 §6) — extra dependency, and the title keys already tell us which languages exist.
+- Affects: `sources/assemble.py`, docs/03 §6.
+- Revisit if: we find a field for the original submission language.
+
+### D8 — Text assembly details (slice S1, 2026-10-18)
+- Decision: HTML stripped with the stdlib parser, entities unescaped, all whitespace collapsed to single spaces. Order: TITLE → TEXT (Eingereichter Text) → REASONING (Begründung) → ANSWER (Antwort BR / Büro) → other text types → DOCUMENT sections (docs in the chosen language or unlabelled, oldest first, exact duplicates dropped). Truncate the joined string at `MAX_INPUT_CHARS`.
+- Why: the original submission is usually the oldest doc, so it survives truncation; GR returns duplicate docs (e.g. 165564). Collapsing whitespace makes verbatim evidence easier for the model to copy and for verify to match.
+- Alternatives rejected: keeping line breaks — PDF extraction inserts breaks mid-sentence.
+- Affects: `sources/assemble.py`; every evidence check runs against this string.
+- Revisit if: **27/100 PolitMonitor affairs are truncated at 12,000 chars** — if S4 shows misses caused by truncation, raise `MAX_INPUT_CHARS` (costs tokens) or drop long government reports first.
+
+### D9 — Challenge-file checksums committed (slice S1, 2026-10-18)
+- Decision: `parltopics data download` (`make data`) downloads the 9 files to `data/raw/` and compares them with `data/raw_files.sha256` (committed). First run writes that file; a changed or missing file exits 1.
+- Why: docs/03 §4 asks for checksums; the challenge files are a dated snapshot (2026-10-18) and may be republished.
+- Alternatives rejected: skipping the `*_long.csv` and `.jsonl` duplicates is deliberate — same data as the `.csv` files we use.
+- Affects: `sources/bulk.py`, `Makefile`, `data/raw_files.sha256`.
+- Revisit if: organisers republish the files (then delete the checksum file, re-download, re-run evals).
+
+### D10 — API client: synchronous, disk cache keyed by sha1(URL with sorted params) (slice S1, 2026-10-18)
+- Decision: one `httpx.Client`, 20 s timeout, 3 retries with 1/2/4 s backoff on 429/5xx/transport errors, project User-Agent. Relations paged with `limit=1000`. Concurrency (max 4) is applied by callers with a thread pool.
+- Why: docs/03 client rules; no rate-limit headers seen, no 429 in ~450 requests at 4 threads.
+- Alternatives rejected: async client — nothing in S1 needs it.
+- Affects: `sources/api.py`.
+- Revisit if: we see 429s or need > 4 parallel requests.
