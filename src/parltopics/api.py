@@ -110,10 +110,21 @@ def state() -> dict:
         "presets": out,
         "pool": {"file": str(DEMO_POOL), "n": len(pool)},
         "prompt_template": PROMPT_TEMPLATE,
-        "match_threshold": settings.match_threshold,
+        "match_threshold": match_threshold(settings),
         "default_preset": settings.demo_default_preset,
         "review_lang": settings.review_lang,
     }
+
+
+def match_threshold(settings: Settings) -> float:
+    """The threshold fixed on dev by the pre-registered rule (results/metrics.json); config value as fallback."""
+    path = RESULTS_DIR / "metrics.json"
+    if path.exists():
+        block = json.loads(path.read_text()).get("digitalisation_federal_2018", {})
+        chosen = block.get("threshold", {}).get("chosen_on_dev")
+        if chosen is not None:
+            return float(chosen)
+    return settings.match_threshold
 
 
 def _run_meta(run: dict) -> dict:
@@ -193,9 +204,12 @@ def translate(prediction_id: int, lang: str) -> dict:
             "note": f"Unofficial machine translation by {model}. Not evidence; check the original."}
 
 
+DEFAULT_DEFINITION = "Affairs whose main subject is {name}."
+
+
 class TopicIn(BaseModel):
     name: str = Field(min_length=1, max_length=120)
-    definition: str = Field(min_length=1, max_length=2000)
+    definition: str = Field(default="", max_length=2000)
     include: list[str] = []
     exclude: list[str] = []
 
@@ -205,22 +219,36 @@ class SearchIn(BaseModel):
     topic: TopicIn | None = None
 
 
+def build_topic(body: SearchIn) -> tuple[Topic, str]:
+    """The topic exactly as the user gave it: a preset from topics/*.yaml, or a custom name + definition.
+    A custom topic never inherits anything from a preset; no definition → neutral default; no keyword lists."""
+    if body.preset_id:
+        if body.preset_id not in presets():
+            raise HTTPException(404, "unknown preset")
+        topic_path, topic = presets()[body.preset_id]
+        return topic, str(topic_path.relative_to(ROOT))
+    if body.topic:
+        name = body.topic.name.strip()
+        definition = body.topic.definition.strip() or DEFAULT_DEFINITION.format(name=name)
+        topic = Topic(name=name, definition=definition, include=body.topic.include, exclude=body.topic.exclude)
+        return topic, f"ui:{name}"
+    raise HTTPException(422, "preset_id or topic required")
+
+
+@app.get("/api/pool")
+def pool() -> list[dict]:
+    """Demo pool rows (for 'Analyzing…' placeholders while a run is in progress)."""
+    df = pd.read_csv(ROOT / DEMO_POOL, dtype={"lang": str}, keep_default_na=False)
+    return df[["affair_id", "body_key", "lang", "begin_date", "title"]].to_dict("records")
+
+
 @app.post("/api/search")
 def search(body: SearchIn) -> StreamingResponse:
     """Classify the demo pool live; streams NDJSON (run, item…, done). Closing the connection cancels."""
     settings = get_settings()
     if not check_model(settings)["reachable"]:
         raise HTTPException(503, "model endpoint unreachable — cached results only")
-    if body.preset_id:
-        if body.preset_id not in presets():
-            raise HTTPException(404, "unknown preset")
-        topic_path, topic = presets()[body.preset_id]
-        topic_ref = str(topic_path.relative_to(ROOT))
-    elif body.topic:
-        topic = Topic(**body.topic.model_dump(), keywords={"topic name": [body.topic.name]})
-        topic_ref = f"ui:{body.topic.name}"
-    else:
-        raise HTTPException(422, "preset_id or topic required")
+    topic, topic_ref = build_topic(body)
     rows = pd.read_csv(ROOT / DEMO_POOL, dtype={"lang": str}, keep_default_na=False).to_dict("records")
     prompt = load_prompt(PROMPT_TEMPLATE)
     s = store()
@@ -231,7 +259,9 @@ def search(body: SearchIn) -> StreamingResponse:
 
     def stream():
         n = 0
-        yield json.dumps({"type": "run", "run_id": run.run_id, "n": len(rows), "topic_name": topic.name}) + "\n"
+        yield json.dumps({"type": "run", "run_id": run.run_id, "n": len(rows), "topic_name": topic.name,
+                          "definition": topic.definition, "include": topic.include, "exclude": topic.exclude,
+                          "has_keywords": bool(topic.keywords)}, ensure_ascii=False) + "\n"
         try:
             for record in iter_classify(settings, s, RESULTS_DIR, run, topic, prompt, rows, cancel):
                 n += 1

@@ -43,6 +43,8 @@ eval_app = typer.Typer(no_args_is_help=True, help="Evaluations → results/metri
 app.add_typer(eval_app, name="eval")
 demo_app = typer.Typer(no_args_is_help=True, help="Cached demo results for the UI.")
 app.add_typer(demo_app, name="demo")
+check_app = typer.Typer(no_args_is_help=True, help="Live sanity checks against the model (not unit tests).")
+app.add_typer(check_app, name="check")
 
 
 @app.callback()
@@ -303,6 +305,39 @@ def eval_digitalisation(
     typer.echo(md)
     typer.echo(f"review sheet: {len(rows)} affairs → data/gold/for_partner/adjudication.xlsx "
                f"(key: results/adjudication_key.csv)")
+
+
+@check_app.command("topic")
+def check_topic(
+    name: str,
+    definition: str = "",
+    max_matches: int = typer.Option(..., help="fail if more affairs than this are shown as matches"),
+    pool: Path = Path("data/samples/demo_pool.csv"),
+) -> None:
+    """Classify the demo pool with a custom topic exactly as the UI does; list shown matches; fail above the limit."""
+    from parltopics.api import SearchIn, TopicIn, build_topic, match_threshold
+    from parltopics.batch import iter_classify
+
+    settings = get_settings()
+    store = Store(settings.db_path)
+    topic, ref = build_topic(SearchIn(topic=TopicIn(name=name, definition=definition)))
+    prompt = load_prompt("adhoc_v5")
+    run = start_run(RESULTS_DIR, prompt, topic, Path(ref), settings, sample_file=str(pool), notes=f"check topic {name}")
+    store.add_run(run, topic)
+    rows = pd.read_csv(pool, dtype={"lang": str}, keep_default_na=False).to_dict("records")
+    records = list(iter_classify(settings, store, RESULTS_DIR, run, topic, prompt, rows))
+    store.finish_run(run.run_id, len(records))
+    threshold = match_threshold(settings)
+    shown = [r for r in records if r["status"] == "ok" and r["label"] == "match" and r["confidence"] >= threshold]
+    labels = pd.Series([r.get("label") or r["status"] for r in records]).value_counts().to_dict()
+    typer.echo(f"{name!r} (definition: {topic.definition!r}) run {run.run_id}: {len(records)} affairs, labels {labels}, "
+               f"shown at t={threshold}: {len(shown)}")
+    for r in shown:
+        typer.echo(f"  {r['affair_id']} {r['body_key']} {r['confidence']:.2f} | {r['title'][:70]} | {r['evidence'][:90]}")
+    if len(shown) > max_matches:
+        typer.echo(f"FAIL: {len(shown)} > {max_matches}")
+        raise typer.Exit(1)
+    typer.echo("PASS")
 
 
 @demo_app.command("export")

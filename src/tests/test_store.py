@@ -97,3 +97,27 @@ def test_run_manifest_round_trip(store):
     run = s.run("run1")
     assert run["prompt_template"] == "adhoc_v4"
     assert run["manifest"]["fingerprint"]["parts"]["topic"] == run["topic_sha"]
+
+
+def test_bulk_affair_has_source_link_per_language(tmp_path):
+    import json
+    import sqlite3
+
+    from parltopics.sources.bulk import BULK_SCHEMA, BulkReader
+
+    db = tmp_path / "bulk.db"
+    con = sqlite3.connect(db)
+    con.executescript(BULK_SCHEMA)
+    con.execute("INSERT INTO che_affairs VALUES (1, '19.1', 'Motion', '2019-01-01', ?, ?, '', '')",
+                (json.dumps({"de": "Titel", "fr": "Titre", "it": "Titolo"}),
+                 "https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20191"))
+    con.commit()
+    affair = BulkReader(db, Body(key="CHE", type="country", languages=[], primary=None)).get_affair(1)
+    assert affair.url_external["it"] == "https://www.parlament.ch/it/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20191"
+    assert affair.url_external["fr"].startswith("https://www.parlament.ch/fr/")
+
+
+def test_adding_a_source_again_updates_its_link(store):
+    s, source = store
+    s.add_source(AFFAIR, source.model_copy(update={"url": "https://ge.ch/new"}))
+    assert s.predictions("run1")[0]["url"] == "https://ge.ch/new"

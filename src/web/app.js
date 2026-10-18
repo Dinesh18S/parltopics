@@ -9,7 +9,7 @@ const QUOTES = { de: ["„", "“"], fr: ["« ", " »"], it: ["« ", " »"] };
 const S = {
   app: null, presetId: null, topicName: "", runId: null, items: [], live: false, controller: null,
   filters: { parl: "", level: "", lang: "", year: "" }, kwOnly: false, show: { rejected: false, below: false },
-  selected: -1, detailId: null,
+  selected: -1, detailId: null, pending: [], definitionUsed: "", hasKeywords: false, pool: [],
 };
 
 async function api(path, opts = {}) {
@@ -26,6 +26,8 @@ async function loadState() {
   $("modelBadge").classList.toggle("off", !live);
   $("offlineBanner").classList.toggle("hidden", live);
   $("classifyBtn").disabled = !live;
+  $("sampleChip").classList.toggle("hidden", live);
+  if (!S.pool.length) S.pool = await api("/api/pool");
   $("classifyBtn").title = live ? "Classify the demo pool (Enter)" : "Model endpoint unreachable";
   renderPresets();
   const preferred = S.app.presets.find((p) => p.id === S.app.default_preset && p.run);
@@ -48,14 +50,15 @@ function selectPreset(id) {
   $("topicInclude").value = (p.include || []).join("\n");
   $("topicExclude").value = (p.exclude || []).join("\n");
   renderPresets();
-  if (p.run) loadRun(p.run.run_id, true);
+  S.definitionUsed = p.definition.trim();
+  S.hasKeywords = Object.keys(p.keywords || {}).length > 0;
+  if (p.run) loadRun(p.run.run_id);
   else { S.items = []; S.runId = null; S.topicName = p.name; render(); }
 }
 
-async function loadRun(runId, stored) {
+async function loadRun(runId) {
   const data = await api(`/api/runs/${encodeURIComponent(runId)}`);
-  Object.assign(S, { runId, items: data.items, topicName: data.topic_name, selected: -1 });
-  $("sampleChip").classList.toggle("hidden", !stored);
+  Object.assign(S, { runId, items: data.items, topicName: data.topic_name, selected: -1, pending: [] });
   const when = (data.run.finished_at || data.run.started_at || "").slice(0, 16).replace("T", " ");
   $("offlineText").innerHTML = `Showing cached results from run <span class="mono">${esc(runId)}</span> · ${esc(when)}. Live classification is paused.`;
   fillFilterOptions();
@@ -81,11 +84,12 @@ async function classify() {
   const body = presetUnchanged() ? { preset_id: S.presetId } : { topic: topicFromForm() };
   if (body.topic) {
     S.presetId = null; renderPresets();
-    if (!body.topic.name || !body.topic.definition) { openDef(); $(body.topic.name ? "topicDef" : "topicName").focus(); return; }
+    if (!body.topic.name) { $("topicName").focus(); return; }
   }
   S.controller = new AbortController();
-  S.live = true; S.items = []; S.selected = -1;
-  $("sampleChip").classList.add("hidden");
+  S.live = true; S.items = []; S.selected = -1; S.runId = null; S.definitionUsed = "";
+  S.pending = S.pool.map((r) => ({ ...r, prediction_id: null, placeholder: true }));
+  closeDetail();
   $("classifyBtn").disabled = true; $("classifyBtn").firstChild.textContent = "Classifying… ";
   $("progress").classList.remove("hidden");
   $("progTopic").textContent = body.topic ? body.topic.name : $("topicName").value;
@@ -104,7 +108,7 @@ async function classify() {
   } catch (e) {
     if (e.name !== "AbortError") alertStrip(`Classification stopped: ${e.message}`);
   } finally {
-    S.live = false; S.controller = null;
+    S.live = false; S.controller = null; S.pending = [];
     $("progress").classList.add("hidden");
     $("classifyBtn").disabled = S.app.mode !== "live"; $("classifyBtn").firstChild.textContent = "Classify ";
     S.app = await api("/api/state"); renderPresets();
@@ -113,9 +117,15 @@ async function classify() {
 }
 
 function handleEvent(ev) {
-  if (ev.type === "run") { S.runId = ev.run_id; S.topicName = ev.topic_name; $("progTotal").textContent = ev.n; }
+  if (ev.type === "run") {
+    Object.assign(S, { runId: ev.run_id, topicName: ev.topic_name, definitionUsed: ev.definition, hasKeywords: ev.has_keywords });
+    $("progTotal").textContent = ev.n;
+    render();
+  }
   if (ev.type === "item") {
+    if (ev.item.run_id && ev.item.run_id !== S.runId) return;
     S.items.push(ev.item);
+    S.pending = S.pending.filter((r) => r.affair_id !== ev.item.affair_id);
     $("progDone").textContent = ev.done;
     $("progBar").style.width = `${(100 * ev.done) / Number($("progTotal").textContent || 1)}%`;
     fillFilterOptions(); render();
@@ -132,7 +142,7 @@ const reviewState = (i) => i.review_decision === "confirm" || (i.review_decision
 function passesFilters(i) {
   const f = S.filters;
   return (!f.parl || i.body_key === f.parl) && (!f.level || level(i) === f.level) && (!f.lang || i.lang === f.lang) &&
-    (!f.year || (i.begin_date || "") >= f.year) && (!S.kwOnly || i.keyword_absent);
+    (!f.year || (i.begin_date || "") >= f.year) && (!S.kwOnly || !S.hasKeywords || i.keyword_absent === true);
 }
 
 function groups() {
@@ -150,6 +160,8 @@ function visibleRows() {
   return [...g.suggested, ...(S.show.below ? g.below : []), ...(S.show.rejected ? g.rejected : [])];
 }
 
+const placeholderRows = () => (S.live ? S.pending.filter(passesFilters) : []);
+
 function fillFilterOptions() {
   const keep = (id, values, fmt) => {
     const el = $(id); const cur = el.value; const first = el.options[0].outerHTML;
@@ -165,16 +177,18 @@ function fillFilterOptions() {
 function render() {
   const g = groups();
   const rows = visibleRows();
-  const kw = S.kwOnly ? ` · “Keyword absent” ON — every affair below is <i>suggested</i> for ${esc(S.topicName)} yet its text never contains the topic's core words.` : "";
+  $("kwToggle").classList.toggle("hidden", !S.hasKeywords);
+  const kw = S.kwOnly && S.hasKeywords ? ` · “Keyword absent” ON — every affair below is <i>suggested</i> for ${esc(S.topicName)} yet its text never contains the topic's core words.` : "";
   $("strip").innerHTML = S.items.length || S.live ? `
     <span><b>${g.suggested.length}</b> suggested</span><span>·</span>
     <span><b>${g.confirmed.length}</b> confirmed</span><span>·</span>
     <button type="button" class="linkbtn" data-show="rejected" aria-pressed="${S.show.rejected}"><b>${g.rejected.length}</b> rejected (evidence not found)</button><span>·</span>
     <button type="button" class="linkbtn" data-show="below" aria-pressed="${S.show.below}"><b>${g.below.length}</b> below threshold ${S.app.match_threshold.toFixed(2)}</button>
     <span class="spacer"></span>
-    <span class="cap">Pool: <b>${S.app.pool.n}</b> affairs${kw}</span>` : "";
+    <span class="cap">Pool: <b>${S.pool.length || S.app.pool.n}</b> affairs${kw}</span>
+    ${S.definitionUsed ? `<div class="defused">Definition used: <i>${esc(S.definitionUsed)}</i></div>` : ""}` : "";
   $("strip").classList.toggle("hidden", !S.items.length && !S.live);
-  $("rows").innerHTML = rows.map((i, n) => rowHtml(i, n)).join("");
+  $("rows").innerHTML = rows.map((i, n) => rowHtml(i, n)).join("") + placeholderRows().map(placeholderHtml).join("");
   const empty = $("emptyState");
   if (!S.items.length && !S.live) {
     empty.innerHTML = S.app.mode === "live"
@@ -184,6 +198,12 @@ function render() {
     empty.innerHTML = `<h2>No matches in this pool</h2><p>Nothing is suggested with the current filters${S.kwOnly ? " and “keyword absent” on" : ""}. Widen the filters, or show the affairs below the threshold.</p>`;
   }
   empty.classList.toggle("hidden", !!rows.length || S.live);
+}
+
+function placeholderHtml(i) {
+  return `<tr class="dim placeholder"><td>${esc(i.body_key)}</td><td></td><td class="muted nowrap">${esc(i.begin_date)}</td>
+    <td>${i.lang ? `<span class="lang">${esc(i.lang.toUpperCase())}</span>` : ""}</td><td class="tbltitle">${esc(i.title)}</td>
+    <td colspan="4"><span class="cap"><span class="spin spin-sm" aria-hidden="true"></span> Analyzing…</span></td></tr>`;
 }
 
 function quote(i) {
@@ -198,8 +218,8 @@ function badges(i) {
   const b = [];
   if (i.status === "evidence_failed") b.push(`<span class="badge b-grey">evidence not found</span>`);
   else if (i.verify_ok) b.push(`<span class="badge b-green">✓ evidence verified${i.verify_method === "fuzzy" ? " (fuzzy)" : ""}</span>`);
-  if (i.keyword_absent) b.push(`<span class="badge b-amber">⚑ keyword absent</span>`);
-  if (i.keyword_absent && i.tech_vocab_absent) b.push(`<span class="badge b-grey">tech vocab absent</span>`);
+  if (S.hasKeywords && i.keyword_absent === true) b.push(`<span class="badge b-amber">⚑ keyword absent</span>`);
+  if (S.hasKeywords && i.keyword_absent === true && i.tech_vocab_absent === true) b.push(`<span class="badge b-grey">tech vocab absent</span>`);
   if (i.title_only) b.push(`<span class="badge b-grey">title only</span>`);
   return b.length ? `<div class="badges">${b.join("")}</div>` : "";
 }
@@ -277,7 +297,7 @@ async function openDetail(pid) {
         <div><div class="meta-k">Model confidence</div>
           <div class="conf" style="margin-top:8px"><span class="track"><span class="fill" style="width:${Math.round((d.confidence || 0) * 100)}%"></span></span><span class="num">${d.confidence == null ? "—" : d.confidence.toFixed(2)}</span></div></div>
       </div>
-      <div class="badges" style="align-items:center"><span class="meta-k">Evidence</span>${verified}${item.keyword_absent ? `<span class="badge b-amber">⚑ keyword absent</span>` : ""}${d.title_only ? `<span class="badge b-grey">title only</span>` : ""}</div>
+      <div class="badges" style="align-items:center"><span class="meta-k">Evidence</span>${verified}${S.hasKeywords && item.keyword_absent === true ? `<span class="badge b-amber">⚑ keyword absent</span>` : ""}${d.title_only ? `<span class="badge b-grey">title only</span>` : ""}</div>
       <div class="textbox" lang="${esc(d.lang)}">${highlight(d.text || "", d.evidence_span)}</div>
       ${aid}
       <div class="rationale"><div class="meta-k">Model rationale — not evidence</div><div class="cap" style="font-size:13.5px">${esc(d.rationale)}</div></div>
@@ -476,6 +496,20 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "r" || e.key === "R") return review(selectedPid(), "reject");
 });
 
-$("topicName").addEventListener("input", () => { if (S.presetId && !presetUnchanged()) { S.presetId = null; renderPresets(); } });
+$("topicName").addEventListener("input", () => {
+  if (!S.presetId) return updateDefHint();
+  const p = S.app.presets.find((x) => x.id === S.presetId);
+  if (p && $("topicName").value.trim() !== p.name) {
+    S.presetId = null; renderPresets();
+    ["topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).value = ""; });
+    openDef();
+  }
+  updateDefHint();
+});
+
+function updateDefHint() {
+  const name = $("topicName").value.trim() || "…";
+  $("topicDef").placeholder = `Optional. If empty: “Affairs whose main subject is ${name}.”`;
+}
 
 loadState().catch((e) => alertStrip(`Could not reach the ParlTopics server: ${e.message}`));

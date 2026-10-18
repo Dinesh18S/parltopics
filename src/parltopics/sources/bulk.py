@@ -149,9 +149,12 @@ class BulkReader:
                 (affair_id,),
             )
         ]
+        titles = json.loads(title_json)
         url_lang = re.search(r"/([a-z]{2})/", url or "")
+        urls = ({lang: url.replace(f"/{url_lang.group(1)}/", f"/{lang}/", 1) for lang in titles} | {url_lang.group(1): url}
+                if url_lang else {})
         return Affair(
             id=affair_id, body=self.body, number=number, type=type_en, begin_date=begin_date,
-            title=json.loads(title_json), url_external={url_lang.group(1): url} if url_lang else {},
+            title=titles, url_external=urls,
             url_api=f"https://api.openparldata.ch/v1/affairs/{affair_id}", texts=texts, docs=[],
         )

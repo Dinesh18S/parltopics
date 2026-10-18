@@ -24,13 +24,14 @@ exclude:
   - Education, labour or budgets in general, with no digital link
   - Affairs where digital technology, data or telecom is only mentioned in passing
 # keywords: the core words of the pitch claim ("Digitalisierung / numérique / digitale never appears").
-# All keywords match at the start of a word, case-insensitive; `*` marks an explicit prefix (digital* = digitale, digitalen …).
+# Matching is case-insensitive: `word*` = any word starting with it (digital* = digitale, digitalen …);
+# a plain word or phrase must match as whole word(s) (so "KI" never matches "Kinder").
 keywords:
-  de: [Digitalisierung, digital*]
-  fr: [numérique, numérisation, digital*]
-  it: [digitale, digitalizzazione, digital*]
+  de: [Digitalisierung*, digital*]
+  fr: [numérique*, numérisation*, digital*]
+  it: [digitale*, digitalizzazione*, digital*]
 # keywords_broad: general tech vocabulary; only for the stricter tech_vocab_absent badge.
 keywords_broad:
-  de: [Daten, elektronisch, Cyber]
-  fr: [données, électronique, cyber]
-  it: [dati, elettronico, cyber]
+  de: [Daten*, elektronisch*, Cyber*, KI, künstliche Intelligenz, Internet*, online, Algorithm*]
+  fr: [données, électronique*, cyber*, IA, intelligence artificielle, internet*, en ligne, algorithm*]
+  it: [dati, elettronic*, cyber*, IA, intelligenza artificiale, internet*, online, algoritm*]

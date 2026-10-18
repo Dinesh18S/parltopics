@@ -1,8 +1,8 @@
 from parltopics.evaluate.metrics import first_loop_summary, is_correct, wilson
 from parltopics.topics import Topic, keyword_absent, tech_vocab_absent
 
-CORE = {"de": ["Digitalisierung", "digital*"], "fr": ["numérique"]}
-BROAD = {"de": ["Daten", "Cyber"]}
+CORE = {"de": ["Digitalisierung*", "digital*"], "fr": ["numérique*"]}
+BROAD = {"de": ["Daten*", "Cyber*", "KI", "künstliche Intelligenz"]}
 TOPIC = Topic(name="T", definition="d", keywords=CORE, keywords_broad=BROAD)
 
 
@@ -14,12 +14,24 @@ def test_keyword_absent_core_words_word_start_prefix_case_insensitive():
     assert keyword_absent("Breitband für alle", TOPIC)
 
 
+def test_plain_keywords_match_whole_words_only():
+    assert not tech_vocab_absent("Einsatz von KI in der Verwaltung", TOPIC)
+    assert tech_vocab_absent("Kinder und Kirchen", TOPIC)  # 'KI' must not match inside words
+    assert not tech_vocab_absent("Regeln für künstliche Intelligenz", TOPIC)  # phrase
+
+
 def test_tech_vocab_absent_uses_core_and_broad():
     assert not tech_vocab_absent("Schutz von DATENbanken", TOPIC)
     assert not tech_vocab_absent("gegen Cyberangriffe", TOPIC)
     assert not tech_vocab_absent("digitale Verwaltung", TOPIC)
     assert tech_vocab_absent("Kandidaten und Mandate", TOPIC)  # 'daten' inside a word is not a hit
     assert tech_vocab_absent("Breitband für alle", TOPIC)
+
+
+def test_topics_without_keywords_have_no_keyword_flags():
+    bare = Topic(name="Beekeeping", definition="Affairs whose main subject is beekeeping.")
+    assert keyword_absent("anything at all", bare) is None
+    assert tech_vocab_absent("anything at all", bare) is None
 
 
 def _row(gold, label, status="ok", verify_ok=True, kw_absent=False, lang="de", ms=1000, inconsistent=False):

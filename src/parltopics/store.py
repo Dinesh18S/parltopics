@@ -93,6 +93,10 @@ class Store:
         for column in ADDED_PREDICTION_COLUMNS:
             if column not in have:
                 self.db.execute(f"ALTER TABLE predictions ADD COLUMN {column} INTEGER")
+        self.db.execute(  # source links in the text's own language when the affair has one (D60)
+            "UPDATE sources SET url = (SELECT json_extract(a.url_external_json, '$.' || sources.lang) FROM affairs a "
+            "WHERE a.id = sources.affair_id) WHERE (SELECT json_extract(a.url_external_json, '$.' || sources.lang) "
+            "FROM affairs a WHERE a.id = sources.affair_id) IS NOT NULL")
         self.lock = threading.Lock()
 
     def add_run(self, manifest: RunManifest, topic: Topic) -> None:
@@ -122,7 +126,8 @@ class Store:
                  json.dumps(affair.title, ensure_ascii=False), json.dumps(affair.url_external), affair.url_api),
             )
             self.db.execute(
-                "INSERT OR IGNORE INTO sources VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                "INSERT INTO sources VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "
+                "ON CONFLICT(text_sha256) DO UPDATE SET url = excluded.url",
                 (source.sha256, affair.id, source.lang, source.lang_source, source.detected_lang,
                  source.lang_mismatch, source.title, source.title_only, source.truncated, source.cut_section,
                  source.chars_lost, source.n_chars_full, source.url, source.text, _now()),
