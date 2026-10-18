@@ -7,8 +7,9 @@ from pathlib import Path
 from parltopics.classify import Prediction
 
 LOGGED_FIELDS = (
-    "affair_id", "lang", "topic", "label", "confidence", "status", "model", "prompt_version",
-    "prompt_sha", "source_sha256", "latency_ms", "tok_in", "tok_out", "tokens_estimated", "repaired", "error",
+    "affair_id", "lang", "topic", "label", "confidence", "status", "verify_ok", "verify_method",
+    "verify_score", "model", "prompt_version", "prompt_sha", "source_sha256", "latency_ms", "tok_in",
+    "tok_out", "tokens_estimated", "repaired", "error",
 )
 
 

@@ -33,6 +33,7 @@ class SourceText(BaseModel):
     lang_source: str
     detected_lang: str | None
     lang_mismatch: bool
+    title: str
     text: str
     sha256: str
     sections: list[str]
@@ -167,6 +168,7 @@ def assemble(affair: Affair, max_chars: int, lang: str | None = None) -> SourceT
         lang_source=lang_source,
         detected_lang=detected,
         lang_mismatch=detected is not None and detected != lang,
+        title=clean_text(affair.title.get(lang, "")),
         text=text,
         sha256=hashlib.sha256(text.encode()).hexdigest(),
         sections=[header for header, _ in sections],

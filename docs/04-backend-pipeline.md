@@ -37,7 +37,7 @@ src/parltopics/
   api.py           # FastAPI routes
   cli.py
 src/web/index.html, app.js, style.css
-tests/
+src/tests/          # all code lives in src/ (template rule)
 ```
 
 ## 3. Configuration
@@ -74,7 +74,7 @@ Switching 70B ↔ 8B, or gateway ↔ local server, changes only the three `LLM_*
 - Record per call: latency, input/output tokens (from usage, or estimated), model, prompt version hash.
 
 ### 4.3 Verify (no model)
-`verify_evidence(evidence, source.text) -> VerifyResult(ok, method, span)`
+`verify_evidence(evidence, source.text, title) -> VerifyResult(ok, method, score, span)` (span = offsets in the normalised text); `check_prediction(...)` turns it into `status` + capped confidence
 1. Normalise both: Unicode NFKC, lowercase, unify quotes/apostrophes/dashes (’ ' ‘ « » " → one form; – — → -), collapse whitespace, strip soft hyphens and line-break hyphenation.
 2. Exact substring → `ok, method=exact`.
 3. Else: evidence ≥ 25 chars and best fuzzy window ratio ≥ 0.92 (rapidfuzz `partial_ratio`) → `ok, method=fuzzy` (shown in UI, counted separately in metrics).

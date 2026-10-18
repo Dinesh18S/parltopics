@@ -69,7 +69,7 @@ def classify(
         typer.echo(f"status=lang_missing {e}")
         raise typer.Exit(2)
     prompt = load_prompt(prompt_version)
-    prediction = classify_adhoc(LLMClient(settings), prompt, source, load_topic(topic))
+    prediction = classify_adhoc(LLMClient(settings), prompt, source, load_topic(topic), settings.title_only_conf_cap)
     run_id = new_run_id()
     log_path = log_call(Path("results"), run_id, prediction)
     typer.echo(prediction.model_dump_json(indent=2))

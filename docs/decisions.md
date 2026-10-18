@@ -114,3 +114,19 @@
 - Observation: on `no_match` the 70B model returns `confidence: 0.0` (e.g. 70435, also Covid-19 topic on 235308). It treats confidence as "probability of the topic", not "confidence the label is correct" (docs/05 §2). Rationales run ~35–40 words vs the 25-word rule.
 - Decision: no prompt change before S4; one example is not evidence. If S4 confirms it, either (a) redefine confidence in docs/05 as "probability the topic is a main subject" (it works better as a ranking score anyway) or (b) bump to `adhoc_v2`. Rationale length is cosmetic; add `maxLength` only if it costs tokens.
 - Affects: threshold tuning and calibration (S6).
+
+### D18 — Verification details (slice S3, 2026-10-18)
+- Decision: implemented docs/04 §4.3 as written (25-char / 92 fuzzy, 15-char minimum unless the evidence equals the title, title-only → evidence must be in the title, confidence capped at 0.6). Choices the doc left open:
+  - all quote and apostrophe characters map to one `"`, and spaces next to a quote are removed (French `l’« identité »` vs model `l'"identité"` must match);
+  - line-break hyphenation `x- y` → `xy` on **both** sides (so `Digitali- sierung` = `Digitalisierung`; a real `Aus- und` also becomes `ausund` on both sides, so it still matches);
+  - the title-only cap applies to every label, not only matches;
+  - `no_match`/`abstain`/`NONE_OTHER` with evidence: evidence is still checked and recorded, but never changes the status;
+  - `span` is in normalised-text coordinates (enough for the UI to highlight via the evidence string; mapping back to raw offsets is not needed yet).
+- Why: tests written first (`src/tests/test_verify.py`, 18 cases: exact, quote variants, hyphenation, fuzzy pass/fail, < 25 chars, too short, empty, title-only cap and title-only rejection). Real check: 235308 (de) and 329562 (it) exact; 247811 (fr) fuzzy 93.6 because the PDF has a page footer "M 3088 4/4" inside the quoted sentence — the case fuzzy exists for.
+- Alternatives rejected: separate `'` and `"` classes — breaks on French guillemets and typographic apostrophes.
+- Affects: `verify.py`, `classify.py` (Prediction gains `verify_ok`, `verify_method`, `verify_score`; status becomes `evidence_failed` on failure), `runlog.py`, `SourceText.title`.
+- Revisit if: S4 shows evidence failures that a human would call verbatim.
+
+### D19 — Early signals for S4 (slice S3, 2026-10-18) — observation only
+- 247811 (GE, audiovisual fund, a PolitMonitor positive) → `no_match`: PolitMonitor's tag is broad ("covers … digital media", challenge README); our draft definition is not. Partner's include/exclude rules decide this, not a prompt tweak.
+- 159814 (federal bill "Revision EPDG", title-only, PolitMonitor positive) → `no_match` with empty evidence. Title-only bills (D13) may be systematic misses; the prompt says "abstain" when the text is too short, and the model didn't. Count both patterns in S4 before changing anything.

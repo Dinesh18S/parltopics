@@ -1,4 +1,4 @@
-"""One affair × one topic → Prediction. Evidence verification is added in verify.py (S3)."""
+"""One affair × one topic → verified Prediction."""
 
 from typing import Literal
 
@@ -8,6 +8,7 @@ from parltopics.llm import LLMCall, LLMClient
 from parltopics.prompts import Prompt, render_adhoc
 from parltopics.sources.assemble import SourceText
 from parltopics.topics import Topic
+from parltopics.verify import check_prediction
 
 
 class AdhocOutput(BaseModel):
@@ -28,6 +29,9 @@ class Prediction(BaseModel):
     evidence: str
     rationale: str
     status: str
+    verify_ok: bool
+    verify_method: str
+    verify_score: float
     model: str
     prompt_version: str
     prompt_sha: str
@@ -41,19 +45,33 @@ class Prediction(BaseModel):
     raw_json: str | None
 
 
-def classify_adhoc(llm: LLMClient, prompt: Prompt, source: SourceText, topic: Topic) -> Prediction:
+def classify_adhoc(
+    llm: LLMClient, prompt: Prompt, source: SourceText, topic: Topic, title_only_cap: float
+) -> Prediction:
     system, user = render_adhoc(prompt, topic, source.text, source.lang)
     call: LLMCall = llm.complete_json(system, user, AdhocOutput)
     out = call.parsed or {}
+    status, confidence = call.status, out.get("confidence")
+    verify_ok, verify_method, verify_score = False, "not_run", 0.0
+    if call.status == "ok":
+        check = check_prediction(
+            out["label"], out["confidence"], out["evidence"], source.text, source.title,
+            title_only=source.title_only, cap=title_only_cap,
+        )
+        status, confidence = check.status, check.confidence
+        verify_ok, verify_method, verify_score = check.verify_ok, check.verify_method, check.score
     return Prediction(
         affair_id=source.affair_id,
         lang=source.lang,
         topic=topic.name,
         label=out.get("label"),
-        confidence=out.get("confidence"),
+        confidence=confidence,
         evidence=out.get("evidence", ""),
         rationale=out.get("rationale", ""),
-        status=call.status,
+        status=status,
+        verify_ok=verify_ok,
+        verify_method=verify_method,
+        verify_score=verify_score,
         model=call.model,
         prompt_version=prompt.version,
         prompt_sha=prompt.sha,
