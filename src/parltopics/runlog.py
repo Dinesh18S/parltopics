@@ -48,7 +48,7 @@ def fingerprint(prompt: Prompt, topic: Topic, settings: Settings, fewshot: list[
     params = {
         "model": settings.llm_name,
         "temperature": settings.llm_temperature,
-        "max_tokens": settings.llm_max_tokens,
+        "max_tokens": settings.llm_max_tokens_standard if prompt.version.startswith("standard") else settings.llm_max_tokens,
         "json_mode": settings.llm_json_mode,
         "max_input_chars": settings.max_input_chars,
         "title_only_conf_cap": settings.title_only_conf_cap,

@@ -2,10 +2,11 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, create_model
 
 from parltopics.llm import LLMCall, LLMClient
-from parltopics.prompts import Prompt, render_adhoc
+from parltopics.prompts import Prompt, render_adhoc, render_standard
+from parltopics.schemes import Scheme
 from parltopics.sources.assemble import SourceText
 from parltopics.topics import Topic
 from parltopics.verify import check_prediction
@@ -95,3 +96,59 @@ def classify_adhoc(
         error=call.error,
         raw_json=call.raw,
     )
+
+
+NONE_OTHER = "NONE_OTHER"
+
+
+def standard_output_model(codes: list[str]) -> type[BaseModel]:
+    """JSON schema for standard mode with the scheme's codes as an enum (enforced server-side)."""
+    code_type = Literal[tuple(codes + [NONE_OTHER])]  # type: ignore[valid-type]
+    label = create_model("StandardLabel", __config__=ConfigDict(extra="forbid"),
+                         code=(code_type, ...), confidence=(float, Field(ge=0, le=1)), evidence=(str, ...))
+    return create_model("StandardOutput", __config__=ConfigDict(extra="forbid"),
+                        labels=(list[label], Field(min_length=1, max_length=3)), rationale=(str, ...))
+
+
+def classify_standard(
+    llm: LLMClient, prompt: Prompt, source: SourceText, scheme: Scheme, fallback_lang: str, title_only_cap: float,
+    run_id: str, max_tokens: int | None = None,
+) -> list[dict]:
+    """One affair × one scheme → one record per chosen category (label = source id). Each label's evidence is
+    verified on its own; NONE_OTHER must stand alone (else dropped and flagged)."""
+    system, user = render_standard(prompt, scheme, source.text, source.lang, fallback_lang)
+    call = llm.complete_json(system, user, standard_output_model([c.code for c in scheme.categories]), max_tokens)
+    base = {"run_id": run_id, "affair_id": source.affair_id, "lang": source.lang, "topic": scheme.name,
+            "model": call.model, "source_sha256": source.sha256, "tokens_estimated": call.tokens_estimated,
+            "repaired": call.repaired, "raw_json": call.raw, "inconsistent": False, "evidence_retried": False,
+            "evidence_recovered": False, "latency_ms": call.latency_ms, "tok_in": call.tok_in, "tok_out": call.tok_out}
+    if call.status != "ok":
+        return [base | {"label": None, "status": call.status, "error": call.error, "confidence": None, "evidence": "",
+                        "rationale": "", "verify_ok": False, "verify_method": "not_run", "verify_score": 0.0}]
+    labels = call.parsed["labels"]
+    note = None
+    if any(lab["code"] == NONE_OTHER for lab in labels) and len(labels) > 1:
+        labels = [lab for lab in labels if lab["code"] != NONE_OTHER]
+        note = "NONE_OTHER mixed with codes: dropped"
+    by_code = scheme.by_code()
+    records = []
+    for rank, lab in enumerate(labels, start=1):
+        if lab["code"] == NONE_OTHER:
+            check_label, source_id = "NONE_OTHER", NONE_OTHER
+        elif lab["code"] in by_code:
+            check_label, source_id = "match", by_code[lab["code"]].source_id
+        else:
+            records.append(base | {"label": None, "scheme_code": lab["code"], "rank": rank, "status": "invalid_label",
+                                   "confidence": lab["confidence"], "evidence": lab["evidence"], "rationale": "",
+                                   "verify_ok": False, "verify_method": "not_run", "verify_score": 0.0,
+                                   "error": f"unknown code {lab['code']}"})
+            continue
+        check = check_prediction(check_label, lab["confidence"], lab["evidence"], source.text, source.title,
+                                 title_only=source.title_only, cap=title_only_cap)
+        records.append(base | {
+            "label": source_id, "scheme_code": lab["code"], "rank": rank, "confidence": check.confidence,
+            "evidence": lab["evidence"], "rationale": call.parsed["rationale"], "status": check.status,
+            "verify_ok": check.verify_ok, "verify_method": check.verify_method, "verify_score": check.score,
+            "error": note,
+        } | ({} if rank == 1 else {"latency_ms": 0, "tok_in": 0, "tok_out": 0}))
+    return records

@@ -1,0 +1,11 @@
+CATEGORIES ({scheme_name}):
+{categories}
+NONE_OTHER: none of the above fits, or purely procedural
+
+AFFAIR (language: {lang}):
+<<<
+{text}
+>>>
+
+Task: choose 1 to 3 codes from the CATEGORIES list above that are main subjects of this affair (or NONE_OTHER).
+Return JSON: {{"labels": [{{"code": string, "confidence": number 0-1, "evidence": string}}], "rationale": string}}

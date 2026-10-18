@@ -37,3 +37,9 @@ def render_adhoc(prompt: Prompt, topic: Topic, text: str, lang: str) -> tuple[st
         name=topic.name, definition=topic.definition.strip(), rules=rules, lang=lang, text=text
     )
     return prompt.system.strip(), user.strip()
+
+
+def render_standard(prompt: Prompt, scheme, text: str, lang: str, fallback_lang: str) -> tuple[str, str]:
+    categories = "\n".join(f"{c.code}: {scheme.label(c, lang, fallback_lang)}" for c in scheme.categories)
+    user = prompt.user.format(scheme_name=scheme.name, categories=categories, lang=lang, text=text)
+    return prompt.system.strip(), user.strip()

@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_temperature: float = 0.0
     llm_max_tokens: int = 400
+    llm_max_tokens_standard: int = 900  # up to 3 labels with evidence + rationale (400 truncated JSON, D62)
     llm_concurrency: int = 4
     llm_json_mode: str = "json_schema"
     max_input_chars: int = 12000
@@ -19,7 +20,8 @@ class Settings(BaseSettings):
     match_threshold: float = 0.9  # D45: fixed on dev by the pre-registered rule
     demo_default_preset: str = ""
     translate_model: str = ""  # model for the unofficial reading-aid translation; empty = LLM_NAME
-    review_lang: str = ""  # reader language for review aids (official version / unofficial translation); empty = off  # topics/<id>.yaml shown first in the UI; empty = first preset with results
+    review_lang: str = ""
+    scheme_label_fallback: str = ""  # label language when a scheme has none in the affair language (APS has no IT)  # reader language for review aids (official version / unofficial translation); empty = off  # topics/<id>.yaml shown first in the UI; empty = first preset with results
     opd_api_base: str = "https://api.openparldata.ch"
     data_dir: Path = Path("./data")
     db_path: Path = Path("./data/parltopics.db")

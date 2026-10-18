@@ -5,7 +5,7 @@ import pandas as pd
 import typer
 import uvicorn
 
-from parltopics.batch import run_sample
+from parltopics.batch import run_sample, run_standard_sample
 from parltopics.classify import classify_adhoc
 from parltopics.config import get_settings
 from parltopics.evaluate import digitalisation as digi_eval
@@ -13,7 +13,8 @@ from parltopics.evaluate import metrics_report
 from parltopics.evaluate import report as reports
 from parltopics.evaluate.keyword_scan import scan as keyword_scan
 from parltopics.evaluate.samples import (
-    build_aps_gold, build_demo_pool, build_digi_federal, build_first_loop, enlarge_negatives, federal_slice,
+    build_aps_gold, build_curia_vista_sample, build_demo_pool, build_digi_federal, build_first_loop, enlarge_negatives,
+    federal_slice,
 )
 from parltopics import partner as partner_files
 from parltopics.sources.router import AffairSource
@@ -85,21 +86,32 @@ def fetch(affair_id: int, lang: str | None = typer.Option(None, help="de|fr|it, 
 
 @app.command()
 def classify(
-    topic: Path = typer.Option(..., help="topic YAML, e.g. topics/<name>.yaml"),
+    topic: Path | None = typer.Option(None, help="topic YAML, e.g. topics/<name>.yaml (ad-hoc mode)"),
+    scheme: str | None = typer.Option(None, help="standard mode: curia_vista | aps (needs --sample)"),
     affair: int | None = typer.Option(None, help="one OpenParlData affair id"),
     sample: Path | None = typer.Option(None, help="sample CSV (affair_id, body_key, lang, gold, ...)"),
     lang: str | None = typer.Option(None, help="de|fr|it, federal affairs only (with --affair)"),
-    prompt_version: str = "adhoc_v4",
+    prompt_version: str | None = typer.Option(None, help="default: adhoc_v5 (ad-hoc) / standard_v1 (standard)"),
     notes: str = "",
     split: str | None = typer.Option(None, help="only rows of this split (dev|test) of the sample"),
 ) -> None:
-    """Classify one affair (--affair) or a sample file (--sample) against one ad-hoc topic."""
+    """Classify one affair (--affair) or a sample (--sample) against an ad-hoc topic (--topic) or a scheme (--scheme)."""
     settings = get_settings()
     if (affair is None) == (sample is None):
         raise typer.BadParameter("pass exactly one of --affair or --sample")
+    if (topic is None) == (scheme is None):
+        raise typer.BadParameter("pass exactly one of --topic (ad-hoc) or --scheme (standard)")
     store = Store(settings.db_path)
+    prompt_version_adhoc = prompt_version or "adhoc_v5"
+    if scheme is not None:
+        if sample is None:
+            raise typer.BadParameter("--scheme needs --sample")
+        run = run_standard_sample(settings, store, sample, scheme, RESULTS_DIR, prompt_version or "standard_v1",
+                                  notes, split)
+        typer.echo(f"run_id={run.run_id} prompt_version={run.fingerprint.prompt_version[:12]}")
+        return
     if sample is not None:
-        run = run_sample(settings, store, sample, topic, RESULTS_DIR, prompt_version, notes, split)
+        run = run_sample(settings, store, sample, topic, RESULTS_DIR, prompt_version_adhoc, notes, split)
         typer.echo(f"run_id={run.run_id} prompt_version={run.fingerprint.prompt_version[:12]}")
         return
     affair_obj = OPDClient(settings).get_affair(affair)
@@ -108,7 +120,7 @@ def classify(
     except LangMissing as e:
         typer.echo(f"status=lang_missing {e}")
         raise typer.Exit(2)
-    prompt = load_prompt(prompt_version)
+    prompt = load_prompt(prompt_version_adhoc)
     topic_obj = load_topic(topic)
     run = start_run(RESULTS_DIR, prompt, topic_obj, topic, settings, notes=notes or f"single affair {affair}")
     store.add_run(run, topic_obj)
@@ -176,6 +188,29 @@ def sample_digi_federal(
                                   for (s, g), n in df.groupby(["split", "gold"]).size().items()}}}
     out.with_suffix(".meta.json").write_text(json.dumps(meta, indent=2))
     typer.echo(json.dumps(meta, indent=2))
+
+
+@sample_app.command("curia-vista")
+def sample_curia_vista(
+    out: Path = Path("data/samples/curia_vista.csv"),
+    per_area: int = 10,
+    since: str = "2018-01-01",
+    exclude_type: list[str] = typer.Option([], help="affair types left out, e.g. Consultation"),
+    dev_share: float = 0.3,
+    seed: int = 28,
+    exclude_sample: list[Path] = typer.Option([], help="sample files whose affairs must not be drawn"),
+    force: bool = False,
+) -> None:
+    """Stratified Curia Vista sample (docs/06 §3.1): >= per_area affairs per subject area, dev/test grouped by title."""
+    if out.exists() and not force:
+        typer.echo(f"{out} exists (frozen); use --force to rebuild")
+        return
+    population = federal_slice(get_settings(), since, exclude_type, "ch")
+    excluded = {int(i) for p in exclude_sample for i in pd.read_csv(p).affair_id}
+    df = build_curia_vista_sample(population, per_area, seed, dev_share, excluded)
+    df.to_csv(out, index=False)
+    typer.echo(f"wrote {out}: {len(df)} affairs, splits {df.split.value_counts().to_dict()}, "
+               f"mean gold labels {df.gold.str.split('|').map(len).mean():.2f}")
 
 
 @sample_app.command("enlarge-negatives")
@@ -354,6 +389,53 @@ def demo_export(pool: Path = Path("data/samples/demo_pool.csv")) -> None:
             continue
         n = demo.export_run(store, run["id"], RESULTS_DIR / "demo" / f"{preset_id}.json")
         typer.echo(f"{preset_id}: run {run['id']} ({run['prompt_template']}, {n} predictions) → results/demo/{preset_id}.json")
+
+
+@eval_app.command("curia-vista")
+def eval_curia_vista(
+    run_ids: list[str] = typer.Argument(..., help="runs with the same prompt_version (e.g. dev, or dev + test)"),
+    sample: Path = Path("data/samples/curia_vista.csv"),
+    n_boot: int = 1000,
+    seed: int = 28,
+) -> None:
+    """Curia Vista standard mode (docs/06 §3.1): at-least-one-correct, micro/macro F1, per area, cardinality."""
+    from parltopics.evaluate.multilabel import multilabel_summary
+    from parltopics.schemes import load_curia_vista
+
+    settings = get_settings()
+    store = Store(settings.db_path)
+    versions = {store.run(r)["prompt_version"] for r in run_ids}
+    if len(versions) != 1:
+        raise typer.BadParameter(f"runs have different prompt_versions: {versions}")
+    smp = pd.read_csv(sample, dtype={"lang": str, "gold": str}, keep_default_na=False).set_index("affair_id")
+    rows = [r for run_id in run_ids for r in store.predictions(run_id)]
+    excluded = {a for a in {r["affair_id"] for r in rows}
+                if any(r["affair_id"] == a and (r["status"] == "lang_missing" or r.get("lang_mismatch")) for r in rows)}
+    labels = [c.source_id for c in load_curia_vista(settings.data_dir / "raw").categories]
+    out = {"run_ids": run_ids, "prompt_version": versions.pop(), "model": store.run(run_ids[0])["model"],
+           "excluded_lang_missing_or_mismatch": len(excluded), "status_counts": {}}
+    for r in rows:
+        out["status_counts"][r["status"]] = out["status_counts"].get(r["status"], 0) + 1
+    for split in ("dev", "test"):
+        ids = [a for a in smp.index[smp.split == split] if a not in excluded and a in {r["affair_id"] for r in rows}]
+        if not ids:
+            continue
+        gold = {a: set(smp.loc[a, "gold"].split("|")) for a in ids}
+        pred: dict[int, set[str]] = {a: set() for a in ids}
+        for r in rows:
+            if r["affair_id"] in pred and r["status"] == "ok" and r["label"]:
+                pred[r["affair_id"]].add(r["label"])
+        out[split] = multilabel_summary(gold, pred, labels, n_boot, seed)
+        s = out[split]
+        typer.echo(f"[{split}] n={s['n']}  at-least-one-correct {s['at_least_one_correct']['correct']}/{s['n']} = "
+                   f"{s['at_least_one_correct']['rate']:.1%} (CI {s['at_least_one_correct']['ci95'][0]:.1%}–"
+                   f"{s['at_least_one_correct']['ci95'][1]:.1%})  micro-F1 {s['micro']['f1']:.3f} "
+                   f"(CI {s['micro']['f1_ci95'][0]:.3f}–{s['micro']['f1_ci95'][1]:.3f}; P {s['micro']['precision']:.3f} "
+                   f"R {s['micro']['recall']:.3f})  macro-F1 {s['macro_f1']:.3f}  labels/affair gold "
+                   f"{s['cardinality']['gold_mean']:.2f} pred {s['cardinality']['pred_mean']:.2f}  "
+                   f"NONE_OTHER {s['none_other_rate']:.1%}")
+    typer.echo(f"statuses {out['status_counts']}; excluded (lang missing/mismatch) {len(excluded)}")
+    metrics_report.update_metrics_json(RESULTS_DIR / "metrics.json", "curia_vista_standard", out)
 
 
 @partner_app.command("files")

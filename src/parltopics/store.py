@@ -65,12 +65,14 @@ CREATE TRIGGER IF NOT EXISTS reviews_no_delete BEFORE DELETE ON reviews
 PREDICTION_COLUMNS = (
     "run_id", "affair_id", "source_sha256", "lang", "gold", "body_key", "title", "label", "confidence", "evidence",
     "rationale", "verify_ok", "verify_method", "verify_score", "inconsistent", "keyword_absent",
-    "tech_vocab_absent", "evidence_retried", "evidence_recovered", "status", "model", "latency_ms", "tok_in", "tok_out", "tokens_estimated", "repaired",
+    "tech_vocab_absent", "evidence_retried", "evidence_recovered", "scheme_code", "rank", "status", "model", "latency_ms", "tok_in", "tok_out", "tokens_estimated", "repaired",
     "error", "raw_json",
 )
 BOOL_COLUMNS = {"verify_ok", "inconsistent", "evidence_retried", "evidence_recovered", "keyword_absent", "tech_vocab_absent", "tokens_estimated", "repaired",
                 "lang_mismatch", "title_only", "truncated"}
-ADDED_PREDICTION_COLUMNS = ("evidence_retried", "evidence_recovered")  # added after S5; migrated on open
+# added after S5; migrated on open
+ADDED_PREDICTION_COLUMNS = {"evidence_retried": "INTEGER", "evidence_recovered": "INTEGER", "scheme_code": "TEXT",
+                            "rank": "INTEGER"}
 SOURCE_FIELDS = ("lang_source", "detected_lang", "lang_mismatch", "title_only", "truncated", "cut_section",
                  "chars_lost", "n_chars_full", "url")
 
@@ -86,13 +88,14 @@ def _row(row: sqlite3.Row) -> dict:
 class Store:
     def __init__(self, path: Path):
         path.parent.mkdir(parents=True, exist_ok=True)
-        self.db = sqlite3.connect(path, check_same_thread=False, isolation_level=None)
+        self.db = sqlite3.connect(path, check_same_thread=False, isolation_level=None, timeout=30)
         self.db.row_factory = sqlite3.Row
+        self.db.execute("PRAGMA journal_mode=WAL")  # CLI runs and the UI server write the same file
         self.db.executescript(SCHEMA)
         have = {r["name"] for r in self.db.execute("PRAGMA table_info(predictions)")}
-        for column in ADDED_PREDICTION_COLUMNS:
+        for column, sql_type in ADDED_PREDICTION_COLUMNS.items():
             if column not in have:
-                self.db.execute(f"ALTER TABLE predictions ADD COLUMN {column} INTEGER")
+                self.db.execute(f"ALTER TABLE predictions ADD COLUMN {column} {sql_type}")
         self.db.execute(  # source links in the text's own language when the affair has one (D60)
             "UPDATE sources SET url = (SELECT json_extract(a.url_external_json, '$.' || sources.lang) FROM affairs a "
             "WHERE a.id = sources.affair_id) WHERE (SELECT json_extract(a.url_external_json, '$.' || sources.lang) "

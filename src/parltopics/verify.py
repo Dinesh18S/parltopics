@@ -106,4 +106,9 @@ def locate(evidence: str, text: str) -> tuple[int, int] | None:
     best = fuzz.partial_ratio_alignment(ev, low)
     if best is None or best.score < FUZZY_MIN_SCORE - 12:
         return None
-    return best.dest_start, best.dest_end
+    start, end = best.dest_start, best.dest_end
+    while start > 0 and text[start - 1].isalnum():
+        start -= 1
+    while end < len(text) and text[end].isalnum():
+        end += 1
+    return start, end

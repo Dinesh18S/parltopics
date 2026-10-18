@@ -136,3 +136,12 @@ def test_locate_exact_and_fuzzy_in_original_offsets():
     assert span is not None and "accompagne en permanence" in text[span[0]:span[1]]
     assert locate("völlig anderer Satz ohne Bezug zum Text hier", text) is None
     assert locate("", text) is None
+
+
+def test_locate_snaps_fuzzy_span_to_whole_words():
+    from parltopics.verify import locate
+    text = "Satz davor. Die negativen Folgen sind wissenschaftlich eindeutig belegt, und sie treffen alle direkt. Danach."
+    start, end = locate("ie negativen Folgen sind wissenschaftlich eindeutig belegt und sie treffen alle direkt", text)
+    assert text[start] == "D" and text[start - 1] == " "
+    assert text[end - 1].isalpha() or text[end - 1] in ".,"
+    assert end == len(text) or not text[end].isalnum()

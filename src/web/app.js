@@ -398,6 +398,7 @@ async function loadMetrics() {
   const d = m.digitalisation_federal_2018;
   if (!d) { grid.innerHTML = `<div class="card wide"><div class="ctitle">No digitalisation evaluation in results/metrics.json</div></div>`; return; }
   const t = d.test.at_chosen_threshold, b = d.baselines_full_slice, q = d.test.quality;
+  const cvt = (m.curia_vista_standard || {}).test;
   const pending = (what) => `<span class="pending">pending — ${what}</span>`;
   grid.innerHTML = `
     <div class="card wide">
@@ -427,9 +428,10 @@ async function loadMetrics() {
       <div class="kv"><span>Keyword-absent matches (tagged)</span><span class="kvv">${q.keyword_absent_shown.n} (${q.keyword_absent_shown.gold_positive})</span></div>
       <div class="kv"><span>Abstain · inconsistent</span><span class="kvv">${q.abstain} · ${q.inconsistent}</span></div>
       <div class="kv"><span>Excluded (lang missing / mismatch)</span><span class="kvv">${d.excluded_from_metrics.lang_missing} / ${d.excluded_from_metrics.lang_mismatch}</span></div></div>
-    <div class="card"><div class="ctitle">Standard mode</div><div class="csub">Curia Vista areas · APS chapters</div>
-      <div class="kv"><span>Curia Vista · at-least-one-correct</span>${pending("S7")}</div>
-      <div class="kv"><span>Curia Vista · micro-F1</span>${pending("S7")}</div>
+    <div class="card"><div class="ctitle">Standard mode</div><div class="csub">Curia Vista areas (test${cvt ? `, n = ${cvt.n}` : ""}) · APS chapters</div>
+      <div class="kv"><span>Curia Vista · at-least-one-correct</span>${cvt ? `<span class="kvv">${pct(cvt.at_least_one_correct.rate)} <span class="cap">${ci(cvt.at_least_one_correct.ci95)}</span></span>` : pending("S7")}</div>
+      <div class="kv"><span>Curia Vista · micro-F1</span>${cvt ? `<span class="kvv">${cvt.micro.f1.toFixed(2)} <span class="cap">P ${cvt.micro.precision.toFixed(2)} · R ${cvt.micro.recall.toFixed(2)}</span></span>` : pending("S7")}</div>
+      <div class="kv"><span>Labels per affair (gold · predicted)</span>${cvt ? `<span class="kvv">${cvt.cardinality.gold_mean.toFixed(1)} · ${cvt.cardinality.pred_mean.toFixed(1)}</span>` : pending("S7")}</div>
       <div class="kv"><span>APS · gold sample</span>${pending("partner labels")}</div></div>
     <div class="card"><div class="ctitle">Cross-language · cost</div><div class="csub">Do DE / FR / IT agree? What does it cost?</div>
       <div class="kv"><span>All three languages agree</span>${pending("S9")}</div>

@@ -78,10 +78,11 @@ class LLMClient:
         )
         return r.choices[0].message.content or ""
 
-    def complete_json(self, system: str, user: str, schema: type[BaseModel]) -> LLMCall:
-        return self.complete_messages([{"role": "system", "content": system}, {"role": "user", "content": user}], schema)
+    def complete_json(self, system: str, user: str, schema: type[BaseModel], max_tokens: int | None = None) -> LLMCall:
+        return self.complete_messages(
+            [{"role": "system", "content": system}, {"role": "user", "content": user}], schema, max_tokens)
 
-    def complete_messages(self, messages: list[dict], schema: type[BaseModel]) -> LLMCall:
+    def complete_messages(self, messages: list[dict], schema: type[BaseModel], max_tokens: int | None = None) -> LLMCall:
         """One JSON answer for a conversation; one repair retry if the JSON is invalid."""
         messages = list(messages)
         n_given = len(messages)
@@ -105,7 +106,7 @@ class LLMClient:
                     model=self.settings.llm_name,
                     messages=messages,
                     temperature=self.settings.llm_temperature,
-                    max_tokens=self.settings.llm_max_tokens,
+                    max_tokens=max_tokens or self.settings.llm_max_tokens,
                     **extra,
                 )
             except openai.OpenAIError as e:

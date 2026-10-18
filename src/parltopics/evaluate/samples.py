@@ -303,3 +303,31 @@ def build_demo_pool(settings: Settings, scan: pd.DataFrame, since: str, seed: in
     rng.shuffle(cand)
     add(cand, body_of, 0, n_neg - n_neg // 2, "neg")
     return pd.DataFrame(rows, columns=SAMPLE_COLUMNS)
+
+
+def build_curia_vista_sample(population: pd.DataFrame, per_area: int, seed: int, dev_share: float,
+                             exclude: set[int]) -> pd.DataFrame:
+    """Stratified over the Curia Vista areas: for each area (rarest first) draw affairs carrying it until it has
+    `per_area` affairs in the sample; language by rotation; dev/test grouped by title."""
+    rng = random.Random(seed)
+    pop = population[population.topic_ids.map(bool) & ~population.affair_id.isin(exclude)]
+    langs = sorted({lang for titles in pop.titles for lang in titles})
+    counts = pop.topic_ids.explode().value_counts()
+    picked: dict[int, None] = {}
+    for area in counts.sort_values().index:
+        have = sum(area in pop.loc[pop.affair_id == a, "topic_ids"].iloc[0] for a in picked)
+        pool = sorted(i for i, ids in zip(pop.affair_id, pop.topic_ids) if area in ids and i not in picked)
+        for affair_id in rng.sample(pool, max(0, min(per_area - have, len(pool)))):
+            picked[affair_id] = None
+    rows = []
+    sub = pop.set_index("affair_id")
+    for k, affair_id in enumerate(picked):
+        r = sub.loc[affair_id]
+        rotation = langs[k % len(langs):] + langs[:k % len(langs)]
+        lang = next(l for l in rotation if l in r.titles)
+        rows.append({"affair_id": int(affair_id), "body_key": BULK_BODY_KEY, "lang": lang, "gold": "|".join(r.topic_ids),
+                     "set": "curia_vista", "split": "", "begin_date": r.begin_date, "title": clean_text(r.titles[lang]),
+                     "type": r.type_en, "group_key": r.titles.get(langs[0]) or next(iter(r.titles.values()))})
+    df = pd.DataFrame(rows)
+    df["split"] = grouped_split(df.group_key.tolist(), dev_share, seed)
+    return df.drop(columns="group_key").sort_values(["split", "affair_id"])
