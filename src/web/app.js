@@ -92,7 +92,7 @@ function selectCollection(body) {
   if (S.live || S.job) { $("fColl").value = S.collection; return; }
   Object.assign(S, { collection: body, coll: null, confirmJob: null, items: [], runId: null, selected: -1 });
   S.prevVisit = body ? lastVisit(body) : null;
-  S.filters.parl = ""; S.filters.level = ""; $("fParl").value = ""; $("fLevel").value = "";
+  S.filters.parl = ""; S.filters.level = ""; S.filters.shelf = ""; $("fParl").value = ""; $("fLevel").value = ""; $("fShelf").value = "";
   renderScopeChip(); renderSchemes();
   closeDetail();
   $("classifyBtn").title = body ? `Index ${body} for this topic (Enter)` : "Classify the demo pool (Enter)";
@@ -400,6 +400,7 @@ function fillParliaments(keys) {
 }
 
 function fillFilterOptions() {
+  if (S.mode === "standard") fillShelves();
   const keep = (id, values, fmt) => {
     const el = $(id); const cur = el.value; const first = el.options[0].outerHTML;
     el.innerHTML = first + values.map((v) => `<option value="${esc(v)}">${esc(fmt(v))}</option>`).join("");
@@ -671,7 +672,7 @@ async function setMode(mode) {
 }
 
 async function selectScheme(id) {
-  S.scheme = id; renderSchemes();
+  S.scheme = id; S.filters.shelf = ""; $("fShelf").value = ""; renderSchemes();
   const seq = ++S.loadSeq;
   if (!S.labelNames[id]) S.labelNames[id] = await api(`/api/schemes/${encodeURIComponent(id)}/labels`);
   if (seq !== S.loadSeq || S.scheme !== id) return;
@@ -697,14 +698,37 @@ function stdGroups() {
     if (i.status === "ok" && i.label && !g.labels.some((l) => l.label === i.label)) g.labels.push(i);
     else if (i.status === "evidence_failed") g.failed += 1;
   }
-  const all = [...by.values()];
+  const shelf = S.filters.shelf;
+  const onShelf = (l) => shelf && (l.label === shelf || String(l.label).startsWith(`${shelf}.`));
+  const all = [...by.values()].filter((g) => !shelf || g.labels.some(onShelf));
   for (const g of all) {
     g.labels.sort((a, b) => (a.rank || 9) - (b.rank || 9) || String(a.label).localeCompare(String(b.label)));
-    const top = g.labels.find((l) => l.label !== "NONE_OTHER") || g.labels[0];
+    const top = g.labels.find((l) => shelf && l.label === shelf) || g.labels.find((l) => l.label !== "NONE_OTHER") || g.labels[0];
     if (top) Object.assign(g, { prediction_id: top.prediction_id, evidence: top.evidence, verify_ok: top.verify_ok, verify_method: top.verify_method });
   }
   return { all, shown: all.filter((g) => g.labels.length), failed: all.reduce((n, g) => n + g.failed, 0),
            none: all.filter((g) => g.labels.length && g.labels.every((l) => l.label === "NONE_OTHER")).length };
+}
+
+// "Shelf" filter: every category that occurs in the loaded results, with its number of affairs
+function fillShelves() {
+  const el = $("fShelf"); const cur = el.value;
+  const count = new Map();
+  const seen = new Set();
+  for (const i of S.items) {
+    if (i.status !== "ok" || !i.label || i.label === "NONE_OTHER" || seen.has(`${i.affair_id}|${i.label}`)) continue;
+    seen.add(`${i.affair_id}|${i.label}`);
+    count.set(i.label, (count.get(i.label) || 0) + 1);
+  }
+  const isTopic = (id) => (id.match(/\./g) || []).length >= 2;
+  const opt = (id) => `<option value="${esc(id)}">${esc(labelText(id, "de"))} (${count.get(id)})</option>`;
+  const byName = (a, b) => labelText(a, "de").localeCompare(labelText(b, "de"), "de");
+  const ids = [...count.keys()];
+  const chapters = ids.filter((id) => !isTopic(id)).sort(byName), topics = ids.filter(isTopic).sort(byName);
+  el.innerHTML = `<option value="">All</option>` + (topics.length ? `<optgroup label="Topics">${topics.map(opt).join("")}</optgroup>` : "") +
+    (chapters.length ? `<optgroup label="${topics.length ? "Chapters" : "Areas"}">${chapters.map(opt).join("")}</optgroup>` : "");
+  el.value = count.has(cur) ? cur : "";
+  S.filters.shelf = el.value;
 }
 
 function paths(g) {
@@ -732,9 +756,9 @@ function stdReview(g) {
 
 function renderStandard() {
   const g = stdGroups();
-  const fallbackNote = S.scheme === "aps" ? " · APS has no Italian labels: Italian affairs show the German label" : "";
+  const fallbackNote = S.scheme === "aps" ? " · Italian affairs show German APS labels" : "";
   $("strip").innerHTML = S.items.length || S.live ? `
-    <span><b>${g.shown.length}</b> affairs labelled</span><span>·</span>
+    <span><b>${g.shown.length}</b> ${g.shown.length === 1 ? "affair" : "affairs"} labelled</span><span>·</span>
     <span><b>${g.shown.reduce((n, x) => n + x.labels.filter((l) => l.label !== "NONE_OTHER").length, 0)}</b> labels</span><span>·</span>
     <span><b>${g.none}</b> none / other</span><span>·</span>
     <span><b>${g.failed}</b> labels rejected (evidence not found)</span>
@@ -1032,7 +1056,7 @@ document.addEventListener("change", (e) => {
     if (S.runId) return void (location.href = `/api/export.csv?run_id=${enc(S.runId)}`);
     return alertStrip("Nothing to export yet.");
   }
-  const map = { fParl: "parl", fLevel: "level", fLang: "lang", fDate: "year" };
+  const map = { fParl: "parl", fLevel: "level", fLang: "lang", fDate: "year", fShelf: "shelf" };
   if (map[t.id]) { S.filters[map[t.id]] = t.value; S.selected = -1; render(); }
 });
 
