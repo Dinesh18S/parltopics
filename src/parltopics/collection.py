@@ -11,6 +11,9 @@ from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+import pandas as pd
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
+
 from parltopics.batch import iter_classify, iter_records, scheme_classifier, scheme_object
 from parltopics.config import Settings
 from parltopics.evaluate.metrics import is_predicted_match
@@ -196,6 +199,18 @@ def update(settings: Settings, store: Store, results_dir: Path, body_key: str,
             continue
         targets.append(index(settings, store, results_dir, body_key, path, t["prompt_template"], report=report))
     return {"ingest": ingested, "new_ids": sorted(new_ids), "indexed": targets, "skipped_changed": skipped}
+
+
+EXPORT_COLUMNS = ("affair_id", "number", "type", "date", "title", "lang", "url", "label", "scheme_code", "confidence",
+                  "shown_as_match", "evidence", "evidence_verified", "rationale", "status", "review", "review_label",
+                  "reviewed_at", "prediction_id", "run_id")
+
+
+def export_frame(rows: list[dict]) -> pd.DataFrame:
+    """Rows as an Excel-safe table: fixed headers (also when empty), and control characters from scanned PDFs
+    (not allowed in .xlsx) removed from text cells."""
+    clean = [{k: ILLEGAL_CHARACTERS_RE.sub("", v) if isinstance(v, str) else v for k, v in r.items()} for r in rows]
+    return pd.DataFrame(clean, columns=list(EXPORT_COLUMNS))
 
 
 def export_rows(store: Store, body_key: str, prompt_version: str, threshold: float) -> list[dict]:

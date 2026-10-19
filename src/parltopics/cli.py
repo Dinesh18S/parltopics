@@ -763,7 +763,7 @@ def export_collection(
     name = topic.stem if topic is not None else scheme
     out = out or settings.data_dir / "exports" / f"{body}_{name}.xlsx"
     out.parent.mkdir(parents=True, exist_ok=True)
-    df = pd.DataFrame(rows)
+    df = collection.export_frame(rows)
     df.to_csv(out, index=False) if out.suffix == ".csv" else df.to_excel(out, index=False)
     typer.echo(f"{len(df)} rows ({df.affair_id.nunique() if len(df) else 0} affairs, prompt_version "
                f"{version[:12]}) → {out}")

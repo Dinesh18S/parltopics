@@ -170,3 +170,11 @@ def test_offline_copy_round_trip_gives_the_same_results(env, tmp_path):
     ref = collection.collection_ref("GE")
     assert key(fresh.collection_results(ref, out["prompt_version"])) == key(env.store.collection_results(ref, out["prompt_version"]))
     assert len(fresh.done_affairs(ref, out["prompt_version"])) == 3
+
+
+def test_export_frame_has_headers_when_empty_and_strips_control_characters(tmp_path):
+    empty = collection.export_frame([])
+    assert list(empty.columns) == list(collection.EXPORT_COLUMNS) and len(empty) == 0
+    df = collection.export_frame([{"affair_id": 1, "evidence": "scan \x1e\x0bnoise ok", "confidence": 0.9}])
+    assert df.loc[0, "evidence"] == "scan noise ok"
+    df.to_excel(tmp_path / "x.xlsx", index=False)  # would raise IllegalCharacterError without cleaning

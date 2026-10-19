@@ -41,8 +41,6 @@
     </div>
 
     <div class="row" id="queryRow">
-      <label class="filter"><span class="cz">Collection</span><select id="fColl" aria-label="Collection"><option value="">Demo pool</option></select></label>
-      <div class="vsep"></div>
       <span class="cap std-only hidden" style="font-weight:600">Scheme</span>
       <div class="seg std-only hidden" role="group" aria-label="Classification scheme" id="schemeSeg"></div>
       <span class="cap std-only hidden">Full taxonomy · up to 3 per affair · labels in DE/FR (APS has no IT labels)</span>
@@ -56,7 +54,7 @@
       <span id="presetChips" class="adhoc-only" style="display:flex;gap:8px;flex-wrap:wrap"></span>
       <button class="btn adhoc-only" type="button" id="newTopicBtn" title="Start an empty topic: name, definition, then Classify">+ New topic</button>
       <div class="spacer"></div>
-      <span class="chip chip-amber hidden" id="sampleChip" title="Model offline: these are stored results from an earlier run">Cached results</span>
+      <span class="chip chip-amber hidden" id="sampleChip"></span>
       <button class="btn btn-primary" type="button" id="classifyBtn">Classify <span class="kbd"><b>↵</b></span></button>
     </div>
 
@@ -68,19 +66,17 @@
     </div>
 
     <div class="row" id="filterRow">
-      <label class="filter"><span class="cz">Parliament</span><select id="fParl"><option value="">All</option></select></label>
-      <label class="filter"><span class="cz">Level</span><select id="fLevel"><option value="">Federal · Cantonal · Municipal</option><option>Federal</option><option>Cantonal</option><option>Municipal</option></select></label>
+      <label class="filter"><span class="cz">Collection</span><select id="fColl" aria-label="Collection"><option value="">Demo pool</option></select></label>
+      <label class="filter" id="fParlWrap"><span class="cz">Parliament</span><select id="fParl"><option value="">All</option></select></label>
+      <label class="filter" id="fLevelWrap"><span class="cz">Level</span><select id="fLevel"><option value="">All</option><option>Federal</option><option>Cantonal</option><option>Municipal</option></select></label>
       <label class="filter"><span class="cz">Language</span><select id="fLang"><option value="">DE · FR · IT</option><option value="de">DE</option><option value="fr">FR</option><option value="it">IT</option></select></label>
       <label class="filter"><span class="cz">Date</span><select id="fDate"><option value="">2018 → today</option></select></label>
-      <div class="vsep"></div>
+      <div class="spacer"></div>
       <div class="seg" role="group" aria-label="Task" id="taskSeg">
         <button type="button" class="on" data-task="all" aria-pressed="true">Find all</button>
         <button type="button" data-task="new" aria-pressed="false">What's new</button>
         <button type="button" data-task="queue" aria-pressed="false">Review queue</button>
       </div>
-      <div class="spacer"></div>
-      <label class="filter"><span class="cz">Export</span><select id="fExport" aria-label="Export"><option value="">Excel…</option><option value="shown">Suggested</option><option value="confirmed">Confirmed</option><option value="all">All rows</option></select></label>
-      <button class="toggle" type="button" id="kwToggle" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span id="kwLabel">Keyword absent OFF</span></button>
     </div>
 
     <div class="progress hidden" id="progress" role="status" aria-live="polite">
@@ -91,7 +87,17 @@
       <button class="btn" type="button" id="cancelBtn">Cancel</button>
     </div>
 
-    <div class="strip" id="strip" aria-live="polite"></div>
+    <div class="strip hidden" id="stripBar">
+      <div class="strip-main" id="strip" aria-live="polite"></div>
+      <div class="strip-tools">
+        <button class="toggle" type="button" id="kwToggle" aria-pressed="false"><span class="sw" aria-hidden="true"></span><span id="kwLabel">Keyword absent</span></button>
+        <label class="btn exportbtn" title="Download as Excel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <select id="fExport" aria-label="Export to Excel"><option value="">Export Excel</option><option value="shown">Suggested</option><option value="confirmed">Confirmed</option><option value="all">All rows</option></select>
+        </label>
+      </div>
+    </div>
+    <div class="kwnote hidden" id="kwNote"></div>
 
     <div class="tablewrap" id="tableWrap">
       <table class="tbl">

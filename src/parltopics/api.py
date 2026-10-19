@@ -146,6 +146,7 @@ def state() -> dict:
         "mode": "live" if model["reachable"] else "cached",
         "model": settings.llm_name,
         "endpoint_host": urlparse(settings.llm_base_url).hostname or "",
+        "endpoint_label": settings.endpoint_label,
         "model_error": model.get("error"),
         "presets": out,
         "schemes": schemes,

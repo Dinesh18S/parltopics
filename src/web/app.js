@@ -11,12 +11,26 @@ const S = {
   filters: { parl: "", level: "", lang: "", year: "" }, kwOnly: false, show: { rejected: false, below: false },
   selected: -1, detailId: null, pending: [], definitionUsed: "", hasKeywords: false, pool: [],
   mode: "adhoc", scheme: "aps", labelNames: {}, loadSeq: 0,
-  collection: "", collections: [], coll: null, task: "all", prevVisit: null, job: null, confirmJob: null, jobBody: null,
+  limit: 300, collection: "", collections: [], coll: null, task: "all", prevVisit: null, job: null, confirmJob: null, jobBody: null,
 };
 const enc = encodeURIComponent;
 const DAY_MS = 86400000;
 const ADHOC_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Label", "Confidence", "Evidence", "Review"];
 const STD_HEAD = ["Parl.", "Number", "Date", "Lang", "Title", "Labels (confidence)", "Evidence (top label)", "Review"];
+
+// "apertus-v1-5-70b" → "Apertus v1.5 70B"; other model ids are shown as they are
+const modelLabel = (id) => (id || "").replace(/^apertus-v(\d+)-(\d+)-(\d+b)(.*)$/i, (_, a, b, size, rest) => `Apertus v${a}.${b} ${size.toUpperCase()}${rest}`);
+
+function renderScopeChip() {
+  const chip = $("sampleChip");
+  const offline = S.app.mode !== "live";
+  chip.textContent = offline ? "Cached results" : "Sample data";
+  chip.title = offline ? "Model offline: these are stored results from an earlier run"
+    : `Demo pool: a fixed sample of ${S.app.pool.n} affairs. Pick a parliament under Collection for complete results.`;
+  chip.classList.toggle("hidden", !offline && !!S.collection);
+  $("fParlWrap").classList.toggle("hidden", !!S.collection);
+  $("fLevelWrap").classList.toggle("hidden", !!S.collection);
+}
 
 async function api(path, opts = {}) {
   const r = await fetch(path, { headers: { "Content-Type": "application/json" }, ...opts });
@@ -28,11 +42,12 @@ async function api(path, opts = {}) {
 async function loadState() {
   S.app = await api("/api/state");
   const live = S.app.mode === "live";
-  $("modelName").textContent = live ? `${S.app.model} · ${S.app.endpoint_host}` : "Model offline · cached results";
+  $("modelName").textContent = live ? `${modelLabel(S.app.model)} · ${S.app.endpoint_label || S.app.endpoint_host}` : "Model offline · cached results";
+  $("modelName").title = `${S.app.model} via ${S.app.endpoint_host}`;
   $("modelBadge").classList.toggle("off", !live);
   $("offlineBanner").classList.toggle("hidden", live);
   $("classifyBtn").disabled = !live;
-  $("sampleChip").classList.toggle("hidden", live);
+  renderScopeChip();
   if (!S.pool.length) S.pool = await api("/api/pool");
   S.collections = await api("/api/collections");
   renderCollections();
@@ -57,8 +72,8 @@ const currentCollection = () => S.collections.find((c) => c.body_key === S.colle
 
 function renderCollections() {
   const el = $("fColl"); const cur = S.collection;
-  el.innerHTML = `<option value="">Demo pool · ${S.app.pool.n} affairs</option>` + S.collections.map((c) =>
-    `<option value="${esc(c.body_key)}">${esc(c.body_key)} · ${esc(c.level)} · ${c.n.toLocaleString("en")} affairs</option>`).join("");
+  el.innerHTML = `<option value="">Demo pool · ${S.app.pool.n}</option>` + S.collections.map((c) =>
+    `<option value="${esc(c.body_key)}" title="${esc(c.level)}, ${c.n.toLocaleString("en")} affairs since ${esc((c.since || "").slice(0, 4))}">${esc(c.body_key)} · ${c.n.toLocaleString("en")}</option>`).join("");
   el.value = cur;
 }
 
@@ -76,11 +91,26 @@ function selectCollection(body) {
   if (S.live || S.job) { $("fColl").value = S.collection; return; }
   Object.assign(S, { collection: body, coll: null, confirmJob: null, items: [], runId: null, selected: -1 });
   S.prevVisit = body ? lastVisit(body) : null;
+  S.filters.parl = ""; S.filters.level = ""; $("fParl").value = ""; $("fLevel").value = "";
+  renderScopeChip();
   closeDetail();
   $("classifyBtn").title = body ? `Index ${body} for this topic (Enter)` : "Classify the demo pool (Enter)";
   renderPresets();
   if (S.mode === "standard") return selectScheme(S.scheme);
   selectPreset(S.presetId || (S.app.presets.find((p) => p.id === S.app.default_preset) || S.app.presets[0] || {}).id);
+}
+
+function selectOwnTopic(target) {
+  const t = (currentCollection().targets || []).find((x) => x.target === target);
+  if (!t) return;
+  S.presetId = null;
+  $("topicName").value = t.name;
+  $("topicDef").value = t.definition || "";
+  $("topicInclude").value = (t.include || []).join("\n");
+  $("topicExclude").value = (t.exclude || []).join("\n");
+  S.definitionUsed = t.definition || ""; S.hasKeywords = false;
+  if (!$("defBox").classList.contains("hidden")) setDef(true);
+  return loadCollection(target);
 }
 
 function targetBody(target) {
@@ -280,6 +310,9 @@ function groups() {
   };
 }
 
+const PAGE = 300;  // rows drawn at once; whole collections have thousands
+const moreRow = (n, cols) => (n > S.limit ? `<tr class="more"><td colspan="${cols}"><button class="btn" type="button" data-act="more">Show ${Math.min(PAGE, n - S.limit)} more</button> <span class="cap">${S.limit.toLocaleString("en")} of ${n.toLocaleString("en")} shown</span></td></tr>` : "");
+
 const byConfidence = (a, b) => (b.confidence ?? 0) - (a.confidence ?? 0);
 const byDate = (a, b) => String(b.begin_date || "").localeCompare(String(a.begin_date || "")) || byConfidence(a, b);
 
@@ -328,22 +361,28 @@ function fillFilterOptions() {
 
 // ---------- rendering ----------
 function render() {
+  if (S.limitKey !== `${S.collection}|${S.mode}|${S.task}|${S.topicName}`) {  // new view → first page again
+    S.limitKey = `${S.collection}|${S.mode}|${S.task}|${S.topicName}`; S.limit = PAGE;
+  }
   $("thead").innerHTML = `<tr>${(S.mode === "standard" ? STD_HEAD : ADHOC_HEAD).map((h) => `<th>${h}</th>`).join("")}</tr>`;
   if (S.mode === "standard") return renderStandard();
   const g = groups();
   const rows = visibleRows();
   $("kwToggle").classList.toggle("hidden", !S.hasKeywords);
-  const kw = S.kwOnly && S.hasKeywords ? ` · “Keyword absent” ON — every affair below is <i>suggested</i> for ${esc(S.topicName)} yet its text never contains the topic's core words.` : "";
+  const kwOn = S.kwOnly && S.hasKeywords;
+  const notes = [kwOn ? `“Keyword absent” on — every affair below is <i>suggested</i> for ${esc(S.topicName)} yet its text never contains the topic's core words.` : "",
+                 S.definitionUsed ? `Definition used: <i>${esc(S.definitionUsed)}</i>` : ""].filter(Boolean);
+  $("kwNote").innerHTML = notes.join("<br>");
+  $("kwNote").classList.toggle("hidden", !notes.length || (!S.items.length && !S.live));
   $("strip").innerHTML = S.items.length || S.live ? `
     <span><b>${g.suggested.length}</b> suggested</span><span>·</span>
     <span><b>${g.confirmed.length}</b> confirmed</span><span>·</span>
     <button type="button" class="linkbtn" data-show="rejected" aria-pressed="${S.show.rejected}"><b>${g.rejected.length}</b> rejected (evidence not found)</button><span>·</span>
     <button type="button" class="linkbtn" data-show="below" aria-pressed="${S.show.below}"><b>${g.below.length}</b> below threshold ${S.app.match_threshold.toFixed(2)}</button>
-    <span class="spacer"></span>
-    ${scopeHtml()}<span class="cap">${kw}</span>
-    ${S.definitionUsed ? `<div class="defused">Definition used: <i>${esc(S.definitionUsed)}</i></div>` : ""}` : "";
-  $("strip").classList.toggle("hidden", !S.items.length && !S.live);
-  $("rows").innerHTML = rows.map((i, n) => rowHtml(i, n)).join("") + placeholderRows().map(placeholderHtml).join("");
+    <span>·</span>${scopeHtml()}` : "";
+  $("stripBar").classList.toggle("hidden", !S.items.length && !S.live);
+  $("rows").innerHTML = rows.slice(0, S.limit).map((i, n) => rowHtml(i, n)).join("") + moreRow(rows.length, 9) +
+    placeholderRows().map(placeholderHtml).join("");
   const empty = $("emptyState");
   if (S.confirmJob && !S.job && (!rows.length || S.confirmJob.partial)) {
     empty.innerHTML = confirmJobHtml();
@@ -420,7 +459,7 @@ function rowHtml(i, n) {
 }
 
 function alertStrip(msg) {
-  $("strip").classList.remove("hidden");
+  $("stripBar").classList.remove("hidden");
   $("strip").innerHTML = `<span role="alert"><b>${esc(msg)}</b></span>`;
 }
 
@@ -543,6 +582,7 @@ function move(delta) {
   const rows = visibleRows();
   if (!rows.length) return;
   S.selected = Math.max(0, Math.min(rows.length - 1, S.selected + delta));
+  if (S.selected >= S.limit) S.limit += PAGE;
   render();
   const tr = document.querySelector(`tr[data-n="${S.selected}"]`);
   if (tr) { tr.focus(); tr.scrollIntoView({ block: "nearest" }); }
@@ -644,19 +684,21 @@ function renderStandard() {
     <span><b>${g.none}</b> none / other</span><span>·</span>
     <span><b>${g.failed}</b> labels rejected (evidence not found)</span>
     <span class="spacer"></span>${scopeHtml()}<span class="cap"> · scheme ${esc(schemeName(S.scheme))}${fallbackNote}</span>` : "";
-  $("strip").classList.toggle("hidden", !S.items.length && !S.live);
+  $("stripBar").classList.toggle("hidden", !S.items.length && !S.live);
+  $("kwNote").classList.add("hidden");
   const empty = $("emptyState");
   if (S.confirmJob && !S.job && (!g.shown.length || S.confirmJob.partial)) {
     $("rows").innerHTML = "";
     empty.innerHTML = confirmJobHtml();
     return empty.classList.remove("hidden");
   }
-  $("rows").innerHTML = visibleRows().map((x, n) => `<tr tabindex="0" data-pid="${x.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}">
+  const all = visibleRows();
+  $("rows").innerHTML = all.slice(0, S.limit).map((x, n) => `<tr tabindex="0" data-pid="${x.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}">
     <td>${esc(x.body_key)}</td><td class="mono muted">${esc(x.number)}</td><td class="muted nowrap">${esc(x.begin_date)}</td>
     <td><span class="lang">${esc((x.lang || "").toUpperCase())}</span></td><td class="tbltitle" lang="${esc(x.lang)}">${esc(x.title)}</td>
     <td><div class="labels">${paths(x).map((p) => p.none ? `<span class="path none">None / other</span>`
       : `<span class="path">${p.chap ? `<span class="chap">${esc(p.chap)}</span>` : ""}${p.chap && p.topic ? `<span class="arr">→</span>` : ""}${p.topic ? `<span class="topic">${esc(p.topic)}</span>` : ""}<span class="cf">${(p.conf ?? 0).toFixed(2)}</span></span>`).join("")}</div></td>
-    <td class="evcell">${quote(x)}</td><td>${stdReview(x)}</td></tr>`).join("") + placeholderRows().map(placeholderHtml).join("");
+    <td class="evcell">${quote(x)}</td><td>${stdReview(x)}</td></tr>`).join("") + moreRow(all.length, 8) + placeholderRows().map(placeholderHtml).join("");
   if (!S.items.length && !S.live) empty.innerHTML = `<h2>No results for ${esc(schemeName(S.scheme))} yet</h2><p>${S.app.mode === "live" ? "Press <b>Classify</b> to label the demo pool with this scheme." : "The model endpoint is unreachable and no cached run exists for this scheme."}</p>`;
   empty.classList.toggle("hidden", !!g.shown.length || S.live);
 }
@@ -804,13 +846,14 @@ document.addEventListener("click", (e) => {
   const t = e.target.closest("button, tr[data-pid], #scrim, select");
   if (!t) return;
   if (t.dataset.preset) return selectPreset(t.dataset.preset);
-  if (t.dataset.target) { S.presetId = null; return loadCollection(t.dataset.target); }
+  if (t.dataset.target) return selectOwnTopic(t.dataset.target);
   if (t.dataset.task) {
     S.task = t.dataset.task; S.selected = -1;
     document.querySelectorAll("[data-task]").forEach((x) => { x.classList.toggle("on", x === t); x.setAttribute("aria-pressed", String(x === t)); });
     return render();
   }
   if (t.dataset.act === "job-start") return startJob();
+  if (t.dataset.act === "more") { S.limit += PAGE; return render(); }
   if (t.dataset.show) { S.show[t.dataset.show] = !S.show[t.dataset.show]; return render(); }
   if (t.dataset.view) {
     document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x === t));
@@ -840,7 +883,7 @@ document.addEventListener("click", (e) => {
   if (t.id === "retryBtn") return loadState();
   if (t.id === "kwToggle") {
     S.kwOnly = !S.kwOnly; t.setAttribute("aria-pressed", String(S.kwOnly));
-    $("kwLabel").textContent = `Keyword absent ${S.kwOnly ? "ON" : "OFF"}`; return render();
+    return render();
   }
 });
 
@@ -849,6 +892,8 @@ document.addEventListener("change", (e) => {
   if (t.id === "fColl") return selectCollection(t.value);
   if (t.id === "fExport" && t.value) {
     const only = t.value; t.value = "";
+    if (only === "confirmed" && S.mode !== "standard" && !groups().confirmed.length)
+      return alertStrip("Nothing confirmed yet: open a suggestion and press C (or use the Review queue), then export again.");
     if (S.collection && S.coll) return void (location.href = `/api/collections/${enc(S.collection)}/export.xlsx?target=${enc(S.coll.target)}&only=${only}`);
     if (S.runId) return void (location.href = `/api/export.csv?run_id=${enc(S.runId)}`);
     return alertStrip("Nothing to export yet.");

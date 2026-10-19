@@ -41,6 +41,14 @@ def _name(target: str) -> str:
     return collection.load_topic(Path(target)).name
 
 
+def _topic_fields(target: str) -> dict:
+    """Definition and lists of an ad-hoc target, so the UI can show what an indexed topic means."""
+    if _kind(target) == "standard":
+        return {}
+    t = collection.load_topic(Path(target))
+    return {"definition": t.definition, "include": t.include, "exclude": t.exclude}
+
+
 def _body_meta(body_key: str) -> dict:
     row = _api().store().db.execute(
         "SELECT MAX(a.body_type) AS body_type, COUNT(*) AS n, SUM(c.status = 'ok') AS ok FROM collection_items c "
@@ -71,7 +79,7 @@ def _progress(body_key: str, target: str) -> dict:
     done = len(_api().store().done_affairs(collection.collection_ref(body_key), version))
     total = _body_meta(body_key)["ok"]
     rate, measured = _rate(_kind(target))
-    return {"target": target, "name": _name(target), "kind": _kind(target), "prompt_version": version,
+    return {"target": target, "name": _name(target), "kind": _kind(target), **_topic_fields(target), "prompt_version": version,
             "done": done, "total": total, "pending": total - done, "rate_per_min": round(rate), "rate_measured": measured,
             "minutes": round((total - done) / rate) if rate else None}
 
@@ -211,7 +219,7 @@ def export(body_key: str, target: str, only: str = "all") -> Response:
     elif only == "confirmed":
         rows = [r for r in rows if r["review"] == "confirm" or (r["review"] == "correct" and r["review_label"] == "match")]
     buf = io.BytesIO()
-    pd.DataFrame(rows).to_excel(buf, index=False)
+    collection.export_frame(rows).to_excel(buf, index=False)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
     name = f"parltopics_{body_key}_{Path(target).stem.replace('scheme:', '')}_{only}_{stamp}.xlsx"
     return Response(buf.getvalue(), headers={"Content-Disposition": f'attachment; filename="{name}"'},
