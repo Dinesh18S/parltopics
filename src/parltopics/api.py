@@ -1,6 +1,7 @@
 """HTTP API + static demo UI (docs/04 §4.5, docs/02)."""
 
 import csv
+import hashlib
 import io
 import json
 import sqlite3
@@ -184,7 +185,7 @@ def prediction(prediction_id: int) -> dict:
     return detail | {"evidence_span": list(span) if span else None}
 
 
-TRANSLATE_MAX_CHARS = 2000
+TRANSLATE_MAX_CHARS = 2500
 _translations: dict[tuple[str, str], str] = {}
 
 
@@ -223,17 +224,32 @@ def translate(prediction_id: int, lang: str) -> dict:
         detail = store().prediction_detail(prediction_id)
     except KeyError:
         raise HTTPException(404, "unknown prediction")
-    key = (detail["source_sha256"], lang)
-    if key not in _translations:
-        text = detail["text"] or ""
-        system = (Path(__file__).parent / "prompts" / "translate_v1.system.txt").read_text()
-        model = settings.translate_model or settings.llm_name
-        _translations[key] = LLMClient(settings.model_copy(update={"llm_name": model})).complete_text(
-            system, f"Target language: {lang}\n\n{text[:TRANSLATE_MAX_CHARS]}", max_tokens=1200)
+    text = detail["text"] or ""
+    start, end = _translation_window(text, detail.get("evidence") or "", TRANSLATE_MAX_CHARS)
     model = settings.translate_model or settings.llm_name
-    return {"kind": "machine", "lang": lang, "text": _translations[key], "model": model,
-            "truncated": len(detail["text"] or "") > TRANSLATE_MAX_CHARS,
+    client = LLMClient(settings.model_copy(update={"llm_name": model}))
+    system = (Path(__file__).parent / "prompts" / "translate_v1.system.txt").read_text()
+
+    def translated(part: str) -> str:
+        key = (hashlib.sha256(part.encode()).hexdigest(), lang)
+        if key not in _translations:
+            _translations[key] = client.complete_text(system, f"Target language: {lang}\n\n{part}", max_tokens=1500)
+        return _translations[key]
+
+    evidence = detail.get("evidence") or ""
+    return {"kind": "machine", "lang": lang, "text": translated(text[start:end]), "model": model,
+            "evidence": translated(evidence) if evidence and detail.get("verify_ok") else "",
+            "cut_before": start > 0, "cut_after": end < len(text),
             "note": f"Unofficial machine translation by {model}. Not evidence; check the original."}
+
+
+def _translation_window(text: str, evidence: str, size: int) -> tuple[int, int]:
+    """The part of the text to translate: the title plus the passage around the verified quote (or the start)."""
+    span = locate(evidence, text) if evidence else None
+    if len(text) <= size or not span:
+        return 0, min(len(text), size)
+    start = max(0, min(span[0] - size // 3, len(text) - size))
+    return start, start + size
 
 
 DEFAULT_DEFINITION = "Affairs whose main subject is {name}."

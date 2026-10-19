@@ -185,3 +185,5 @@ svg.pr text{font-family:Inter,sans-serif;font-size:11px;fill:#6A6459}
   .inp input{width:180px}
   .metrics{grid-template-columns:1fr 1fr}
 }
+.textbox b.sec{font-weight:600;color:var(--ink);letter-spacing:.02em}
+.textbox-ev{max-height:none;font-style:italic}

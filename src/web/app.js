@@ -280,15 +280,18 @@ function groups() {
 }
 
 const byConfidence = (a, b) => (b.confidence ?? 0) - (a.confidence ?? 0);
+const byDate = (a, b) => String(b.begin_date || "").localeCompare(String(a.begin_date || "")) || byConfidence(a, b);
 
 function visibleRows() {
   if (S.mode === "standard") {
     const shownGroups = stdGroups().shown;
-    return S.task === "queue" ? shownGroups.filter((g) => g.labels.every((l) => !reviewState(l))).sort(byConfidence) : shownGroups;
+    if (S.task === "queue") return shownGroups.filter((g) => g.labels.every((l) => !reviewState(l))).sort(byConfidence);
+    return S.collection ? [...shownGroups].sort(byDate) : shownGroups;
   }
   const g = groups();
   if (S.task === "queue") return g.suggested.filter((i) => !reviewState(i)).sort(byConfidence);
-  return [...g.suggested, ...(S.show.below ? g.below : []), ...(S.show.rejected ? g.rejected : [])];
+  const order = (list) => (S.collection ? [...list].sort(byDate) : list);
+  return [...order(g.suggested), ...(S.show.below ? order(g.below) : []), ...(S.show.rejected ? order(g.rejected) : [])];
 }
 
 function scopeHtml() {
@@ -419,10 +422,13 @@ function alertStrip(msg) {
 }
 
 // ---------- detail panel & review ----------
+// section headers of the assembled text (TITLE:, TEXT:, DOCUMENT (…):) in bold, so long texts are scannable
+const sections = (html) => html.replace(/(^|\n\n)([A-ZÄÖÜ][A-ZÄÖÜ ]+(?: \([^)\n]*\))?):/g, '$1<b class="sec">$2</b>:');
+
 function highlight(text, span) {
-  if (!span) return esc(text);
+  if (!span) return sections(esc(text));
   const [a, b] = span;
-  return `${esc(text.slice(0, a))}<mark>${esc(text.slice(a, b))}</mark>${esc(text.slice(b))}`;
+  return sections(`${esc(text.slice(0, a))}<mark>${esc(text.slice(a, b))}</mark>${esc(text.slice(b))}`);
 }
 
 async function openDetail(pid) {
@@ -473,7 +479,6 @@ async function openDetail(pid) {
     <div class="dactions">
       <button class="btn btn-primary" type="button" data-act="confirm" aria-pressed="${st === "confirmed"}">${st === "confirmed" ? "✓ Confirmed" : "Confirm"} <span class="kbd"><b>C</b></span></button>
       <button class="btn${st === "rejected" ? " btn-on" : ""}" type="button" data-act="reject" aria-pressed="${st === "rejected"}">${st === "rejected" ? "✕ Rejected" : "Reject"} <span class="kbd"><b>R</b></span></button>
-      <label class="filter"><span class="cz">Correct label</span><select data-act="correct"><option value="">…</option><option value="match">This topic</option><option value="no_match">Not this topic</option></select></label>
     </div>`;
   $("detail").classList.remove("hidden");
   $("scrim").classList.remove("hidden");
@@ -492,9 +497,18 @@ async function readingAid(pid, machine) {
         <span class="cap">This parliament publishes no ${esc(lang.toUpperCase())} version.${S.app.mode === "live" ? "" : " Needs the model endpoint."}</span>`;
       return;
     }
-    const label = r.kind === "official" ? `Official ${lang.toUpperCase()} version` : `Unofficial machine translation (${esc(r.model)})`;
-    box.innerHTML = `<div class="meta-k">${label}</div><div class="cap">${esc(r.note)}${r.truncated ? " First part only." : ""}</div>
-      <div class="textbox textbox-aid" lang="${esc(lang)}">${esc(r.text)}</div>`;
+    if (r.kind === "official") {
+      box.innerHTML = `<div class="meta-k">Official ${esc(lang.toUpperCase())} version</div><div class="cap">${esc(r.note)}</div>
+        <div class="textbox textbox-aid" lang="${esc(lang)}">${sections(esc(r.text))}</div>`;
+      return;
+    }
+    const cut = r.cut_before || r.cut_after;
+    box.innerHTML = `<div class="meta-k">Unofficial machine translation (${esc(r.model)})</div><div class="cap">${esc(r.note)}</div>
+      ${r.evidence ? `<div class="meta-k" style="margin-top:10px">Proof sentence, translated</div>
+        <div class="textbox textbox-aid textbox-ev" lang="${esc(lang)}"><mark>${esc(r.evidence)}</mark></div>` : ""}
+      <div class="meta-k" style="margin-top:10px">${cut ? "Passage around the proof sentence, translated" : "Text, translated"}</div>
+      ${cut ? `<div class="cap">Only this passage is translated; the full original is above.</div>` : ""}
+      <div class="textbox textbox-aid" lang="${esc(lang)}">${r.cut_before ? "… " : ""}${sections(esc(r.text))}${r.cut_after ? " …" : ""}</div>`;
   } catch (e) {
     box.innerHTML = `<span class="cap" role="alert">Could not load: ${esc(e.message)}</span>`;
   }
@@ -811,7 +825,6 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("change", (e) => {
   const t = e.target;
-  if (t.dataset.act === "correct" && t.value) return review(S.detailId, "correct", t.value);
   if (t.id === "fColl") return selectCollection(t.value);
   if (t.id === "fExport" && t.value) {
     const only = t.value; t.value = "";
