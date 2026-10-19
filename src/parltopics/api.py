@@ -156,6 +156,7 @@ def state() -> dict:
         "match_threshold": match_threshold(settings),
         "default_preset": settings.demo_default_preset,
         "review_lang": settings.review_lang,
+        "bodies": json.loads((RESULTS_DIR / "bodies.json").read_text()) if (RESULTS_DIR / "bodies.json").exists() else {},
     }
 
 

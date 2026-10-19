@@ -1,0 +1,317 @@
+{
+ "261": {
+  "name": {
+   "de": "Zürich",
+   "en": "Zürich",
+   "fr": "Zürich",
+   "it": "Zürich"
+  },
+  "type": "city"
+ },
+ "2829": {
+  "name": {
+   "de": "Liestal",
+   "en": "Liestal",
+   "fr": "Liestal",
+   "it": "Liestal"
+  },
+  "type": "city"
+ },
+ "2939": {
+  "name": {
+   "de": "Schaffhausen",
+   "en": "Schaffhausen",
+   "fr": "Schaffhausen",
+   "it": "Schaffhausen"
+  },
+  "type": "city"
+ },
+ "329": {
+  "name": {
+   "de": "Langenthal",
+   "en": "Langenthal",
+   "fr": "Langenthal",
+   "it": "Langenthal"
+  },
+  "type": "city"
+ },
+ "351": {
+  "name": {
+   "de": "Bern",
+   "en": "Bern",
+   "fr": "Bern",
+   "it": "Bern"
+  },
+  "type": "city"
+ },
+ "4401": {
+  "name": {
+   "de": "Arbon",
+   "en": "Arbon",
+   "fr": "Arbon",
+   "it": "Arbon"
+  },
+  "type": "city"
+ },
+ "53": {
+  "name": {
+   "de": "Bülach",
+   "en": "Bülach",
+   "fr": "Bülach",
+   "it": "Bülach"
+  },
+  "type": "city"
+ },
+ "66": {
+  "name": {
+   "de": "Opfikon",
+   "en": "Opfikon",
+   "fr": "Opfikon",
+   "it": "Opfikon"
+  },
+  "type": "city"
+ },
+ "AG": {
+  "name": {
+   "de": "Aargau",
+   "en": "Aargau",
+   "fr": "Argovie",
+   "it": "Argovia"
+  },
+  "type": "canton"
+ },
+ "AI": {
+  "name": {
+   "de": "Appenzell Innerrhoden",
+   "en": "Appenzell Innerrhoden",
+   "fr": "Appenzell Rhodes-Int",
+   "it": "Appenzello Interno"
+  },
+  "type": "canton"
+ },
+ "AR": {
+  "name": {
+   "de": "Appenzell Ausserrhoden",
+   "en": "Appenzell Ausserrhoden",
+   "fr": "Appenzell Rhodes-Ext",
+   "it": "Appenzello Esterno"
+  },
+  "type": "canton"
+ },
+ "BE": {
+  "name": {
+   "de": "Bern",
+   "en": "Bern",
+   "fr": "Berne",
+   "it": "Berna"
+  },
+  "type": "canton"
+ },
+ "BL": {
+  "name": {
+   "de": "Basel-Landschaft",
+   "en": "Basel-Landschaft",
+   "fr": "Bâle-Campagne",
+   "it": "Basilea Campagna"
+  },
+  "type": "canton"
+ },
+ "BS": {
+  "name": {
+   "de": "Basel-Stadt",
+   "en": "Basel-Stadt",
+   "fr": "Bâle-Ville",
+   "it": "Basilea Città"
+  },
+  "type": "canton"
+ },
+ "CHE": {
+  "name": {
+   "de": "Schweiz",
+   "en": "Switzerland",
+   "fr": "Suisse",
+   "it": "Svizzera"
+  },
+  "type": "country"
+ },
+ "FR": {
+  "name": {
+   "de": "Freiburg",
+   "en": "Freiburg",
+   "fr": "Fribourg",
+   "it": "Friborgo"
+  },
+  "type": "canton"
+ },
+ "GE": {
+  "name": {
+   "de": "Genf",
+   "en": "Geneva",
+   "fr": "Genève",
+   "it": "Ginevra"
+  },
+  "type": "canton"
+ },
+ "GL": {
+  "name": {
+   "de": "Glarus",
+   "en": "Glarus",
+   "fr": "Glaris",
+   "it": "Glarona"
+  },
+  "type": "canton"
+ },
+ "GR": {
+  "name": {
+   "de": "Graubünden",
+   "en": "Grisons",
+   "fr": "Grisons",
+   "it": "Grigioni"
+  },
+  "type": "canton"
+ },
+ "JU": {
+  "name": {
+   "de": "Jura",
+   "en": "Jura",
+   "fr": "Jura",
+   "it": "Giura"
+  },
+  "type": "canton"
+ },
+ "LU": {
+  "name": {
+   "de": "Luzern",
+   "en": "Lucerne",
+   "fr": "Lucerne",
+   "it": "Lucerna"
+  },
+  "type": "canton"
+ },
+ "NE": {
+  "name": {
+   "de": "Neuenburg",
+   "en": "Neuchâtel",
+   "fr": "Neuchâtel",
+   "it": "Neuchâtel"
+  },
+  "type": "canton"
+ },
+ "NW": {
+  "name": {
+   "de": "Nidwalden",
+   "en": "Nidwalden",
+   "fr": "Nidwald",
+   "it": "Nidvaldo"
+  },
+  "type": "canton"
+ },
+ "OW": {
+  "name": {
+   "de": "Obwalden",
+   "en": "Obwalden",
+   "fr": "Obwald",
+   "it": "Obvaldo"
+  },
+  "type": "canton"
+ },
+ "SG": {
+  "name": {
+   "de": "St. Gallen",
+   "en": "St. Gallen",
+   "fr": "Saint-Gall",
+   "it": "San Gallo"
+  },
+  "type": "canton"
+ },
+ "SH": {
+  "name": {
+   "de": "Schaffhausen",
+   "en": "Schaffhausen",
+   "fr": "Schaffouse",
+   "it": "Sciaffusa"
+  },
+  "type": "canton"
+ },
+ "SO": {
+  "name": {
+   "de": "Solothurn",
+   "en": "Solothurn",
+   "fr": "Soleure",
+   "it": "Soletta"
+  },
+  "type": "canton"
+ },
+ "SZ": {
+  "name": {
+   "de": "Schwyz",
+   "en": "Schwyz",
+   "fr": "Schwyz",
+   "it": "Svitto"
+  },
+  "type": "canton"
+ },
+ "TG": {
+  "name": {
+   "de": "Thurgau",
+   "en": "Thurgau",
+   "fr": "Thurgovie",
+   "it": "Turgovia"
+  },
+  "type": "canton"
+ },
+ "TI": {
+  "name": {
+   "de": "Tessin",
+   "en": "Ticino",
+   "fr": "Tessin",
+   "it": "Ticino"
+  },
+  "type": "canton"
+ },
+ "UR": {
+  "name": {
+   "de": "Uri",
+   "en": "Uri",
+   "fr": "Uri",
+   "it": "Uri"
+  },
+  "type": "canton"
+ },
+ "VD": {
+  "name": {
+   "de": "Waadt",
+   "en": "Vaud",
+   "fr": "Vaud",
+   "it": "Vaud"
+  },
+  "type": "canton"
+ },
+ "VS": {
+  "name": {
+   "de": "Wallis",
+   "en": "Valais",
+   "fr": "Valais",
+   "it": "Vallese"
+  },
+  "type": "canton"
+ },
+ "ZG": {
+  "name": {
+   "de": "Zug",
+   "en": "Zug",
+   "fr": "Zug",
+   "it": "Zugo"
+  },
+  "type": "canton"
+ },
+ "ZH": {
+  "name": {
+   "de": "Zürich",
+   "en": "Zürich",
+   "fr": "Zürich",
+   "it": "Zurigo"
+  },
+  "type": "canton"
+ }
+}

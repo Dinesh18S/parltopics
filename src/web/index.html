@@ -48,7 +48,7 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#908A7E" stroke-width="1.8"/><path d="M20 20 L16 16" stroke="#908A7E" stroke-width="1.8" stroke-linecap="round"/></svg>
         <input id="topicName" type="text" placeholder="Topic name" aria-label="Topic name" autocomplete="off">
       </label>
-      <button class="btn adhoc-only" type="button" id="defToggle" aria-expanded="false" aria-controls="defBox">+ Definition</button>
+      <button class="btn adhoc-only" type="button" id="defToggle" aria-haspopup="dialog">Definition</button>
       <div class="vsep adhoc-only"></div>
       <span class="cap adhoc-only" style="font-weight:600">Presets</span>
       <span id="presetChips" class="adhoc-only" style="display:flex;gap:8px;flex-wrap:wrap"></span>
@@ -56,13 +56,6 @@
       <div class="spacer"></div>
       <span class="chip chip-amber hidden" id="sampleChip"></span>
       <button class="btn btn-primary" type="button" id="classifyBtn">Classify <span class="kbd"><b>↵</b></span></button>
-    </div>
-
-    <div class="defbox hidden" id="defBox">
-      <div class="defhint" id="defHint"></div>
-      <label>Definition <textarea id="topicDef" placeholder="One or a few sentences: what counts as this topic?"></textarea></label>
-      <label>Counts as this topic (one per line) <textarea id="topicInclude"></textarea></label>
-      <label>Does not count (one per line) <textarea id="topicExclude"></textarea></label>
     </div>
 
     <div class="row" id="filterRow">
@@ -122,6 +115,28 @@
   </footer>
 </div>
 
+<div class="modal-scrim hidden" id="topicModal" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="topicModalTitle">New topic</h2>
+      <span class="spacer"></span>
+      <button class="iconbtn" type="button" data-act="topic-close" aria-label="Close">✕</button>
+    </div>
+    <div class="defhint" id="defHint"></div>
+    <label class="mname">Topic name <input id="mName" type="text" autocomplete="off" placeholder="e.g. Wolf, E-voting, School buildings"></label>
+    <div class="defbox" id="defBox">
+      <label>Definition <textarea id="topicDef" placeholder="One or a few sentences: what counts as this topic?"></textarea></label>
+      <label>Counts as this topic (one per line) <textarea id="topicInclude" placeholder="Optional"></textarea></label>
+      <label>Does not count (one per line) <textarea id="topicExclude" placeholder="Optional"></textarea></label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" type="button" data-act="topic-close">Cancel</button>
+      <span class="spacer"></span>
+      <button class="btn hidden" type="button" id="templateBtn" data-act="topic-template">Use as template for a new topic</button>
+      <button class="btn btn-primary" type="button" id="mClassify" data-act="topic-run">Classify <span class="kbd"><b>↵</b></span></button>
+    </div>
+  </div>
+</div>
 <div class="scrim hidden" id="scrim"></div>
 <aside class="detail hidden" id="detail" aria-label="Affair detail" role="dialog" aria-modal="false"></aside>
 

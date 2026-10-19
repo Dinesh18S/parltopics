@@ -109,7 +109,6 @@ function selectOwnTopic(target) {
   $("topicInclude").value = (t.include || []).join("\n");
   $("topicExclude").value = (t.exclude || []).join("\n");
   S.definitionUsed = t.definition || ""; S.hasKeywords = false;
-  if (!$("defBox").classList.contains("hidden")) setDef(true);
   return loadCollection(target);
 }
 
@@ -190,7 +189,6 @@ function selectPreset(id) {
   const p = S.app.presets.find((x) => x.id === id);
   if (!p) return render();
   S.presetId = id;
-  if (!$("defBox").classList.contains("hidden")) setDef(true);
   $("topicName").value = p.name;
   $("topicDef").value = p.definition.trim();
   $("topicInclude").value = (p.include || []).join("\n");
@@ -348,13 +346,27 @@ function confirmJobHtml() {
 
 const placeholderRows = () => (S.live ? S.pending.filter(passesFilters) : []);
 
+// parliament names come from results/bodies.json (OpenParlData); grouped by level, sorted by name
+const bodyName = (key) => { const b = (S.app.bodies || {})[key]; return b ? (b.name.de || b.name.en || key) : key; };
+const bodyLevel = (key) => LEVEL[((S.app.bodies || {})[key] || {}).type] || "Municipal";
+const bodyLabel = (key) => `${bodyName(key)} (${key})`;
+
+function fillParliaments(keys) {
+  const el = $("fParl"); const cur = el.value;
+  const groups = ["Federal", "Cantonal", "Municipal"].map((lvl) => [lvl, keys.filter((k) => bodyLevel(k) === lvl)
+    .sort((a, b) => bodyName(a).localeCompare(bodyName(b), "de"))]).filter(([, ks]) => ks.length);
+  el.innerHTML = `<option value="">All</option>` + groups.map(([lvl, ks]) =>
+    `<optgroup label="${lvl}">${ks.map((k) => `<option value="${esc(k)}">${esc(bodyLabel(k))}</option>`).join("")}</optgroup>`).join("");
+  el.value = keys.includes(cur) ? cur : "";
+}
+
 function fillFilterOptions() {
   const keep = (id, values, fmt) => {
     const el = $(id); const cur = el.value; const first = el.options[0].outerHTML;
     el.innerHTML = first + values.map((v) => `<option value="${esc(v)}">${esc(fmt(v))}</option>`).join("");
     el.value = values.includes(cur) ? cur : "";
   };
-  keep("fParl", [...new Set(S.items.map((i) => i.body_key))].sort(), (v) => v);
+  fillParliaments([...new Set(S.items.map((i) => i.body_key))]);
   const years = [...new Set(S.items.map((i) => (i.begin_date || "").slice(0, 4)).filter(Boolean))].sort();
   keep("fDate", years.slice(1).map((y) => `${y}-01-01`), (v) => `${v.slice(0, 4)} → today`);
 }
@@ -452,7 +464,7 @@ function reviewCell(i) {
 function rowHtml(i, n) {
   const conf = i.confidence == null ? "" : `<div class="conf"><span class="track"><span class="fill" style="width:${Math.round(i.confidence * 100)}%"></span></span><span class="num">${i.confidence.toFixed(2)}</span></div>`;
   return `<tr tabindex="0" data-pid="${i.prediction_id}" data-n="${n}" class="${n === S.selected ? "sel" : ""}${shown(i) ? "" : " dim"}">
-    <td>${esc(i.body_key)}</td><td class="mono muted">${esc(i.number)}</td><td class="muted nowrap">${esc(i.begin_date)}</td>
+    <td title="${esc(bodyLabel(i.body_key))}">${esc(i.body_key)}</td><td class="mono muted">${esc(i.number)}</td><td class="muted nowrap">${esc(i.begin_date)}</td>
     <td><span class="lang">${esc((i.lang || "").toUpperCase())}</span></td>
     <td class="tbltitle" lang="${esc(i.lang)}">${esc(i.title)}</td>
     <td>${labelCell(i)}</td><td>${conf}</td><td class="evcell">${quote(i)}${badges(i)}</td><td>${reviewCell(i)}</td></tr>`;
@@ -606,7 +618,7 @@ async function setMode(mode) {
   document.querySelectorAll(".adhoc-only").forEach((x) => x.classList.toggle("hidden", mode !== "adhoc"));
   document.querySelectorAll(".std-only").forEach((x) => x.classList.toggle("hidden", mode !== "standard"));
   document.body.classList.toggle("std", mode === "standard");
-  setDef(false);
+  closeTopic();
   $("kwToggle").classList.toggle("hidden", mode === "standard" || !S.hasKeywords);
   closeDetail();
   S.runId = null; S.items = []; S.selected = -1;
@@ -823,23 +835,45 @@ async function loadMetrics() {
 }
 
 // ---------- events ----------
-function setDef(open) {
-  $("defBox").classList.toggle("hidden", !open);
-  $("defToggle").setAttribute("aria-expanded", String(open));
-  $("defToggle").textContent = open ? "− Definition" : "+ Definition";
-  $("defHint").innerHTML = S.presetId
-    ? "This is the preset's definition. Edit anything (or the name) and press <b>Classify</b> to run your own version as a new topic."
-    : `Name the topic above, say in one or two sentences what counts, optionally list what counts and what doesn't — then press <b>Classify</b>${S.collection ? ` (you'll see how long ${esc(S.collection)} takes before anything runs)` : ""}. English works for affairs in all languages.`;
+// ---------- topic dialog: preset = read-only, new / own topic = editable ----------
+const topicOpen = () => !$("topicModal").classList.contains("hidden");
+
+function openTopic(mode) {  // "view" (preset) | "new" | "edit"
+  const ro = mode === "view";
+  ["mName", "topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).readOnly = ro; });
+  $("mName").value = mode === "new" ? "" : $("topicName").value;
+  $("topicModalTitle").textContent = ro ? `Preset topic: ${$("topicName").value}` : mode === "new" ? "New topic" : "Your topic";
+  $("templateBtn").classList.toggle("hidden", !ro);
+  $("mClassify").classList.toggle("hidden", ro);
+  $("defHint").innerHTML = ro
+    ? "Preset topics are fixed so their results stay comparable over time. To change anything, use this one as a template for a new topic."
+    : `Name the topic, say in one or two sentences what counts, optionally list what counts and what doesn't, then press <b>Classify</b>${S.collection ? ` (you'll see how long ${esc(S.collection)} takes before anything runs)` : ""}. English works for affairs in all languages.`;
+  updateDefHint();
+  $("topicModal").classList.remove("hidden");
+  (ro ? $("templateBtn") : $("mName")).focus();
 }
-const openDef = () => setDef(true);
+
+function closeTopic() { $("topicModal").classList.add("hidden"); }
 
 function newTopic() {
-  S.presetId = null; renderPresets();
-  ["topicName", "topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).value = ""; });
-  Object.assign(S, { items: [], runId: null, coll: null, confirmJob: null, selected: -1, definitionUsed: "", hasKeywords: false });
-  S.loadSeq += 1;
-  closeDetail(); updateDefHint(); openDef(); render();
-  $("topicName").focus();
+  ["topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).value = ""; });
+  openTopic("new");
+}
+
+function topicAsTemplate() {
+  const name = $("topicName").value;
+  openTopic("edit");
+  $("mName").value = `${name} (own version)`;
+  $("mName").select();
+}
+
+function runTopic() {
+  const name = $("mName").value.trim();
+  if (!name) return $("mName").focus();
+  $("topicName").value = name;
+  if (!presetUnchanged()) { S.presetId = null; renderPresets(); }
+  closeTopic();
+  return classify();
 }
 
 document.addEventListener("click", (e) => {
@@ -875,8 +909,11 @@ document.addEventListener("click", (e) => {
   if (t.dataset.act === "reading") return readingAid(S.detailId, false);
   if (t.dataset.act === "translate") return readingAid(S.detailId, true);
   if (t.dataset.act === "reject") return review(S.detailId, "reject");
-  if (t.id === "defToggle") return setDef($("defBox").classList.contains("hidden"));
+  if (t.id === "defToggle") return openTopic(S.presetId ? "view" : "edit");
   if (t.id === "newTopicBtn") return newTopic();
+  if (t.dataset.act === "topic-close") return closeTopic();
+  if (t.dataset.act === "topic-template") return topicAsTemplate();
+  if (t.dataset.act === "topic-run") return runTopic();
   if (t.id === "classifyBtn") return classify();
   if (t.id === "cancelBtn" && S.job) return api(`/api/jobs/${S.job.job_id}/cancel`, { method: "POST" }).catch((err) => alertStrip(err.message));
   if (t.id === "cancelBtn" && S.controller) return S.controller.abort();
@@ -903,6 +940,11 @@ document.addEventListener("change", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
+  if (topicOpen()) {
+    if (e.key === "Escape") return closeTopic();
+    if (e.key === "Enter" && e.target.id === "mName") { e.preventDefault(); return runTopic(); }
+    return;
+  }
   const typing = e.target.matches("input, textarea, select");
   if (e.key === "Enter" && !e.shiftKey && (!typing || e.target.id === "topicName")) {
     if (e.target.matches("tr[data-pid]")) return openDetail(Number(e.target.dataset.pid));
@@ -917,18 +959,17 @@ document.addEventListener("keydown", (e) => {
 });
 
 $("topicName").addEventListener("input", () => {
-  if (!S.presetId) return updateDefHint();
   const p = S.app.presets.find((x) => x.id === S.presetId);
-  if (p && $("topicName").value.trim() !== p.name) {
+  if (p && $("topicName").value.trim() !== p.name) {  // typing another name starts a new topic, never an edited preset
     S.presetId = null; renderPresets();
     ["topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).value = ""; });
-    openDef();
   }
-  updateDefHint();
 });
 
+$("mName").addEventListener("input", updateDefHint);
+
 function updateDefHint() {
-  const name = $("topicName").value.trim() || "…";
+  const name = $("mName").value.trim() || "…";
   $("topicDef").placeholder = `Optional. If empty: “Affairs whose main subject is ${name}.”`;
 }
 

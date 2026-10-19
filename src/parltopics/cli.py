@@ -653,6 +653,21 @@ def data_load_bulk() -> None:
     typer.echo(f"loaded {counts} into {settings.bulk_db_path}")
 
 
+@data_app.command("body-names")
+def data_body_names(out: Path = Path("results/bodies.json")) -> None:
+    """Names and levels of every parliament in the demo pool and the ingested collections (UI labels, committed)."""
+    settings = get_settings()
+    keys = set(pd.read_csv("data/samples/demo_pool.csv", dtype=str).body_key)
+    keys |= {r[0] for r in Store(settings.db_path).db.execute("SELECT DISTINCT body_key FROM collection_items")}
+    client = OPDClient(settings)
+    names = {}
+    for key in sorted(keys):
+        b = client.get_json("/v1/bodies/", {"body_key": key})["data"][0]
+        names[key] = {"name": b.get("name") or {}, "type": b.get("type")}
+    out.write_text(json.dumps(names, ensure_ascii=False, indent=1) + "\n")
+    typer.echo(f"{len(names)} parliaments → {out}")
+
+
 @data_app.command("download")
 def data_download(force: bool = False) -> None:
     """Download challenge files into data/raw and compare with committed checksums."""
