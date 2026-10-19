@@ -6,7 +6,7 @@ affair about a topic, in German, French and Italian, and shows the sentence that
 - **Challenge:** OpenParlData: Topic classification for Swiss parliaments with Apertus ([challenge page](https://hackapertus.notion.site/openparldata))
 - **Event:** On-site Liebefeld
 - **Team:** Unisono
-- **Demo:** [youtu.be/QICc2WXZcqA](https://youtu.be/QICc2WXZcqA)
+- **Demo:** [youtu.be/EpF6-megCrY](https://youtu.be/EpF6-megCrY)
 
 ## 1. Summary
 
@@ -283,7 +283,8 @@ APS accuracy was not measured (no answer key).
 
   Run ids, prompt versions and commits for every number are in `results/metrics.json` and the run
   manifests.
-- **Exact commit:** `<final commit hash>`.
+- **Exact commit:** code at `2729af1` (branch `main`); later commits change only the README, this report
+  and its PDF.
 
 ### Use of non-Apertus models
 

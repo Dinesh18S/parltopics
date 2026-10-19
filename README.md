@@ -21,7 +21,7 @@ Team: Unisono · builder (build) · partner (research & pitch)
 
 Unisono finds every affair about a topic, in German, French and Italian, and shows the sentence that proves it.
 
-**Demo video (2 min):** [youtu.be/QICc2WXZcqA](https://youtu.be/QICc2WXZcqA) · **Technical report:** [`technical_report.md`](technical_report.md)
+**Demo video (2 min):** [youtu.be/EpF6-megCrY](https://youtu.be/EpF6-megCrY) · **Technical report:** [`technical_report.md`](technical_report.md)
 
 - **Ad-hoc mode:** type any topic name plus a one-line definition ("digitalisation", "Wolf") — no retraining.
 - **Standard mode:** Année Politique Suisse (chapter → topic) or Curia Vista subject areas.
@@ -49,6 +49,10 @@ in DE/FR/IT 94 % of the time. Method, limitations and every number: [`technical_
 documents; cleaned, cut at 12,000 chars) → Apertus (strict JSON) → verify evidence (plain code) → SQLite
 (append-only) → web UI with human review. Builder docs: [`docs/`](docs/); AI coding agents start at
 [`AGENTS.md`](AGENTS.md).
+
+**Template and AI tools:** started from the Hack Apertus Liebefeld template repository. Claude (Anthropic) was
+used as an AI coding assistant during development (code, tests, docs, under the team's direction); it is not
+part of the pipeline — all classification and translation run on Apertus.
 
 **Data:** Source: OpenParlData.ch — licensed CC BY 4.0. Challenge files: files.openparldata.ch/hackapertus.
 Reference labels: PolitMonitor digitalisation tags (challenge files). Topic schemes: Curia Vista, Année
