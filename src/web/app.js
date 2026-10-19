@@ -50,6 +50,7 @@ async function loadState() {
   renderScopeChip();
   if (!S.pool.length) S.pool = await api("/api/pool");
   S.collections = await api("/api/collections");
+  S.topics = await api("/api/topics");
   renderCollections();
   $("classifyBtn").title = live ? "Classify the demo pool (Enter)" : "Model endpoint unreachable";
   renderPresets();
@@ -61,10 +62,10 @@ async function loadState() {
 function renderPresets() {
   const first = S.app.presets.filter((p) => p.id === S.app.default_preset);
   const ordered = [...first, ...S.app.presets.filter((p) => p.id !== S.app.default_preset)];
-  const own = S.collection ? (currentCollection().targets || []).filter((t) => t.kind === "adhoc" && !t.target.startsWith("topics/")) : [];
   $("presetChips").innerHTML = ordered.map((p) =>
-    `<button type="button" class="chip${p.id === S.presetId ? " on" : ""}" data-preset="${esc(p.id)}">${esc(p.name)}</button>`).join("") +
-    own.map((t) => `<button type="button" class="chip${S.coll && S.coll.target === t.target ? " on" : ""}" data-target="${esc(t.target)}" title="Your topic, indexed on this collection">${esc(t.name)}</button>`).join("");
+    `<button type="button" class="chip${p.id === S.presetId ? " on" : ""}" data-preset="${esc(p.id)}">${esc(p.name)}</button>`).join("");
+  const own = (S.topics || []).filter((t) => !t.preset).length;
+  $("topicsBtn").textContent = own ? `My topics (${own})` : "My topics";
 }
 
 // ---------- collections (whole parliaments) ----------
@@ -100,8 +101,33 @@ function selectCollection(body) {
   selectPreset(S.presetId || (S.app.presets.find((p) => p.id === S.app.default_preset) || S.app.presets[0] || {}).id);
 }
 
-function selectOwnTopic(target) {
-  const t = (currentCollection().targets || []).find((x) => x.target === target);
+// ---------- saved topics: every topic that was indexed somewhere, searchable ----------
+function renderTopics() {
+  const q = $("topicsSearch").value.trim().toLowerCase();
+  const list = (S.topics || []).filter((t) => !q || `${t.name} ${t.definition}`.toLowerCase().includes(q));
+  $("topicsList").innerHTML = list.length ? list.map((t) => {
+    const cov = t.collections.map((c) => `<span class="cov${c.body_key === S.collection ? " here" : ""}">${esc(c.body_key)} ${c.done >= c.total
+      ? "✓" : `${c.done.toLocaleString("en")} / ${c.total.toLocaleString("en")}`}</span>`).join("");
+    return `<button type="button" class="topitem" data-topic="${esc(t.target)}"><span class="tn">${esc(t.name)}${t.preset ? ` <span class="tag">preset</span>` : ""}</span>
+      <span class="td">${esc(t.definition)}</span><span class="tc">${cov}</span></button>`;
+  }).join("") : `<div class="cap" style="padding:10px 4px">${q ? "No saved topic matches." : "No saved topics yet. Use <b>+ New topic</b> and index it on a parliament."}</div>`;
+}
+
+function toggleTopics(open) {
+  $("topicsPop").classList.toggle("hidden", !open);
+  $("topicsBtn").setAttribute("aria-expanded", String(open));
+  if (open) { $("topicsSearch").value = ""; renderTopics(); $("topicsSearch").focus(); }
+}
+
+function openSavedTopic(target) {
+  const t = (S.topics || []).find((x) => x.target === target);
+  toggleTopics(false);
+  if (!t) return;
+  if (t.preset) return selectPreset(target.slice(7).replace(/\.yaml$/, ""));
+  return selectOwnTopic(t);
+}
+
+function selectOwnTopic(t) {
   if (!t) return;
   S.presetId = null;
   $("topicName").value = t.name;
@@ -109,7 +135,12 @@ function selectOwnTopic(target) {
   $("topicInclude").value = (t.include || []).join("\n");
   $("topicExclude").value = (t.exclude || []).join("\n");
   S.definitionUsed = t.definition || ""; S.hasKeywords = false;
-  return loadCollection(target);
+  renderPresets();
+  if (!S.collection) {  // demo pool: the saved topic is ready in the form; Classify runs it live
+    Object.assign(S, { items: [], runId: null, coll: null, confirmJob: null });
+    return render();
+  }
+  return loadCollection(t.target, { topic: { name: t.name, definition: t.definition, include: t.include, exclude: t.exclude } });
 }
 
 function targetBody(target) {
@@ -180,6 +211,8 @@ async function finishJob(j) {
   $("progress").classList.add("hidden"); $("progEta").textContent = "";
   S.job = null;
   S.collections = await api("/api/collections");
+  S.topics = await api("/api/topics");
+  renderPresets();
   if (j.body_key !== S.collection) return render();
   await loadCollection(j.target, j.status === "done" ? null : S.jobBody);
   if (j.status === "failed") alertStrip(`Indexing stopped: ${j.error}. Finished affairs are kept; start again to continue.`);
@@ -877,10 +910,12 @@ function runTopic() {
 }
 
 document.addEventListener("click", (e) => {
+  if (!$("topicsPop").classList.contains("hidden") && !e.target.closest(".popwrap")) toggleTopics(false);
   const t = e.target.closest("button, tr[data-pid], #scrim, select");
   if (!t) return;
   if (t.dataset.preset) return selectPreset(t.dataset.preset);
-  if (t.dataset.target) return selectOwnTopic(t.dataset.target);
+  if (t.dataset.topic) return openSavedTopic(t.dataset.topic);
+  if (t.id === "topicsBtn") return toggleTopics($("topicsPop").classList.contains("hidden"));
   if (t.dataset.task) {
     S.task = t.dataset.task; S.selected = -1;
     document.querySelectorAll("[data-task]").forEach((x) => { x.classList.toggle("on", x === t); x.setAttribute("aria-pressed", String(x === t)); });
@@ -940,6 +975,7 @@ document.addEventListener("change", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
+  if (!$("topicsPop").classList.contains("hidden") && e.key === "Escape") return toggleTopics(false);
   if (topicOpen()) {
     if (e.key === "Escape") return closeTopic();
     if (e.key === "Enter" && e.target.id === "mName") { e.preventDefault(); return runTopic(); }
@@ -967,6 +1003,7 @@ $("topicName").addEventListener("input", () => {
 });
 
 $("mName").addEventListener("input", updateDefHint);
+$("topicsSearch").addEventListener("input", renderTopics);
 
 function updateDefHint() {
   const name = $("mName").value.trim() || "…";

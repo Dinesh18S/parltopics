@@ -224,3 +224,26 @@ def export(body_key: str, target: str, only: str = "all") -> Response:
     name = f"parltopics_{body_key}_{Path(target).stem.replace('scheme:', '')}_{only}_{stamp}.xlsx"
     return Response(buf.getvalue(), headers={"Content-Disposition": f'attachment; filename="{name}"'},
                     media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+
+@router.get("/topics")
+def topics() -> list[dict]:
+    """Every saved ad-hoc topic (presets and own topics) with its coverage per collection, newest first."""
+    s = _api().store()
+    settings = get_settings()
+    found: dict[str, dict] = {}
+    for (body_key,) in s.db.execute("SELECT DISTINCT body_key FROM collection_items ORDER BY body_key").fetchall():
+        for path, t in collection.latest_targets(s, body_key).items():
+            if _kind(path) != "adhoc" or not Path(path).exists():
+                continue
+            if collection.target_version(settings, path, t["prompt_template"])[2] != t["prompt_version"]:
+                continue  # topic file changed since: that index belongs to an older version
+            p = _progress(body_key, path)
+            entry = found.setdefault(path, {"target": path, "name": p["name"], "definition": p["definition"],
+                                            "include": p["include"], "exclude": p["exclude"],
+                                            "preset": path.startswith("topics/"), "last": "", "collections": []})
+            entry["collections"].append({"body_key": body_key, "done": p["done"], "total": p["total"]})
+            entry["last"] = max(entry["last"], t["last_started"] or "")
+    presets = sorted((e for e in found.values() if e["preset"]), key=lambda e: e["name"])
+    own = sorted((e for e in found.values() if not e["preset"]), key=lambda e: e["last"], reverse=True)
+    return presets + own

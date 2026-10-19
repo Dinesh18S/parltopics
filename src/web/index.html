@@ -53,6 +53,13 @@
       <span class="cap adhoc-only" style="font-weight:600">Presets</span>
       <span id="presetChips" class="adhoc-only" style="display:flex;gap:8px;flex-wrap:wrap"></span>
       <button class="btn adhoc-only" type="button" id="newTopicBtn" title="Start an empty topic: name, definition, then Classify">+ New topic</button>
+      <span class="popwrap adhoc-only">
+        <button class="btn" type="button" id="topicsBtn" aria-haspopup="true" aria-expanded="false">My topics</button>
+        <div class="pop hidden" id="topicsPop">
+          <input id="topicsSearch" type="search" placeholder="Search saved topics…" autocomplete="off" aria-label="Search saved topics">
+          <div id="topicsList"></div>
+        </div>
+      </span>
       <div class="spacer"></div>
       <span class="chip chip-amber hidden" id="sampleChip"></span>
       <button class="btn btn-primary" type="button" id="classifyBtn">Classify <span class="kbd"><b>↵</b></span></button>
