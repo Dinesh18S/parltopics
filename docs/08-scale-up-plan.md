@@ -46,6 +46,7 @@ Tests for: resumability (no duplicate work), idempotency, update picks only new 
 ### Phase 2 — run it (mostly machine time)
 - Bern + Thurgau: digitalisation, Covid-19, Curia Vista/APS.
 - Federal ≥ 2018 (27,465): digitalisation.
+**Result (D69, D70):** all done overnight, 0 transient failures — BE digitalisation 5,249 (170 shown), CHE digitalisation 27,464 (1,132 shown), BE/TG Covid-19, BE/TG APS; store fixed for full-collection speed (results ≤ 1 s).
 
 ### Phase 3 — the app for real users (≈ 1.5 h)
 - Collection switch: Demo pool / Bern / Thurgau / Federal; filters and presets instant on indexed data.

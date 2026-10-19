@@ -143,7 +143,7 @@ def index(settings: Settings, store: Store, results_dir: Path, body_key: str, ta
     ids = {i["affair_id"] for i in items}
 
     def stored(row: dict) -> SourceText:
-        return store.source_text(row["text_sha256"])
+        return store.source_text(row["text_sha256"], row["affair_id"])
 
     run_ids = []
     for attempt in range(1, passes + 1):

@@ -421,3 +421,25 @@
 - Verified in Chrome on a `.backup` copy of the DB (server on :8091, real DB: 0 new reviews): collection list (Demo 204, BE 5,249, CHE 27,465, TG 1,447); TG digitalisation loads in < 1 s, 30 suggested / 11 evidence failed / 36 below 0.90 (= CLI export); Covid-19 on TG not indexed → estimate 1,447 ≈ 7 min → job ran (27 done after 25 s) → Cancel → "43 of 1,447 classified · Continue"; queue: 30 → C → next affair opened, queue 29, strip "1 confirmed"; export confirmed → 1 row, the confirmed affair; What's new on first visit → "dated in the last 30 days", none for TG; APS on TG → estimate (assumed 80/min); back to Demo pool → 48 rows as before. API timing: state 0.07 s, collections 0.10 s, TG results 0.35 s (104 kB).
 - Not done yet: offline copies of collection results (needs Phase 2 to finish first); the 20-minute user test with the partner (needs the partner).
 - Revisit if: federal results are too slow in the browser (then page or pre-filter by year).
+
+### D69 — Identical texts of different affairs (scale-up phase 2, 2026-10-18)
+- Found on the Bern run: 11 affairs never became "done". Cause: several affairs have the **same text** (e.g. one motion submitted by several members — "Internationale KI-Sicherheit …" 5×; repeated election items). `sources` is keyed by the text hash, so the shared row keeps the first affair's id and link; `index` built the classifier input from that row and stored the prediction under the other affair's id. Size: BE 11, CHE 506 affairs share a text with another affair.
+- Fix: `Store.source_text(sha, affair_id)` uses the listed affair's id and its own link; result rows and the detail view take the link from the affair (`affairs.url_external_json`), not from the shared text row; `collection_results` keeps only affairs of that collection and one ad-hoc record per affair and run. The 11 × (1 + 9 retries) stray Bern records stay in the append-only store and are filtered out. Bern then finished 5,249 / 5,249 (run 20261018T212955923384Z); the federal run started after the fix.
+- Affects the demo pool too (links of duplicates now point to the right affair). Not affected: S6/S7/S9 evaluations (sample runs fetch per affair and key by the sample's affair id).
+
+### D70 — Phase 2 runs done; store made fast enough for full collections (scale-up phase 2, 2026-10-19)
+- Runs (overnight driver: one step after the other, restart after 5 min without progress — never needed; 0 transient failures in the final runs):
+
+| Collection | Target | Prompt | Affairs | Status | Shown / labelled | Run(s) |
+|---|---|---|---|---|---|---|
+| BE | digitalisation | adhoc_v5 | 5,249 | ok 5,204 · evidence_failed 20 · parse_error 25 | 170 shown at t = 0.9 (3.2 %) | 20261018T210127267583Z + 11 affairs in 20261018T212955923384Z (D69) |
+| CHE | digitalisation | adhoc_v5 | 27,464 | ok 27,332 · evidence_failed 121 · parse_error 11 | 1,132 shown (4.1 %) | 20261018T213016562112Z |
+| BE | Covid-19 | adhoc_v5 | 5,249 | ok 5,231 · ef 4 · pe 14 | 102 shown (1.9 %) | 20261018T230840161427Z |
+| TG | Covid-19 | adhoc_v5 | 1,447 | ok 1,425 · ef 9 · pe 13 | 57 shown (3.9 %) | 20261018T233120704475Z |
+| BE | APS (2 stages) | standard_v1 | 5,249 | 16,289 ok labels · 1,842 evidence_failed · 3 pe | 16,192 labels on 5,070 affairs | 20261018T234041024627Z |
+| TG | APS (2 stages) | standard_v1 | 1,447 | 4,647 ok · 1,053 ef · 5 pe | 4,630 labels on 1,303 affairs | 20261019T004402627652Z |
+| TG | digitalisation | adhoc_v5 | 1,447 | (D67) | 30 shown (2.1 %) | D67 |
+
+- Throughput: ad-hoc 210–277 affairs/min at concurrency 16 (federal 27,464 in 98 min); APS ≈ 80 affairs/min (two calls). Evidence failures are much more frequent per APS label (≈ 10 % BE, 18 % TG) than for ad-hoc (≤ 0.6 %) — to report next to the APS numbers. No accuracy is claimed here; exact precision/recall vs PolitMonitor is Phase 4.
+- Performance bugs found when reading the results back (all fixed, tests green): (1) every `Store()` open re-ran the D60 link repair over all ~34k texts, rewriting the 348 MB table and holding the write lock for 12 s+ (this also explains the D67 "database is locked") → now a one-time migration marked in `PRAGMA user_version`; open ≈ 0.1 s. (2) collection results joined `predictions` without a `(run_id, affair_id)` index → minutes per query on Bern → indexes `predictions_run_affair` and `reviews_prediction`; Bern 0.26 s, federal 1.0 s. (3) The `best`/`cand` CTEs are `MATERIALIZED`.
+- Operational: `caffeinate` ended with the driver at 03:07; afterwards the Mac slept between commands, which looked like hanging queries. Long runs keep `caffeinate` alive for the whole session.

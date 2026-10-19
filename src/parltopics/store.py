@@ -46,12 +46,14 @@ CREATE TABLE IF NOT EXISTS predictions (
     error TEXT, raw_json TEXT, created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS predictions_run ON predictions(run_id);
+CREATE INDEX IF NOT EXISTS predictions_run_affair ON predictions(run_id, affair_id);  -- collection results (D70)
 CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT, prediction_id INTEGER NOT NULL REFERENCES predictions(id),
     decision TEXT NOT NULL CHECK (decision IN ('confirm', 'reject', 'correct')),
     corrected_label TEXT CHECK (decision != 'correct' OR corrected_label IS NOT NULL),
     reviewer TEXT, note TEXT, created_at TEXT NOT NULL
 );
+CREATE INDEX IF NOT EXISTS reviews_prediction ON reviews(prediction_id);
 CREATE TABLE IF NOT EXISTS ingests (
     id INTEGER PRIMARY KEY AUTOINCREMENT, body_key TEXT NOT NULL, since TEXT NOT NULL, started_at TEXT NOT NULL,
     finished_at TEXT, n_listed INTEGER, n_new INTEGER, report_json TEXT
@@ -94,7 +96,8 @@ _RETRY_SQL = ", ".join(f"'{s}'" for s in RETRY_STATUSES)
 ITEMS_SELECT = (
     "SELECT p.id AS prediction_id, p.run_id, p.affair_id, p.lang, p.gold, p.body_key, p.title, p.label, p.confidence, "
     "p.evidence, p.rationale, p.verify_ok, p.verify_method, p.inconsistent, p.keyword_absent, p.tech_vocab_absent, "
-    "p.status, p.evidence_recovered, p.scheme_code, p.rank, a.number, a.type, a.begin_date, a.body_type, s.url, "
+    "p.status, p.evidence_recovered, p.scheme_code, p.rank, a.number, a.type, a.begin_date, a.body_type, "
+    "COALESCE(json_extract(a.url_external_json, '$.' || p.lang), s.url) AS url, "
     "s.title_only, s.truncated, r.decision AS review_decision, r.corrected_label AS review_label, "
     "r.created_at AS reviewed_at "
     "FROM predictions p LEFT JOIN affairs a ON a.id = p.affair_id "
@@ -103,11 +106,11 @@ ITEMS_SELECT = (
 )
 # per affair of a collection: the run whose predictions count — newest complete one, else newest
 _BEST_RUN_SQL = f"""
-WITH cand AS (
+WITH cand AS MATERIALIZED (
     SELECT p.affair_id, p.run_id, r.started_at, SUM(p.status IN ({_RETRY_SQL})) AS n_fail
     FROM predictions p JOIN runs r ON r.id = p.run_id
     WHERE r.sample_file = ? AND r.prompt_version = ? GROUP BY p.affair_id, p.run_id
-), best AS (
+), best AS MATERIALIZED (
     SELECT affair_id, run_id, n_fail FROM (
         SELECT *, ROW_NUMBER() OVER (PARTITION BY affair_id ORDER BY n_fail > 0, started_at DESC) AS rn FROM cand
     ) WHERE rn = 1
@@ -133,10 +136,11 @@ class Store:
         for column, sql_type in ADDED_PREDICTION_COLUMNS.items():
             if column not in have:
                 self.db.execute(f"ALTER TABLE predictions ADD COLUMN {column} {sql_type}")
-        self.db.execute(  # source links in the text's own language when the affair has one (D60)
-            "UPDATE sources SET url = (SELECT json_extract(a.url_external_json, '$.' || sources.lang) FROM affairs a "
-            "WHERE a.id = sources.affair_id) WHERE (SELECT json_extract(a.url_external_json, '$.' || sources.lang) "
-            "FROM affairs a WHERE a.id = sources.affair_id) IS NOT NULL")
+        if self.db.execute("PRAGMA user_version").fetchone()[0] < 1:  # one-time migration (D60); reads every text
+            own_url = ("(SELECT json_extract(a.url_external_json, '$.' || sources.lang) FROM affairs a "
+                       "WHERE a.id = sources.affair_id)")
+            self.db.execute(f"UPDATE sources SET url = {own_url} WHERE {own_url} IS NOT NULL AND {own_url} IS NOT url")
+            self.db.execute("PRAGMA user_version = 1")
         self.lock = threading.Lock()
 
     def add_run(self, manifest: RunManifest, topic: Topic) -> None:
@@ -173,17 +177,20 @@ class Store:
                  source.chars_lost, source.n_chars_full, source.url, source.text, _now()),
             )
 
-    def source_text(self, text_sha256: str) -> SourceText:
-        """A stored text as the classifier needs it (section headers are not stored)."""
-        row = self.db.execute("SELECT * FROM sources WHERE text_sha256 = ?", (text_sha256,)).fetchone()
+    def source_text(self, text_sha256: str, affair_id: int) -> SourceText:
+        """A stored text as the classifier needs it, for `affair_id` (section headers are not stored).
+        Identical texts of different affairs share one sources row (D69), so id and link come from the affair."""
+        row = self.db.execute(
+            "SELECT s.*, json_extract(a.url_external_json, '$.' || s.lang) AS own_url FROM sources s "
+            "LEFT JOIN affairs a ON a.id = ? WHERE s.text_sha256 = ?", (affair_id, text_sha256)).fetchone()
         if row is None:
             raise KeyError(text_sha256)
         r = _row(row)
-        return SourceText(affair_id=r["affair_id"], lang=r["lang"], lang_source=r["lang_source"],
+        return SourceText(affair_id=affair_id, lang=r["lang"], lang_source=r["lang_source"],
                           detected_lang=r["detected_lang"], lang_mismatch=r["lang_mismatch"], title=r["title"],
                           text=r["text"], sha256=r["text_sha256"], sections=[], title_only=r["title_only"],
                           truncated=r["truncated"], cut_section=r["cut_section"], chars_lost=r["chars_lost"],
-                          n_chars_full=r["n_chars_full"], url=r["url"])
+                          n_chars_full=r["n_chars_full"], url=r["own_url"] or r["url"])
 
     def add_prediction(self, record: dict) -> int:
         run = self.db.execute("SELECT topic_sha FROM runs WHERE id = ?", (record["run_id"],)).fetchone()
@@ -245,7 +252,8 @@ class Store:
 
     def prediction_detail(self, prediction_id: int) -> dict:
         row = self.db.execute(
-            "SELECT p.*, s.text, s.url, s.title_only, a.number, a.type, a.begin_date, a.body_type FROM predictions p "
+            "SELECT p.*, s.text, COALESCE(json_extract(a.url_external_json, '$.' || p.lang), s.url) AS url, "
+            "s.title_only, a.number, a.type, a.begin_date, a.body_type FROM predictions p "
             "LEFT JOIN sources s ON s.text_sha256 = p.source_sha256 LEFT JOIN affairs a ON a.id = p.affair_id "
             "WHERE p.id = ?", (prediction_id,),
         ).fetchone()
@@ -313,10 +321,17 @@ class Store:
         rows = self.db.execute(
             _BEST_RUN_SQL + " " + select +
             "JOIN best b ON b.affair_id = p.affair_id AND b.run_id = p.run_id "
-            "LEFT JOIN collection_items c ON c.affair_id = p.affair_id AND c.body_key = p.body_key "
+            "JOIN collection_items c ON c.affair_id = p.affair_id AND c.body_key = ? "
             "ORDER BY p.affair_id, p.id",
-            (collection, prompt_version))
-        return [_row(r) for r in rows]
+            (collection, prompt_version, collection.split(":", 1)[1]))
+        out, seen = [], set()
+        for r in map(_row, rows):  # ad-hoc: one record per affair and run (D69 duplicates of shared texts)
+            key = (r["run_id"], r["affair_id"])
+            if r["scheme_code"] is None and key in seen:
+                continue
+            seen.add(key)
+            out.append(r)
+        return out
 
     def collection_targets(self, collection: str) -> list[dict]:
         """Distinct (prompt template, topic/scheme path, prompt_version) that were indexed on a collection."""
