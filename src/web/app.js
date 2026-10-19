@@ -93,7 +93,7 @@ function selectCollection(body) {
   Object.assign(S, { collection: body, coll: null, confirmJob: null, items: [], runId: null, selected: -1 });
   S.prevVisit = body ? lastVisit(body) : null;
   S.filters.parl = ""; S.filters.level = ""; $("fParl").value = ""; $("fLevel").value = "";
-  renderScopeChip();
+  renderScopeChip(); renderSchemes();
   closeDetail();
   $("classifyBtn").title = body ? `Index ${body} for this topic (Enter)` : "Classify the demo pool (Enter)";
   renderPresets();
@@ -645,8 +645,12 @@ const selectedPid = () => S.detailId || (visibleRows()[S.selected] || {}).predic
 // ---------- standard mode (APS / Curia Vista) ----------
 const schemeName = (id) => ((S.app.schemes || []).find((x) => x.id === id) || {}).name || id;
 
+// Curia Vista is the federal parliament's own scheme: offered for the demo pool and federal collections only
+const schemesHere = () => (S.app.schemes || []).filter((x) => x.id !== "curia_vista" || !S.collection || currentCollection().level === "Federal");
+
 function renderSchemes() {
-  $("schemeSeg").innerHTML = (S.app.schemes || []).map((x) =>
+  if (!schemesHere().some((x) => x.id === S.scheme)) S.scheme = (schemesHere()[0] || {}).id || S.scheme;
+  $("schemeSeg").innerHTML = schemesHere().map((x) =>
     `<button type="button" data-scheme="${esc(x.id)}" class="${x.id === S.scheme ? "on" : ""}" aria-pressed="${x.id === S.scheme}">${esc(x.name)}</button>`).join("");
 }
 
