@@ -1,7 +1,7 @@
 # ParlTopics — open topic classifier for Swiss parliamentary affairs
 
 Hack Apertus 2026 (on-site, Liebefeld/Bern) · Challenge: **OpenParlData — topic classification**
-Team: Dinesh (build) · Arivinchsa (research & pitch)
+Team: Unisono — builder (build) · partner (research & pitch)
 
 ParlTopics suggests topics for any Swiss parliamentary affair, in German, French and Italian, and shows why: a confidence, the exact sentence from the affair, and a source link. A human confirms every suggestion.
 

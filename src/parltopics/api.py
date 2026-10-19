@@ -42,7 +42,7 @@ EXPORT_FIELDS = ("prediction_id", "affair_id", "body_key", "number", "begin_date
                  "confidence", "evidence", "verify_method", "keyword_absent", "status", "url", "review_decision",
                  "review_label")
 
-app = FastAPI(title="ParlTopics")
+app = FastAPI(title="Unisono")
 
 
 @app.middleware("http")
@@ -383,7 +383,7 @@ def export_csv(run_id: str) -> Response:
     for i in store().run_items(run_id):
         writer.writerow({k: i.get(k) for k in EXPORT_FIELDS})
     return Response(buf.getvalue(), media_type="text/csv",
-                    headers={"Content-Disposition": f'attachment; filename="parltopics_{run_id}.csv"'})
+                    headers={"Content-Disposition": f'attachment; filename="unisono_{run_id}.csv"'})
 
 
 @app.get("/api/metrics")

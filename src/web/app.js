@@ -863,7 +863,7 @@ async function loadMetrics() {
   // comparison table: best value per column highlighted
   const cols = [["CHE", "precision"], ["CHE", "recall"], ["CHE", "f1"], ["BE", "precision"], ["BE", "recall"], ["TG", "precision"], ["TG", "recall"]];
   const rows = [
-    { name: "<b>ParlTopics</b> (Apertus)", get: (b, k) => (fp[b] || {}).model?.[k] },
+    { name: "<b>Unisono</b> (Apertus)", get: (b, k) => (fp[b] || {}).model?.[k] },
     { name: "Parliament's category<br><span class='cap'>Curia Vista “Medien und Kommunikation”</span>", get: (b, k) => (b === "CHE" && cv ? cv[k] : null) },
     { name: "Keyword search<br><span class='cap'>Digitalisierung · numérique · digitale …</span>", get: (b, k) => (b === "CHE" && kwFull ? kwFull[k] : (fp[b] || {}).keyword_search_core_model_text?.[k]) },
   ];
@@ -874,7 +874,7 @@ async function loadMetrics() {
       return `<td class="${v != null && v === best[j] ? "best" : ""}">${v == null ? `<span class="cap">n/a</span>` : pts(v)}</td>`; }).join("")}</tr>`).join("")}</tbody></table>`;
 
   grid.innerHTML = `
-    <div class="mhead wide"><div class="mh1">How well does ParlTopics find affairs about digitalisation?</div>
+    <div class="mhead wide"><div class="mh1">How well does Unisono find affairs about digitalisation?</div>
       <div class="csub" style="margin:4px 0 0">Compared with <b>PolitMonitor</b> — the list DVS tags by hand — on <b>every affair since 2018</b> of three parliaments, not a sample.
       Model ${esc(modelLabel(d.model))}, cut-off 0.9 fixed before testing, no tuning on these numbers.</div></div>
 
@@ -882,7 +882,7 @@ async function loadMetrics() {
       ${kpi("Precision · federal", pts(che.model.precision), cv ? `+${Math.round(100 * (che.model.precision - cv.precision))} pts` : "",
         `Of 100 suggestions, <b>${Math.round(100 * che.model.precision)}</b> are on PolitMonitor's list. Parliament's category: ${Math.round(100 * cv.precision)}.`)}
       ${be ? kpi("Bern · precision / recall", `${pts(be.model.precision)} / ${pts(be.model.recall)}`, "", `Keyword search: ${pts(be.keyword_search_core_model_text.precision)} / ${pts(be.keyword_search_core_model_text.recall)}. All ${num(be.population.n)} cantonal affairs.`) : ""}
-      ${kpi("Found without the keyword", num(noKw), "", "Tagged affairs found by ParlTopics whose text never says <i>Digitalisierung / numérique / digitale</i> — invisible to keyword search.")}
+      ${kpi("Found without the keyword", num(noKw), "", "Tagged affairs found by Unisono whose text never says <i>Digitalisierung / numérique / digitale</i> — invisible to keyword search.")}
       ${xl ? kpi("Same answer in DE · FR · IT", pts(xl.adhoc.all_agree.rate), "", `The same ${xl.adhoc.n} federal affairs read in all three official languages.`) : ""}
       ${fed ? kpi("All federal affairs", `${Math.round(fed.minutes)} min`, "", `${num(fed.affairs)} affairs at ${fed.concurrency} parallel requests on the Swiss gateway.`) : ""}
     </div>
@@ -891,14 +891,14 @@ async function loadMetrics() {
       <div class="csub">Same affairs, same reference list. Best value per column highlighted. “n/a”: cantons have no comparable category.</div>
       ${table}
       <div class="meta-k" style="margin-top:18px">Federal, at a glance</div>
-      ${bar("ParlTopics · precision", che.model.precision)}${bar("Category · precision", cv.precision, null, true)}
-      ${bar("ParlTopics · recall", che.model.recall)}${bar("Category · recall", cv.recall, null, true)}
+      ${bar("Unisono · precision", che.model.precision)}${bar("Category · precision", cv.precision, null, true)}
+      ${bar("Unisono · recall", che.model.recall)}${bar("Category · recall", cv.recall, null, true)}
     </div>
 
     <div class="card"><div class="ctitle">What the numbers mean</div><div class="csub">In plain words</div>
       <div class="explain"><b>Precision — how often a suggestion is right.</b> ${pts(che.model.precision)} federal: of 100 affairs we suggest, ${Math.round(100 * che.model.precision)} are on PolitMonitor's list.</div>
       <div class="explain"><b>Recall — how much of the list we find.</b> ${pts(che.model.recall)}: of 100 tagged affairs, we find ${Math.round(100 * che.model.recall)}.</div>
-      <div class="explain"><b>The trade-off.</b> The parliament's category finds more (${pts(cv.recall)}), but ${Math.round(100 * (1 - cv.precision))} in 100 of its hits are not about digitalisation. ParlTopics suggests fewer — and every suggestion comes with a quote that code has checked in the original text.</div>
+      <div class="explain"><b>The trade-off.</b> The parliament's category finds more (${pts(cv.recall)}), but ${Math.round(100 * (1 - cv.precision))} in 100 of its hits are not about digitalisation. Unisono suggests fewer — and every suggestion comes with a quote that code has checked in the original text.</div>
       <div class="explain"><b>“Right” means “on PolitMonitor's list”.</b> That list is hand-made and misses affairs: in our blind review, every affair we found that PolitMonitor had not tagged was digital. So our precision here is a floor.</div>
     </div>
 
@@ -1096,4 +1096,4 @@ function updateDefHint() {
   $("topicDef").placeholder = `Optional. If empty: “Affairs whose main subject is ${name}.”`;
 }
 
-loadState().catch((e) => alertStrip(`Could not reach the ParlTopics server: ${e.message}`));
+loadState().catch((e) => alertStrip(`Could not reach the Unisono server: ${e.message}`));

@@ -1,8 +1,8 @@
 # OpenParlData Topic Classification — PRD
 
-Oct 18, 2026 · @Dinesh
+Oct 18, 2026 · Team Unisono
 
-v2 · revised with domain review (Arivinchsa)
+v2 · revised with domain review (partner)
 
 **What changed in v2:** APS levels corrected to chapter → topic (22 chapters, 165 topics, 8 domains above). Standard-mode evaluation fixed: the 70,008 federal affairs carry Curia Vista labels, not APS, so we add an APS ↔ Curia Vista mapping and measure on Curia Vista directly. Negative set restricted to PolitMonitor's scope; disputed cases adjudicated by hand. 41% baseline compared like-for-like (federal affairs since 2018). Multi-label metric; cross-language consistency as the main bias check. Human-in-the-loop wording: the service supports DVS, it does not replace them. Plus: APS labels are German/French only (from aps\_topics.xlsx), so Italian affairs get the DE/FR label and an unofficial gloss.
 
@@ -174,7 +174,7 @@ Already decided: integration format (API or export both fine), Romansh (nice-to-
 
 ## Build approach
 
-**Director workflow (pstack-style).** Dinesh builds by directing AI. We settle the plan first (this PRD + a thin spec), then let an agent build in vertical slices, and treat a verification step as the real definition of "done" (prove it on the running pipeline, not just "it compiles"). Borrowed from Matt Pocock's grill-then-spec chain and pstack's verification-first discipline. Keep it light for 24h: one pipeline, evidence on every claim, no over-planning.
+**Director workflow (pstack-style).** The builder builds by directing AI. We settle the plan first (this PRD + a thin spec), then let an agent build in vertical slices, and treat a verification step as the real definition of "done" (prove it on the running pipeline, not just "it compiles"). Borrowed from Matt Pocock's grill-then-spec chain and pstack's verification-first discipline. Keep it light for 24h: one pipeline, evidence on every claim, no over-planning.
 
 **First loop (start now, no mentor answer needed):**
 
@@ -195,7 +195,7 @@ That five-step loop is the whole system in miniature and your first measurable r
 - Multilingual: classify the same federal affair in DE/FR/IT; report how often labels agree.
 - Scalability: cost/time per affair, then a back-of-envelope estimate for 300k+ (don't run it all).
 
-**Requirement docs to generate before building (Dinesh's standard set), as .md:** product requirements (this PRD), design/frontend notes for the demo UI, data & API notes, backend/pipeline guidelines, prompt spec (both modes + the "None/Other" abstain), and an eval harness checklist.
+**Requirement docs to generate before building (the builder's standard set), as .md:** product requirements (this PRD), design/frontend notes for the demo UI, data & API notes, backend/pipeline guidelines, prompt spec (both modes + the "None/Other" abstain), and an eval harness checklist.
 
 ## Kickoff prompt for a new chat
 

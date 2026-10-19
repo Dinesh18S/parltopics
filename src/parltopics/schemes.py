@@ -31,8 +31,14 @@ def _labels(row: dict, prefix: str, id_column: str = "") -> dict[str, str]:
             if k.startswith(prefix) and k != id_column and v and str(v).strip()}
 
 
+def _scheme_file(raw_dir: Path, name: str) -> Path:
+    """The downloaded challenge file, else the committed copy in data/schemes/ (a fresh clone has no data/raw/)."""
+    path = raw_dir / name
+    return path if path.exists() else raw_dir.parent / "schemes" / name
+
+
 def load_curia_vista(raw_dir: Path) -> Scheme:
-    vocab = pd.read_csv(raw_dir / "che_topics_vocabulary.csv", dtype=str, keep_default_na=False)
+    vocab = pd.read_csv(_scheme_file(raw_dir, "che_topics_vocabulary.csv"), dtype=str, keep_default_na=False)
     cats = [Category(code=f"CV{i:02d}", source_id=r["topic_id"], labels=_labels(r, "topic_", "topic_id"))
             for i, r in enumerate(vocab.to_dict("records"), start=1)]
     return Scheme(name="Curia Vista subject areas", kind="curia_vista", categories=cats,
@@ -40,7 +46,7 @@ def load_curia_vista(raw_dir: Path) -> Scheme:
 
 
 def _aps_rows(raw_dir: Path, sheet: str) -> list[dict]:
-    ws = openpyxl.load_workbook(raw_dir / "aps_topics.xlsx", read_only=True)[sheet]
+    ws = openpyxl.load_workbook(_scheme_file(raw_dir, "aps_topics.xlsx"), read_only=True)[sheet]
     rows = list(ws.iter_rows(values_only=True))
     header = [str(h) for h in rows[0]]
     return [dict(zip(header, r)) for r in rows[1:] if r[0]]

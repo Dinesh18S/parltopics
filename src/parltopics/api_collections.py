@@ -221,7 +221,7 @@ def export(body_key: str, target: str, only: str = "all") -> Response:
     buf = io.BytesIO()
     collection.export_frame(rows).to_excel(buf, index=False)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
-    name = f"parltopics_{body_key}_{Path(target).stem.replace('scheme:', '')}_{only}_{stamp}.xlsx"
+    name = f"unisono_{body_key}_{Path(target).stem.replace('scheme:', '')}_{only}_{stamp}.xlsx"
     return Response(buf.getvalue(), headers={"Content-Disposition": f'attachment; filename="{name}"'},
                     media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 

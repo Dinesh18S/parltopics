@@ -3,7 +3,7 @@
 **Project:** ParlTopics (working name) — open topic classifier for Swiss parliamentary affairs
 **Event:** Hack Apertus, on-site, Liebefeld/Bern, 18–19 Oct 2026
 **Challenge:** OpenParlData — topic classification
-**Team:** Dinesh (build, demo, architecture) · Arivinchsa (Swiss-politics research, adjudication, pitch)
+**Team:** Unisono — builder (build, demo, architecture) · partner (Swiss-politics research, adjudication, pitch)
 **Status:** v1, derived from PRD v2. If this file and the PRD disagree, the PRD wins; fix this file.
 
 ---

@@ -1,6 +1,6 @@
 # Definition: "Digitalisation"
 
-**Author:** Arivinchsa (Swiss-politics research). **Method:** derived from how PolitMonitor actually tagged the 3,433 affairs in `politmonitor_digitalisierung.csv` (AI-assisted analysis by the partner, expert-reviewed), not from the challenge slides. Where the slides and PolitMonitor differ, this definition follows PolitMonitor, because PolitMonitor is the ground truth we are measured against.
+**Author:** partner (Swiss-politics research, team member). **Method:** derived from how PolitMonitor actually tagged the 3,433 affairs in `politmonitor_digitalisierung.csv` (AI-assisted analysis by the partner, reviewed by the partner), not from the challenge slides. Where the slides and PolitMonitor differ, this definition follows PolitMonitor, because PolitMonitor is the ground truth we are measured against.
 
 **Known difference from the slides:** PolitMonitor counts Swiss Post, SRG and the radio/TV licence fee as digitalisation, although the slides list them as "not digital". We follow PolitMonitor.
 
@@ -37,4 +37,4 @@ Counts are approximate, from the partner's AI-assisted analysis of the list; the
 
 About one third of the tagged affairs (~1,100) have no digital keyword in the title. Most are still digital in the full text, but some look like tagging noise (e.g. "Archivgesetz", "Geschäftsbericht 2018").
 
-Disagreements go to blind expert review **in both directions** (model yes / PolitMonitor no, and model no / PolitMonitor yes). The reviewer sees only the affair text, never which side said what. The review rules are fixed before results are seen, and metrics are reported before and after review.
+Disagreements go to blind review by a team member **in both directions** (model yes / PolitMonitor no, and model no / PolitMonitor yes). The reviewer sees only the affair text, never which side said what. The review rules are fixed before results are seen, and metrics are reported before and after review.
