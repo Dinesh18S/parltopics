@@ -525,6 +525,13 @@ function highlight(text, span) {
   return sections(`${esc(text.slice(0, a))}<mark>${esc(text.slice(a, b))}</mark>${esc(text.slice(b))}`);
 }
 
+// the text box is scrollable: bring the highlighted evidence into view (a third from the top), without moving the panel
+function scrollToEvidence() {
+  const box = $("detail").querySelector(".textbox");
+  const mark = box && box.querySelector("mark");
+  if (mark) box.scrollTop += mark.getBoundingClientRect().top - box.getBoundingClientRect().top - box.clientHeight / 3;
+}
+
 async function openDetail(pid) {
   if (S.mode === "standard") return openStandardDetail(pid);
   const d = await api(`/api/predictions/${pid}`);
@@ -576,6 +583,7 @@ async function openDetail(pid) {
     </div>`;
   $("detail").classList.remove("hidden");
   $("scrim").classList.remove("hidden");
+  scrollToEvidence();
 }
 
 async function readingAid(pid, machine) {
@@ -817,6 +825,7 @@ async function openStandardDetail(pid) {
     </div>`;
   $("detail").classList.remove("hidden");
   $("scrim").classList.remove("hidden");
+  scrollToEvidence();
 }
 
 // ---------- metrics ----------
