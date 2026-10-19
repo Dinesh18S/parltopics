@@ -97,10 +97,8 @@ Every affair since 2018 (consultations excluded) of each parliament; model yes =
 | Parliament | Method | Affairs | Tagged | TP | FP | FN | Precision | Recall | F1 |
 |---|---|---|---|---|---|---|---|---|---|
 | TG | **Apertus** (`adhoc_v5`, t = 0.9) | 1,447 | 33 | 15 | 15 | 18 | 50.0% | 45.5% | 47.6% |
-| TG | Apertus without the 0 sample affairs | 1,447 | 33 | 15 | 15 | 18 | 50.0% | 45.5% | 47.6% |
 | TG | Keyword search, core words (text the model saw) | 1,447 | 33 | 24 | 129 | 9 | 15.7% | 72.7% | 25.8% |
 | BE | **Apertus** (`adhoc_v5`, t = 0.9) | 5,249 | 171 | 116 | 54 | 55 | 68.2% | 67.8% | 68.0% |
-| BE | Apertus without the 0 sample affairs | 5,249 | 171 | 116 | 54 | 55 | 68.2% | 67.8% | 68.0% |
 | BE | Keyword search, core words (text the model saw) | 5,249 | 171 | 81 | 167 | 90 | 32.7% | 47.4% | 38.7% |
 | CHE | **Apertus** (`adhoc_v5`, t = 0.9) | 27,465 | 1,396 | 712 | 420 | 684 | 62.9% | 51.0% | 56.3% |
 | CHE | Apertus without the 1012 sample affairs | 26,453 | 1,240 | 631 | 411 | 609 | 60.6% | 50.9% | 55.3% |
@@ -111,3 +109,24 @@ Every affair since 2018 (consultations excluded) of each parliament; model yes =
 - TG: 1,447 affairs, 33 tagged (prevalence 2.3%; 9 more tags outside the population). Statuses {'ok': 1435, 'evidence_failed': 11, 'parse_error': 1}. Found without any core keyword: 3 tagged affairs. By language: DE P 50.0% / R 45.5% (R 29.8%–62.0%, 33 tagged).
 - BE: 5,249 affairs, 171 tagged (prevalence 3.3%; 0 more tags outside the population). Statuses {'ok': 5204, 'parse_error': 25, 'evidence_failed': 20}. Found without any core keyword: 54 tagged affairs. By language: DE P 70.9% / R 68.2% (R 60.5%–75.0%, 154 tagged), FR P 50.0% / R 64.7% (R 41.3%–82.7%, 17 tagged).
 - CHE: 27,465 affairs, 1396 tagged (prevalence 5.1%; 2 more tags outside the population). Statuses {'ok': 27332, 'evidence_failed': 121, 'parse_error': 11}. Found without any core keyword: 215 tagged affairs. By language: DE P 62.7% / R 50.8% (R 48.1%–53.4%, 1375 tagged), FR P 82.4% / R 66.7% (R 45.4%–82.8%, 21 tagged).
+
+## Speed, tokens and the projection to all affairs (measured)
+
+Wall-clock pace of the overnight whole-collection runs on the shared gateway. Wall-clock pace on the shared CSCS gateway at the run's concurrency; no price per token known, so hours and tokens, not CHF.
+
+| Collection · topic | Affairs | Minutes | Affairs / min | Concurrency | Tokens in / out per call |
+|---|---|---|---|---|---|
+| BE · Digitalisation | 5,238 | 27 | 192 | 16 | 1,974 / 132 |
+| BE · Covid-19 | 5,249 | 22 | 234 | 16 | 1,680 / 120 |
+| BE · APS chapters | 5,249 | 63 | 83 | 16 | 1,018 / 119 |
+| CHE · Digitalisation | 27,464 | 98 | 280 | 16 | 1,441 / 131 |
+| TG · Covid-19 | 1,447 | 9 | 161 | 16 | 2,706 / 133 |
+| TG · APS chapters | 1,447 | 23 | 62 | 16 | 1,321 / 130 |
+
+All 326,397 OpenParlData affairs (counted 2026-10-19):
+
+| Basis | Hours | Tokens in (M) | Tokens out (M) |
+|---|---|---|---|
+| federal texts | 19 | 470 | 43 |
+| cantonal texts | 28 | 644 | 43 |
+| aps two stage | 65 | 1,146 | 134 |

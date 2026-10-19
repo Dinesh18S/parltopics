@@ -803,74 +803,126 @@ function bar(label, value, ciArr, base) {
     <span class="mono">${pct(value)} <span class="cap">${ci(ciArr)}</span></span></div>`;
 }
 
-function prCurve(curve, chosen) {
-  const W = 320, H = 220, P = 34;
-  const x = (r) => P + r * (W - P - 10), y = (p) => H - P - p * (H - P - 10);
-  const pts = curve.points.filter((p) => p.precision_corrected != null);
-  const line = pts.map((p) => `${x(p.recall).toFixed(1)},${y(p.precision_corrected).toFixed(1)}`).join(" ");
-  const ch = pts.find((p) => p.threshold === chosen);
-  const b = curve.baseline_point;
-  return `<svg class="pr" width="100%" viewBox="0 0 ${W} ${H}" role="img" aria-label="Precision-recall curve on the test split">
-    <line x1="${P}" y1="${H - P}" x2="${W - 10}" y2="${H - P}" stroke="#D7D2C9"/><line x1="${P}" y1="10" x2="${P}" y2="${H - P}" stroke="#D7D2C9"/>
-    <text x="${W / 2}" y="${H - 6}" text-anchor="middle">recall</text><text x="10" y="${H / 2}" transform="rotate(-90 10 ${H / 2})" text-anchor="middle">precision (corrected)</text>
-    ${[0, 0.5, 1].map((t) => `<text x="${x(t)}" y="${H - P + 14}" text-anchor="middle">${t}</text><text x="${P - 6}" y="${y(t) + 4}" text-anchor="end">${t}</text>`).join("")}
-    <polyline points="${line}" fill="none" stroke="#564B68" stroke-width="2"/>
-    ${ch ? `<circle cx="${x(ch.recall)}" cy="${y(ch.precision_corrected)}" r="5" fill="#564B68"/><text x="${x(ch.recall) + 8}" y="${y(ch.precision_corrected) - 6}">ParlTopics t=${chosen}</text>` : ""}
-    <rect x="${x(b.recall) - 4}" y="${y(b.precision) - 4}" width="8" height="8" fill="#8C8679"/><text x="${x(b.recall) - 8}" y="${y(b.precision) + 18}" text-anchor="end">Curia Vista area</text>
-  </svg>`;
+const pts = (x) => (x == null ? "—" : `${Math.round(100 * x)}%`);
+const num = (x) => (x == null ? "—" : x.toLocaleString("en"));
+
+function kpi(label, value, delta, text, good = true) {
+  return `<div class="kpi"><div class="klabel">${label}</div><div class="kval">${value}${delta ? ` <span class="kdelta${good ? "" : " neutral"}">${delta}</span>` : ""}</div><div class="ktext">${text}</div></div>`;
+}
+
+function rangeRow(label, lo, hi, dots) {
+  // a 0–100 % track: the shaded band is a pre-registered estimate's 95 % range, dots are measured values
+  const w = (x) => `${Math.max(0, Math.min(100, 100 * x))}%`;
+  return `<div class="rrow"><span class="rlabel">${label}</span><span class="rtrack">${lo != null ? `<span class="rband" style="left:${w(lo)};width:calc(${w(hi)} - ${w(lo)})"></span>` : ""}
+    ${dots.map((d) => `<span class="rdot ${d.cls}" style="left:${w(d.v)}" title="${esc(d.t)}: ${pct(d.v)}"></span>`).join("")}</span></div>`;
 }
 
 async function loadMetrics() {
   const grid = $("metricsGrid");
   let m;
   try { m = await api("/api/metrics"); } catch (e) { grid.innerHTML = `<div class="card wide"><div class="ctitle">No metrics yet</div><div class="csub">${esc(e.message)}</div></div>`; return; }
-  const d = m.digitalisation_federal_2018;
-  if (!d) { grid.innerHTML = `<div class="card wide"><div class="ctitle">No digitalisation evaluation in results/metrics.json</div></div>`; return; }
-  const t = d.test.at_chosen_threshold, b = d.baselines_full_slice, q = d.test.quality;
-  const cvt = (m.curia_vista_standard || {}).test;
-  const xl = m.cross_language, ct = ((m.cost_time || {}).runs || [])[0];
-  const adj = ((m.adjudication || {}).readings || {}).strict;
-  const pending = (what) => `<span class="pending">pending — ${what}</span>`;
+  const d = m.digitalisation_federal_2018, fp = m.full_population || {}, sc = m.scale || {};
+  if (!d || !fp.CHE) { grid.innerHTML = `<div class="card wide"><div class="ctitle">Metrics incomplete</div><div class="csub">Run <span class="mono">parltopics eval collection</span> for the collections.</div></div>`; return; }
+  const che = fp.CHE, be = fp.BE, tg = fp.TG;
+  const base = che.baselines_full_text || {}, cv = base.curia_vista_area, kwFull = base.keyword_search_core;
+  const t = d.test.at_chosen_threshold, adj = ((m.adjudication || {}).readings || {}).strict;
+  const xl = m.cross_language, cvs = (m.curia_vista_standard || {}).test, q = d.test.quality;
+  const un = che.model_without_sample_affairs;
+  const fed = (sc.measured_runs || []).find((r) => r.collection === "collection:CHE");
+  const proj = sc.projection_all_affairs || {};
+  const noKw = (che.found_without_core_keyword || {}).n + ((be || {}).found_without_core_keyword || {}).n;
+
+  // comparison table: best value per column highlighted
+  const cols = [["CHE", "precision"], ["CHE", "recall"], ["CHE", "f1"], ["BE", "precision"], ["BE", "recall"], ["TG", "precision"], ["TG", "recall"]];
+  const rows = [
+    { name: "<b>ParlTopics</b> (Apertus)", get: (b, k) => (fp[b] || {}).model?.[k] },
+    { name: "Parliament's category<br><span class='cap'>Curia Vista “Medien und Kommunikation”</span>", get: (b, k) => (b === "CHE" && cv ? cv[k] : null) },
+    { name: "Keyword search<br><span class='cap'>Digitalisierung · numérique · digitale …</span>", get: (b, k) => (b === "CHE" && kwFull ? kwFull[k] : (fp[b] || {}).keyword_search_core_model_text?.[k]) },
+  ];
+  const best = cols.map(([b, k]) => Math.max(...rows.map((r) => r.get(b, k) ?? -1)));
+  const table = `<table class="ctab"><thead><tr><th rowspan="2">Method</th><th colspan="3">Federal · ${num(che.population.n)} affairs</th><th colspan="2">Bern · ${num((be || {}).population?.n)}</th><th colspan="2">Thurgau · ${num((tg || {}).population?.n)}</th></tr>
+    <tr>${cols.map(([, k]) => `<th>${{ precision: "Precision", recall: "Recall", f1: "Balance (F1)" }[k]}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((r, i) => `<tr class="${i === 0 ? "ours" : ""}"><td>${r.name}</td>${cols.map(([b, k], j) => { const v = r.get(b, k);
+      return `<td class="${v != null && v === best[j] ? "best" : ""}">${v == null ? `<span class="cap">n/a</span>` : pts(v)}</td>`; }).join("")}</tr>`).join("")}</tbody></table>`;
+
   grid.innerHTML = `
-    <div class="card wide">
-      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:320px">
-          <div class="ctitle">Digitalisation vs. PolitMonitor — federal affairs since 2018</div>
-          <div class="csub">Test split: ${t.n_pos} tagged + ${t.n_neg} untagged affairs · population ${d.population.n.toLocaleString("en")} (prevalence ${(100 * d.population.prevalence).toFixed(1)}%) · precision is prevalence-corrected · threshold ${d.threshold.chosen_on_dev} fixed on dev · 95% CI</div>
-          <div class="meta-k" style="margin-top:6px">Precision <span class="cap" style="text-transform:none;letter-spacing:0">share of suggestions that are correct</span></div>
-          ${bar("ParlTopics", t.precision_corrected, t.precision_corrected_ci95)}
-          ${bar(`Curia Vista “${b.curia_vista_area.area_names.join(" / ")}”`, b.curia_vista_area.precision, null, true)}
-          ${bar("Keyword search", b.keyword_search_core.precision, null, true)}
-          <div class="meta-k" style="margin-top:14px">Recall <span class="cap" style="text-transform:none;letter-spacing:0">share of tagged affairs that are found</span></div>
-          ${bar("ParlTopics", t.recall, t.recall_ci95)}
-          ${bar(`Curia Vista “${b.curia_vista_area.area_names.join(" / ")}”`, b.curia_vista_area.recall, null, true)}
-          ${bar("Keyword search", b.keyword_search_core.recall, null, true)}
-          <div class="cap" style="margin-top:10px">Baselines are exact counts on all ${d.population.n.toLocaleString("en")} affairs. After blind human review: ${adj ? `precision ${pct(adj.precision)} (${ci(adj.precision_ci95)}), recall ${pct(adj.recall)} (${ci(adj.recall_ci95)}) — strict rule, ${adj.answered.TP + adj.answered.FN + adj.answered.FP + adj.answered.TN} reviewed affairs, wide intervals` : pending("review sheet with the team's political-science reviewer")}.</div>
-        </div>
-        <div style="flex:0 0 360px">
-          <div class="meta-k">Precision–recall curve (test)</div>
-          ${prCurve(d.test_pr_curve, d.threshold.chosen_on_dev)}
-        </div>
-      </div>
+    <div class="mhead wide"><div class="mh1">How well does ParlTopics find affairs about digitalisation?</div>
+      <div class="csub" style="margin:4px 0 0">Compared with <b>PolitMonitor</b> — the list DVS tags by hand — on <b>every affair since 2018</b> of three parliaments, not a sample.
+      Model ${esc(modelLabel(d.model))}, cut-off 0.9 fixed before testing, no tuning on these numbers.</div></div>
+
+    <div class="kpis wide">
+      ${kpi("Precision · federal", pts(che.model.precision), cv ? `+${Math.round(100 * (che.model.precision - cv.precision))} pts` : "",
+        `Of 100 suggestions, <b>${Math.round(100 * che.model.precision)}</b> are on PolitMonitor's list. Parliament's category: ${Math.round(100 * cv.precision)}.`)}
+      ${be ? kpi("Bern · precision / recall", `${pts(be.model.precision)} / ${pts(be.model.recall)}`, "", `Keyword search: ${pts(be.keyword_search_core_model_text.precision)} / ${pts(be.keyword_search_core_model_text.recall)}. All ${num(be.population.n)} cantonal affairs.`) : ""}
+      ${kpi("Found without the keyword", num(noKw), "", "Tagged affairs found by ParlTopics whose text never says <i>Digitalisierung / numérique / digitale</i> — invisible to keyword search.")}
+      ${xl ? kpi("Same answer in DE · FR · IT", pts(xl.adhoc.all_agree.rate), "", `The same ${xl.adhoc.n} federal affairs read in all three official languages.`) : ""}
+      ${fed ? kpi("All federal affairs", `${Math.round(fed.minutes)} min`, "", `${num(fed.affairs)} affairs at ${fed.concurrency} parallel requests on the Swiss gateway.`) : ""}
     </div>
-    <div class="card"><div class="ctitle">Quality checks</div><div class="csub">Test split, same run</div>
-      <div class="kv"><span>Evidence verified on matches</span><span class="kvv">${q.evidence.verified}/${q.evidence.model_matches}</span></div>
-      <div class="kv"><span>Evidence failures before → after retry</span><span class="kvv">${pct(q.evidence.failure_rate_first_attempt)} → ${pct(q.evidence.failure_rate_after_retry)}</span></div>
-      <div class="kv"><span>Keyword-absent matches (tagged)</span><span class="kvv">${q.keyword_absent_shown.n} (${q.keyword_absent_shown.gold_positive})</span></div>
-      <div class="kv"><span>Abstain · inconsistent</span><span class="kvv">${q.abstain} · ${q.inconsistent}</span></div>
-      <div class="kv"><span>Excluded (lang missing / mismatch)</span><span class="kvv">${d.excluded_from_metrics.lang_missing} / ${d.excluded_from_metrics.lang_mismatch}</span></div></div>
-    <div class="card"><div class="ctitle">Standard mode</div><div class="csub">Curia Vista areas (test${cvt ? `, n = ${cvt.n}` : ""}) · APS chapters</div>
-      <div class="kv"><span>Curia Vista · at-least-one-correct</span>${cvt ? `<span class="kvv">${pct(cvt.at_least_one_correct.rate)} <span class="cap">${ci(cvt.at_least_one_correct.ci95)}</span></span>` : pending("S7")}</div>
-      <div class="kv"><span>Curia Vista · micro-F1</span>${cvt ? `<span class="kvv">${cvt.micro.f1.toFixed(2)} <span class="cap">P ${cvt.micro.precision.toFixed(2)} · R ${cvt.micro.recall.toFixed(2)}</span></span>` : pending("S7")}</div>
-      <div class="kv"><span>Labels per affair (gold · predicted)</span>${cvt ? `<span class="kvv">${cvt.cardinality.gold_mean.toFixed(1)} · ${cvt.cardinality.pred_mean.toFixed(1)}</span>` : pending("S7")}</div>
-      <div class="kv"><span>APS · gold sample</span>${pending("partner labels")}</div></div>
-    <div class="card"><div class="ctitle">Cross-language · cost</div><div class="csub">Same federal affairs in DE / FR / IT${xl ? ` (n = ${xl.adhoc.n})` : ""} · measured cost</div>
-      <div class="kv"><span>Ad-hoc: all three languages agree</span>${xl ? `<span class="kvv">${pct(xl.adhoc.all_agree.rate)} <span class="cap">${ci(xl.adhoc.all_agree.ci95)}</span></span>` : pending("S9")}</div>
-      <div class="kv"><span>Cohen's κ DE–FR · DE–IT · FR–IT</span>${xl ? `<span class="kvv">${Object.values(xl.adhoc.pairs).map((p) => p.kappa.toFixed(2)).join(" · ")}</span>` : pending("S9")}</div>
-      <div class="kv"><span>Standard: same top label in all three</span>${xl ? `<span class="kvv">${pct(xl.standard.top_all_agree.rate)}</span>` : pending("S9")}</div>
-      <div class="kv"><span>Model seconds per affair (p50 · p95)</span>${ct ? `<span class="kvv">${ct.model_seconds_per_affair.p50.toFixed(1)} · ${ct.model_seconds_per_affair.p95.toFixed(1)}</span>` : pending("S9")}</div>
-      <div class="kv"><span>300k affairs at concurrency 8 · 32</span>${ct ? `<span class="kvv">${ct.estimate.hours_at_concurrency["8"].toFixed(0)} h · ${ct.estimate.hours_at_concurrency["32"].toFixed(0)} h</span>` : pending("S9")}</div></div>
-    <div class="card wide"><div class="csub" style="margin:0">Model <span class="mono">${esc(d.model)}</span> · prompt <span class="mono">${esc(d.prompt_template)}</span> (version <span class="mono">${esc(d.prompt_version.slice(0, 12))}</span>) · runs <span class="mono">${esc(d.run_ids.join(", "))}</span> · commit <span class="mono">${esc((d.git_commit || "").slice(0, 7))}</span></div></div>`;
+
+    <div class="card span2"><div class="ctitle">How we compare</div>
+      <div class="csub">Same affairs, same reference list. Best value per column highlighted. “n/a”: cantons have no comparable category.</div>
+      ${table}
+      <div class="meta-k" style="margin-top:18px">Federal, at a glance</div>
+      ${bar("ParlTopics · precision", che.model.precision)}${bar("Category · precision", cv.precision, null, true)}
+      ${bar("ParlTopics · recall", che.model.recall)}${bar("Category · recall", cv.recall, null, true)}
+    </div>
+
+    <div class="card"><div class="ctitle">What the numbers mean</div><div class="csub">In plain words</div>
+      <div class="explain"><b>Precision — how often a suggestion is right.</b> ${pts(che.model.precision)} federal: of 100 affairs we suggest, ${Math.round(100 * che.model.precision)} are on PolitMonitor's list.</div>
+      <div class="explain"><b>Recall — how much of the list we find.</b> ${pts(che.model.recall)}: of 100 tagged affairs, we find ${Math.round(100 * che.model.recall)}.</div>
+      <div class="explain"><b>The trade-off.</b> The parliament's category finds more (${pts(cv.recall)}), but ${Math.round(100 * (1 - cv.precision))} in 100 of its hits are not about digitalisation. ParlTopics suggests fewer — and every suggestion comes with a quote that code has checked in the original text.</div>
+      <div class="explain"><b>“Right” means “on PolitMonitor's list”.</b> That list is hand-made and misses affairs: in our blind review, every affair we found that PolitMonitor had not tagged was digital. So our precision here is a floor.</div>
+    </div>
+
+    <div class="card span2"><div class="ctitle">Can you trust these numbers?</div>
+      <div class="csub">Shaded band: the 95% range we predicted from a fixed test sample before running everything. Dots: what we then measured.</div>
+      <div class="rlegend"><span><i class="rdot-k sample"></i>test sample (${t.n_pos + t.n_neg} affairs)</span><span><i class="rdot-k full"></i>all ${num(che.population.n)} federal affairs</span><span><i class="rdot-k untouched"></i>${num(un.n)} affairs never used in development</span></div>
+      ${rangeRow("Precision", t.precision_corrected_ci95[0], t.precision_corrected_ci95[1], [{ v: t.precision_corrected, cls: "sample", t: "test sample" }, { v: che.model.precision, cls: "full", t: "all affairs" }, { v: un.precision, cls: "untouched", t: "never used" }])}
+      ${rangeRow("Recall", t.recall_ci95[0], t.recall_ci95[1], [{ v: t.recall, cls: "sample", t: "test sample" }, { v: che.model.recall, cls: "full", t: "all affairs" }, { v: un.recall, cls: "untouched", t: "never used" }])}
+      <div class="kv"><span>Test sample (pre-registered) → all federal affairs</span><span class="kvv">${pct(t.precision_corrected)} → ${pct(che.model.precision)} precision · ${pct(t.recall)} → ${pct(che.model.recall)} recall</span></div>
+      <div class="kv"><span>Affairs never seen during development</span><span class="kvv">${pct(un.precision)} / ${pct(un.recall)}</span></div>
+      ${adj ? `<div class="kv"><span>After blind review by a team member (MA, political science)</span><span class="kvv">precision ${pct(adj.precision)} <span class="cap">${ci(adj.precision_ci95)} · ${adj.answered.TP + adj.answered.FN + adj.answered.FP + adj.answered.TN} affairs, wide range</span></span></div>` : ""}
+      ${xl ? `<div class="kv"><span>Language fairness: same answer in DE · FR · IT</span><span class="kvv">${pct(xl.adhoc.all_agree.rate)} <span class="cap">${ci(xl.adhoc.all_agree.ci95)}</span></span></div>` : ""}
+      <div class="kv"><span>Proof quotes found in the text (test run)</span><span class="kvv">${q.evidence.verified}/${q.evidence.model_matches}</span></div>
+    </div>
+
+    <div class="card"><div class="ctitle">Cost & scale</div><div class="csub">Measured on the overnight runs · no price per token known, so hours and tokens</div>
+      ${(sc.measured_runs || []).filter((r) => r.topic !== "Covid-19").map((r) => `<div class="kv"><span>${esc(r.collection.replace("collection:", ""))} · ${esc(r.topic)}</span><span class="kvv">${num(r.affairs)} in ${Math.round(r.minutes)} min <span class="cap">${Math.round(r.affairs_per_min)}/min</span></span></div>`).join("")}
+      ${sc.openparldata_affairs ? `<div class="meta-k" style="margin-top:14px">All ${num(sc.openparldata_affairs)} OpenParlData affairs</div>
+      ${proj.federal_texts ? `<div class="kv"><span>One topic</span><span class="kvv">≈ ${Math.round(proj.federal_texts.hours)}–${Math.round((proj.cantonal_texts || proj.federal_texts).hours)} h <span class="cap">${proj.federal_texts.tokens_in_millions}–${(proj.cantonal_texts || proj.federal_texts).tokens_in_millions} M tokens in</span></span></div>` : ""}
+      ${proj.aps_two_stage ? `<div class="kv"><span>APS scheme (2 steps)</span><span class="kvv">≈ ${Math.round(proj.aps_two_stage.hours)} h</span></div>` : ""}
+      <div class="kv"><span>Afterwards</span><span class="kvv">only new affairs · minutes per day</span></div>` : ""}
+    </div>
+
+    <div class="card"><div class="ctitle">Limits & edge cases</div><div class="csub">What we know does not work well yet</div>
+      <ul class="limits">
+        <li><b>Recall</b> is below the broad category (${pts(che.model.recall)} vs ${pts(cv.recall)}): we miss part of the list — partly because PolitMonitor tags broadly.</li>
+        <li><b>Very long texts</b> (> ~12,000 characters) can make the model drift to the main subject; a fix was tested but not adopted (pre-set rule).</li>
+        <li><b>Scanned PDFs</b> are noisy; quotes then fail the check more often (shown as “evidence not found”, never as a match).</li>
+        <li><b>Title-only affairs</b> (some federal bills) give the model little to read.</li>
+        <li><b>Broad custom definitions</b> pull in neighbours (e.g. “Wolf” also found cormorants) — a sharper definition and the review fix it.</li>
+        <li><b>APS accuracy</b> is not measured yet: there is no hand-labelled reference.</li>
+      </ul>
+    </div>
+
+    <div class="card"><div class="ctitle">Other checks</div><div class="csub">Parliament's own categories · quality</div>
+      ${cvs ? `<div class="kv"><span>Curia Vista areas: at least one right</span><span class="kvv">${pct(cvs.at_least_one_correct.rate)} <span class="cap">n = ${cvs.n}</span></span></div>
+      <div class="kv"><span>Curia Vista: areas named (ours · parliament)</span><span class="kvv">${cvs.cardinality.pred_mean.toFixed(1)} · ${cvs.cardinality.gold_mean.toFixed(1)}</span></div>` : ""}
+      ${xl ? `<div class="kv"><span>Curia Vista: same top area in DE · FR · IT</span><span class="kvv">${pct(xl.standard.top_all_agree.rate)}</span></div>` : ""}
+      <div class="kv"><span>Quote failures before → after one retry</span><span class="kvv">${pct(q.evidence.failure_rate_first_attempt)} → ${pct(q.evidence.failure_rate_after_retry)}</span></div>
+    </div>
+
+    <div class="card"><div class="ctitle">What's next</div><div class="csub">To make it a service people rely on</div>
+      <ul class="limits">
+        <li>OpenParlData API endpoint, nightly <span class="mono">update</span></li>
+        <li>APS reference set labelled by domain experts</li>
+        <li>A second, independent reviewer</li>
+        <li>Check for party bias (needs author data)</li>
+        <li>Reviewer accounts; rename / archive topics</li>
+      </ul>
+    </div>
+
+    <div class="card wide"><div class="csub" style="margin:0">Sources: <span class="mono">results/metrics.json</span> · runs <span class="mono">${esc(che.runs.join(", "))}</span> (federal), test <span class="mono">${esc(d.run_ids.join(", "))}</span> · prompt <span class="mono">${esc(che.prompt_template)}</span> · decisions D46, D65, D71, D77 in docs/decisions.md</div></div>`;
 }
 
 // ---------- events ----------

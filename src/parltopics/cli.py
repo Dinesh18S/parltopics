@@ -817,3 +817,42 @@ def eval_collection(
     metrics_report.update_metrics_json(path, "full_population", data.get("full_population", {}) | {body: m})
     write_metrics_md()
     typer.echo(metrics_report.full_population_markdown({body: m}))
+
+
+@eval_app.command("scale")
+def eval_scale() -> None:
+    """Measured speed / tokens of the whole-collection runs + projection to every OpenParlData affair (D77)."""
+    from datetime import date
+
+    from parltopics.evaluate import scale
+
+    settings = get_settings()
+    store = Store(settings.db_path)
+    measured = []
+    for (body,) in store.db.execute("SELECT DISTINCT body_key FROM collection_items ORDER BY body_key").fetchall():
+        for path, target in collection.latest_targets(store, body).items():
+            if not (path.startswith("topics/") or path.startswith(collection.SCHEME_PREFIX)):
+                continue
+            rows = store.collection_results(collection.collection_ref(body), target["prompt_version"])
+            runs = pd.Series([r["run_id"] for r in rows]).value_counts()
+            main_run = runs.index[0]  # the run that classified most affairs; resumed leftovers are excluded
+            if runs.iloc[0] >= 1000:
+                measured.append(scale.run_stats(store, main_run))
+    total = OPDClient(settings).get_json("/v1/affairs/", {"limit": 1, "fields": "id"}, fresh=True)["meta"]["total_records"]
+    by = {(m["collection"], m["topic"]): m for m in measured}
+    basis = {"federal_texts": by.get(("collection:CHE", "Digitalisation")),
+             "cantonal_texts": by.get(("collection:BE", "Digitalisation")),
+             "aps_two_stage": by.get(("collection:BE", "APS chapters"))}
+    block = {"measured_runs": measured, "openparldata_affairs": total, "counted_on": date.today().isoformat(),
+             "projection_all_affairs": {k: {"basis_run": v["run_id"], **scale.projection(v, total)}
+                                        for k, v in basis.items() if v},
+             "note": "Wall-clock pace on the shared CSCS gateway at the run's concurrency; no price per token known, "
+                     "so hours and tokens, not CHF."}
+    metrics_report.update_metrics_json(RESULTS_DIR / "metrics.json", "scale", block)
+    write_metrics_md()
+    for m in measured:
+        typer.echo(f"{m['collection']} {m['topic']}: {m['affairs']} affairs in {m['minutes']} min = "
+                   f"{m['affairs_per_min']}/min (concurrency {m['concurrency']}), {m['tokens_in_per_record']} in / "
+                   f"{m['tokens_out_per_record']} out tokens per record, {m['records_per_affair']} records per affair")
+    for k, p in block["projection_all_affairs"].items():
+        typer.echo(f"all {total:,} affairs, {k}: {p['hours']} h, {p['tokens_in_millions']} M in / {p['tokens_out_millions']} M out")

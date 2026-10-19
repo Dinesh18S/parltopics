@@ -2093,5 +2093,113 @@
         ]
       }
     }
+  },
+  "scale": {
+    "measured_runs": [
+      {
+        "run_id": "20261018T210127267583Z",
+        "collection": "collection:BE",
+        "topic": "Digitalisation",
+        "prompt_template": "adhoc_v5",
+        "concurrency": 16,
+        "affairs": 5238,
+        "minutes": 27.3,
+        "affairs_per_min": 192.0,
+        "records_per_affair": 1.0,
+        "tokens_in_per_record": 1974,
+        "tokens_out_per_record": 132
+      },
+      {
+        "run_id": "20261018T230840161427Z",
+        "collection": "collection:BE",
+        "topic": "Covid-19",
+        "prompt_template": "adhoc_v5",
+        "concurrency": 16,
+        "affairs": 5249,
+        "minutes": 22.5,
+        "affairs_per_min": 233.8,
+        "records_per_affair": 1.0,
+        "tokens_in_per_record": 1680,
+        "tokens_out_per_record": 120
+      },
+      {
+        "run_id": "20261018T234041024627Z",
+        "collection": "collection:BE",
+        "topic": "APS chapters",
+        "prompt_template": "standard_v1",
+        "concurrency": 16,
+        "affairs": 5249,
+        "minutes": 63.0,
+        "affairs_per_min": 83.3,
+        "records_per_affair": 3.45,
+        "tokens_in_per_record": 1018,
+        "tokens_out_per_record": 119
+      },
+      {
+        "run_id": "20261018T213016562112Z",
+        "collection": "collection:CHE",
+        "topic": "Digitalisation",
+        "prompt_template": "adhoc_v5",
+        "concurrency": 16,
+        "affairs": 27464,
+        "minutes": 98.2,
+        "affairs_per_min": 279.7,
+        "records_per_affair": 1.0,
+        "tokens_in_per_record": 1441,
+        "tokens_out_per_record": 131
+      },
+      {
+        "run_id": "20261018T233120704475Z",
+        "collection": "collection:TG",
+        "topic": "Covid-19",
+        "prompt_template": "adhoc_v5",
+        "concurrency": 16,
+        "affairs": 1447,
+        "minutes": 9.0,
+        "affairs_per_min": 160.8,
+        "records_per_affair": 1.0,
+        "tokens_in_per_record": 2706,
+        "tokens_out_per_record": 133
+      },
+      {
+        "run_id": "20261019T004402627652Z",
+        "collection": "collection:TG",
+        "topic": "APS chapters",
+        "prompt_template": "standard_v1",
+        "concurrency": 16,
+        "affairs": 1447,
+        "minutes": 23.2,
+        "affairs_per_min": 62.3,
+        "records_per_affair": 3.94,
+        "tokens_in_per_record": 1321,
+        "tokens_out_per_record": 130
+      }
+    ],
+    "openparldata_affairs": 326397,
+    "counted_on": "2026-10-19",
+    "projection_all_affairs": {
+      "federal_texts": {
+        "basis_run": "20261018T213016562112Z",
+        "affairs": 326397,
+        "hours": 19.4,
+        "tokens_in_millions": 470,
+        "tokens_out_millions": 43
+      },
+      "cantonal_texts": {
+        "basis_run": "20261018T210127267583Z",
+        "affairs": 326397,
+        "hours": 28.3,
+        "tokens_in_millions": 644,
+        "tokens_out_millions": 43
+      },
+      "aps_two_stage": {
+        "basis_run": "20261018T234041024627Z",
+        "affairs": 326397,
+        "hours": 65.3,
+        "tokens_in_millions": 1146,
+        "tokens_out_millions": 134
+      }
+    },
+    "note": "Wall-clock pace on the shared CSCS gateway at the run's concurrency; no price per token known, so hours and tokens, not CHF."
   }
 }
