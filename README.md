@@ -1,22 +1,57 @@
-# Hack Apertus Liebefeld — `challenge name`, `team name`
+# Hack Apertus Liebefeld — OpenParlData: Topic classification for Swiss parliaments with Apertus — Unisono
 
-Template repository for [Hack Apertus](https://hackapertus.ch/) submissions.
-Every project keeps the same layout, so organizers and judges find the same
-things in the same place.
-
-There are 3 challenges to pick from:
-1. Bern Economic Development Agency: Research & Expertise Navigator
-2. OpenParlData: Topic classification for Swiss parliaments with Apertus
-3. University of Bern: Deciphering Archives with Apertus
-
-`One paragraph describing the challenge.`
+Swiss parliaments publish hundreds of thousands of affairs (motions, interpellations, bills) through
+OpenParlData.ch, but their topic labels are coarse and inconsistent across parliaments. Monitors such as
+PolitMonitor tag affairs by hand, and keyword search misses affairs that never use the word. The challenge:
+use Apertus to classify affairs from federal, cantonal and municipal parliaments by topic — in German, French
+and Italian — both into a standard scheme and into ad-hoc topics such as "digitalisation", and measure the
+result against the manual tags.
 
 Submissions must use the v1.5 Apertus model family.
 The submission must comply with the [HackApertus T&C](https://hackapertus.ch/terms-and-conditions).
 
 ## 🎯 The Challenge
 
-`Fill in the title of the challenge you picked and link the Notion challenge page (URL)`
+**OpenParlData: Topic classification for Swiss parliaments with Apertus** —
+[hackapertus.notion.site/openparldata](https://hackapertus.notion.site/openparldata)
+
+## Unisono — open topic classifier for Swiss parliamentary affairs
+
+Team: Unisono · builder (build) · partner (research & pitch)
+
+Unisono finds every affair about a topic, in German, French and Italian, and shows the sentence that proves it.
+
+- **Ad-hoc mode:** type any topic name plus a one-line definition ("digitalisation", "Wolf") — no retraining.
+- **Standard mode:** Année Politique Suisse (chapter → topic) or Curia Vista subject areas.
+- **Evidence, checked by code:** Apertus v1.5 70B answers with a label, a confidence and one sentence copied
+  from the affair. Plain Python verifies the sentence is really in the source; without verified evidence
+  nothing is shown. A human confirms or rejects every suggestion; confirmed affairs export to Excel.
+- **Whole parliaments:** federal (27,465 affairs), Bern (5,249) and Thurgau (1,447) since 2018 are indexed;
+  `update` classifies only new affairs ("What's new").
+- **Sovereign:** one OpenAI-compatible endpoint serving Apertus (local vLLM/Ollama or Swiss-hosted); runs
+  air-gapped with Docker + SQLite. Without an endpoint the app starts in cached mode with pre-computed results.
+
+**Results (digitalisation, every affair since 2018, against PolitMonitor's manual tags):**
+
+| Parliament | Unisono precision / recall | Keyword search | Curia Vista area |
+|---|---|---|---|
+| Federal | **62.9 % / 51.0 %** | 41.3 % / 56.4 % | 40.9 % / 80.2 % |
+| Bern | **68.2 % / 67.8 %** | 32.7 % / 47.4 % | — |
+| Thurgau | **50.0 % / 45.5 %** | 15.7 % / 72.7 % | — |
+
+269 tagged affairs were found that contain none of the core keywords; the same affair gets the same answer
+in DE/FR/IT 94 % of the time. Method, limitations and every number: [`technical_report.md`](technical_report.md),
+[`results/metrics.md`](results/metrics.md).
+
+**How it works:** OpenParlData API / bulk files → assemble text (title, submitted text, reasoning, answer,
+documents; cleaned, cut at 12,000 chars) → Apertus (strict JSON) → verify evidence (plain code) → SQLite
+(append-only) → web UI with human review. Builder docs: [`docs/`](docs/); AI coding agents start at
+[`AGENTS.md`](AGENTS.md).
+
+**Data:** Source: OpenParlData.ch — licensed CC BY 4.0. Challenge files: files.openparldata.ch/hackapertus.
+Reference labels: PolitMonitor digitalisation tags (challenge files). Topic schemes: Curia Vista, Année
+Politique Suisse. `data/` holds only frozen sample IDs, the topic definition and review sheets; raw files are
+downloaded by `make data`.
 
 ## 🔧 Resources & Tools
 
@@ -49,10 +84,13 @@ LLM_BASE_URL — endpoint base URL
 LLM_API_KEY — your API key
 ```
 
-### Run ParlTopics
+### Run Unisono
+
+Requirements: Docker (or [uv](https://docs.astral.sh/uv/) for `make dev`) and an OpenAI-compatible endpoint
+serving Apertus. Without an endpoint the app still starts, in cached mode.
 
 ```bash
-cp .env.example .env   # fill in LLM_API_KEY
+cp .env.example .env   # set LLM_NAME, LLM_BASE_URL, LLM_API_KEY
 make run               # Docker; app on http://localhost:8080, check /health
 make dev               # same without Docker (needs uv)
 make data              # download challenge files to data/raw and check checksums
