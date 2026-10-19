@@ -160,6 +160,7 @@ function selectPreset(id) {
   const p = S.app.presets.find((x) => x.id === id);
   if (!p) return render();
   S.presetId = id;
+  if (!$("defBox").classList.contains("hidden")) setDef(true);
   $("topicName").value = p.name;
   $("topicDef").value = p.definition.trim();
   $("topicInclude").value = (p.include || []).join("\n");
@@ -359,7 +360,9 @@ function render() {
   } else if (S.task === "new" && !rows.length && S.items.length) {
     empty.innerHTML = `<h2>Nothing new</h2><p>No suggested affairs ${S.prevVisit ? "were added since your last visit" : "are dated in the last 30 days"}.</p>`;
   } else if (!S.items.length && !S.live) {
-    empty.innerHTML = S.app.mode === "live"
+    empty.innerHTML = S.app.mode === "live" && S.collection
+      ? `<h2>Name your topic, then press Classify</h2><p>Give it a name and a one-line definition. Before anything runs you'll see how many of the ${currentCollection().n ? currentCollection().n.toLocaleString("en") : ""} ${esc(S.collection)} affairs need classifying and how long it takes.</p>`
+      : S.app.mode === "live"
       ? `<h2>Type a topic, or pick a preset</h2><p>Give a topic a name and a one-line definition, then press <b>Classify</b>. The model reads every affair in the demo pool (${S.app.pool.n} affairs, DE/FR/IT, federal and cantonal) and suggests matches with a verified quote.</p>`
       : `<h2>No cached results for this topic</h2><p>The model endpoint is unreachable, so only stored runs can be shown. Pick a preset with cached results.</p>`;
   } else if (!rows.length && !S.live) {
@@ -563,7 +566,7 @@ async function setMode(mode) {
   document.querySelectorAll(".adhoc-only").forEach((x) => x.classList.toggle("hidden", mode !== "adhoc"));
   document.querySelectorAll(".std-only").forEach((x) => x.classList.toggle("hidden", mode !== "standard"));
   document.body.classList.toggle("std", mode === "standard");
-  $("defBox").classList.add("hidden");
+  setDef(false);
   $("kwToggle").classList.toggle("hidden", mode === "standard" || !S.hasKeywords);
   closeDetail();
   S.runId = null; S.items = []; S.selected = -1;
@@ -778,7 +781,24 @@ async function loadMetrics() {
 }
 
 // ---------- events ----------
-function openDef() { $("defBox").classList.remove("hidden"); $("defToggle").setAttribute("aria-expanded", "true"); }
+function setDef(open) {
+  $("defBox").classList.toggle("hidden", !open);
+  $("defToggle").setAttribute("aria-expanded", String(open));
+  $("defToggle").textContent = open ? "− Definition" : "+ Definition";
+  $("defHint").innerHTML = S.presetId
+    ? "This is the preset's definition. Edit anything (or the name) and press <b>Classify</b> to run your own version as a new topic."
+    : `Name the topic above, say in one or two sentences what counts, optionally list what counts and what doesn't — then press <b>Classify</b>${S.collection ? ` (you'll see how long ${esc(S.collection)} takes before anything runs)` : ""}. English works for affairs in all languages.`;
+}
+const openDef = () => setDef(true);
+
+function newTopic() {
+  S.presetId = null; renderPresets();
+  ["topicName", "topicDef", "topicInclude", "topicExclude"].forEach((id) => { $(id).value = ""; });
+  Object.assign(S, { items: [], runId: null, coll: null, confirmJob: null, selected: -1, definitionUsed: "", hasKeywords: false });
+  S.loadSeq += 1;
+  closeDetail(); updateDefHint(); openDef(); render();
+  $("topicName").focus();
+}
 
 document.addEventListener("click", (e) => {
   const t = e.target.closest("button, tr[data-pid], #scrim, select");
@@ -812,7 +832,8 @@ document.addEventListener("click", (e) => {
   if (t.dataset.act === "reading") return readingAid(S.detailId, false);
   if (t.dataset.act === "translate") return readingAid(S.detailId, true);
   if (t.dataset.act === "reject") return review(S.detailId, "reject");
-  if (t.id === "defToggle") { const open = $("defBox").classList.toggle("hidden"); t.setAttribute("aria-expanded", String(!open)); return; }
+  if (t.id === "defToggle") return setDef($("defBox").classList.contains("hidden"));
+  if (t.id === "newTopicBtn") return newTopic();
   if (t.id === "classifyBtn") return classify();
   if (t.id === "cancelBtn" && S.job) return api(`/api/jobs/${S.job.job_id}/cancel`, { method: "POST" }).catch((err) => alertStrip(err.message));
   if (t.id === "cancelBtn" && S.controller) return S.controller.abort();

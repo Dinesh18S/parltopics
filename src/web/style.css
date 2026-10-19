@@ -187,3 +187,4 @@ svg.pr text{font-family:Inter,sans-serif;font-size:11px;fill:#6A6459}
 }
 .textbox b.sec{font-weight:600;color:var(--ink);letter-spacing:.02em}
 .textbox-ev{max-height:none;font-style:italic}
+.defhint{grid-column:1/-1;font-size:13px;color:var(--muted);line-height:1.45}

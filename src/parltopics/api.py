@@ -45,6 +45,15 @@ EXPORT_FIELDS = ("prediction_id", "affair_id", "body_key", "number", "begin_date
 app = FastAPI(title="ParlTopics")
 
 
+@app.middleware("http")
+async def revalidate_ui(request, call_next):
+    """The UI files change between versions: browsers must re-check them (ETag) instead of using a stale copy."""
+    response = await call_next(request)
+    if request.url.path == "/" or request.url.path.endswith((".js", ".css", ".html")):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 def check_model(settings: Settings) -> dict:
     """Ask the endpoint's /models whether the configured model is served."""
     if not settings.llm_base_url:
