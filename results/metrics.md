@@ -89,3 +89,25 @@ Hardware: CSCS-hosted Apertus via the Keera gateway (OpenAI-compatible); GPU typ
 | `20261018T161841410788Z` | standard_v1 | 122 | 5.4 · 5.1 · 8.8 | 1411 / 265 | 1.00 | 86.1 (8) |
 
 Scale-up for 300,000 affairs (first run's prompt): 67 h at concurrency 4, 33 h at concurrency 8, 17 h at concurrency 16, 8 h at concurrency 32; ≈ 444 M input / 40 M output tokens. Assumptions: linear scaling of measured mean model time per affair; gateway throughput constant at the given concurrency; one topic (ad-hoc) or one scheme (standard) per affair; no price per token / GPU-hour known, so no CHF figure.
+
+## Whole collections vs PolitMonitor (exact, no sampling)
+
+Every affair since 2018 (consultations excluded) of each parliament; model yes = shown in the app (match, verified evidence, confidence ≥ threshold). PolitMonitor is a lower bound: affairs it did not tag are counted as false positives here (D71). Intervals only for breakdowns, indicative.
+
+| Parliament | Method | Affairs | Tagged | TP | FP | FN | Precision | Recall | F1 |
+|---|---|---|---|---|---|---|---|---|---|
+| TG | **Apertus** (`adhoc_v5`, t = 0.9) | 1,447 | 33 | 15 | 15 | 18 | 50.0% | 45.5% | 47.6% |
+| TG | Apertus without the 0 sample affairs | 1,447 | 33 | 15 | 15 | 18 | 50.0% | 45.5% | 47.6% |
+| TG | Keyword search, core words (text the model saw) | 1,447 | 33 | 24 | 129 | 9 | 15.7% | 72.7% | 25.8% |
+| BE | **Apertus** (`adhoc_v5`, t = 0.9) | 5,249 | 171 | 116 | 54 | 55 | 68.2% | 67.8% | 68.0% |
+| BE | Apertus without the 0 sample affairs | 5,249 | 171 | 116 | 54 | 55 | 68.2% | 67.8% | 68.0% |
+| BE | Keyword search, core words (text the model saw) | 5,249 | 171 | 81 | 167 | 90 | 32.7% | 47.4% | 38.7% |
+| CHE | **Apertus** (`adhoc_v5`, t = 0.9) | 27,465 | 1,396 | 712 | 420 | 684 | 62.9% | 51.0% | 56.3% |
+| CHE | Apertus without the 1012 sample affairs | 26,453 | 1,240 | 631 | 411 | 609 | 60.6% | 50.9% | 55.3% |
+| CHE | Keyword search, core words (text the model saw) | 27,465 | 1,396 | 772 | 1028 | 624 | 42.9% | 55.3% | 48.3% |
+| CHE | Curia Vista area 'Medien und Kommunikation' | 27,465 | 1,396 | 1120 | 1620 | 276 | 40.9% | 80.2% | 54.2% |
+| CHE | Keyword search, core words (full text, all languages) | 27,465 | 1,396 | 788 | 1121 | 608 | 41.3% | 56.4% | 47.7% |
+
+- TG: 1,447 affairs, 33 tagged (prevalence 2.3%; 9 more tags outside the population). Statuses {'ok': 1435, 'evidence_failed': 11, 'parse_error': 1}. Found without any core keyword: 3 tagged affairs. By language: DE P 50.0% / R 45.5% (R 29.8%–62.0%, 33 tagged).
+- BE: 5,249 affairs, 171 tagged (prevalence 3.3%; 0 more tags outside the population). Statuses {'ok': 5204, 'parse_error': 25, 'evidence_failed': 20}. Found without any core keyword: 54 tagged affairs. By language: DE P 70.9% / R 68.2% (R 60.5%–75.0%, 154 tagged), FR P 50.0% / R 64.7% (R 41.3%–82.7%, 17 tagged).
+- CHE: 27,465 affairs, 1396 tagged (prevalence 5.1%; 2 more tags outside the population). Statuses {'ok': 27332, 'evidence_failed': 121, 'parse_error': 11}. Found without any core keyword: 215 tagged affairs. By language: DE P 62.7% / R 50.8% (R 48.1%–53.4%, 1375 tagged), FR P 82.4% / R 66.7% (R 45.4%–82.8%, 21 tagged).

@@ -21,7 +21,7 @@ from parltopics import partner as partner_files
 from parltopics.sources.router import AffairSource
 from parltopics.llm import LLMClient
 from parltopics.prompts import load_prompt
-from parltopics.runlog import log_call, start_run
+from parltopics.runlog import fingerprint, log_call, start_run
 from parltopics.sources import bulk
 from parltopics.sources.api import OPDClient
 from parltopics.sources.assemble import LangMissing, assemble
@@ -752,3 +752,38 @@ def export_collection(
     df.to_csv(out, index=False) if out.suffix == ".csv" else df.to_excel(out, index=False)
     typer.echo(f"{len(df)} rows ({df.affair_id.nunique() if len(df) else 0} affairs, prompt_version "
                f"{version[:12]}) → {out}")
+
+
+@eval_app.command("collection")
+def eval_collection(
+    body: str = typer.Option(..., help="body key of an indexed collection"),
+    pm_scope: str = typer.Option(..., help="PolitMonitor scope of that body: ch | be | tg …"),
+    topic: Path = Path("topics/digitalisation.yaml"),
+    cv_area: list[str] = typer.Option([], help="federal only: Curia Vista area id(s) for the baseline, e.g. 34"),
+    exclude_sample: list[Path] = typer.Option(
+        [Path("data/samples/first_loop.csv"), Path("data/samples/digi_federal_2018_v2.csv")],
+        help="samples whose affairs are also reported as excluded (prompt work was done on them)"),
+) -> None:
+    """Exact precision/recall of a whole indexed collection vs PolitMonitor (D71) → metrics.json full_population."""
+    from parltopics.api import match_threshold
+    from parltopics.evaluate import full_population
+
+    settings = get_settings()
+    store = Store(settings.db_path)
+    baseline = None
+    if cv_area:
+        meta = json.loads(Path("data/samples/digi_federal_2018_v2.meta.json").read_text())["population"]
+        population = federal_slice(settings, meta["since"], meta["exclude_types"], meta["pm_scope"])
+        ids = {i["affair_id"] for i in store.items(body)}
+        if set(population.affair_id) != ids:
+            raise typer.BadParameter(f"{body} collection differs from the federal slice ({len(ids)} vs {len(population)})")
+        topic_obj = load_topic(topic)
+        baseline = digi_eval.baselines(settings, population, topic_obj, cv_area, settings.data_dir / "cache",
+                                       fingerprint(load_prompt("adhoc_v5"), topic_obj, settings).parts["topic"])
+    m = full_population.evaluate(settings, store, body, str(topic), pm_scope, match_threshold(settings),
+                                 full_population.sample_ids(exclude_sample), baseline)
+    path = RESULTS_DIR / "metrics.json"
+    data = json.loads(path.read_text())
+    metrics_report.update_metrics_json(path, "full_population", data.get("full_population", {}) | {body: m})
+    write_metrics_md()
+    typer.echo(metrics_report.full_population_markdown({body: m}))

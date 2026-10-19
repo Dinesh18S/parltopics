@@ -61,6 +61,7 @@ Tests for: resumability (no duplicate work), idempotency, update picks only new 
 - Bern and federal: exact precision/recall vs PolitMonitor next to the baselines (Curia Vista area, core keywords).
 - Bern DE vs FR on real cantonal data.
 - After-review numbers when the partner's sheet is back (D55, D56, D58).
+**Result (D71):** federal 27,465: P 62.9 % / R 51.0 % (Curia Vista 40.9 / 80.2, keywords 41.3 / 56.4); Bern 5,249: P 68.2 % / R 67.8 % (keywords 32.7 / 47.4); Thurgau 1,447: 50.0 / 45.5; after-review numbers in D65.
 
 ### Phase 5 — report, README, video script, PDF (≈ 2 h, before 12:00)
 

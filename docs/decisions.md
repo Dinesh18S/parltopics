@@ -443,3 +443,27 @@
 - Throughput: ad-hoc 210–277 affairs/min at concurrency 16 (federal 27,464 in 98 min); APS ≈ 80 affairs/min (two calls). Evidence failures are much more frequent per APS label (≈ 10 % BE, 18 % TG) than for ad-hoc (≤ 0.6 %) — to report next to the APS numbers. No accuracy is claimed here; exact precision/recall vs PolitMonitor is Phase 4.
 - Performance bugs found when reading the results back (all fixed, tests green): (1) every `Store()` open re-ran the D60 link repair over all ~34k texts, rewriting the 348 MB table and holding the write lock for 12 s+ (this also explains the D67 "database is locked") → now a one-time migration marked in `PRAGMA user_version`; open ≈ 0.1 s. (2) collection results joined `predictions` without a `(run_id, affair_id)` index → minutes per query on Bern → indexes `predictions_run_affair` and `reviews_prediction`; Bern 0.26 s, federal 1.0 s. (3) The `best`/`cand` CTEs are `MATERIALIZED`.
 - Operational: `caffeinate` ended with the driver at 03:07; afterwards the Mac slept between commands, which looked like hanging queries. Long runs keep `caffeinate` alive for the whole session.
+
+### D71 — Full-population evaluation vs PolitMonitor: method fixed before computing (scale-up phase 4, 2026-10-19) — logged BEFORE any number
+- Populations = the ingested collections (since 2018-01-01, consultations excluded): CHE 27,465, BE 5,249, TG 1,447. Every affair counts; lang_missing / parse_error / evidence_failed = model "no".
+- Model "yes" = shown in the app: status ok, label match, confidence ≥ 0.9 (D45, unchanged), prompt adhoc_v5, runs of D67/D70. Gold = PolitMonitor tag with the body's own scope (`ch`, `be`, `tg`), as in S6. No threshold or prompt choice is made on these numbers.
+- Reported: exact counts TP / FP / FN / TN, precision, recall, F1 against PolitMonitor (no prevalence correction needed: whole population). Wilson 95 % intervals are added only for the per-language and subset breakdowns and are labelled indicative.
+- Baselines on the same populations: CHE — Curia Vista area 34 and core-keyword search over all language versions (D46 functions, unchanged); BE / TG — core-keyword search on the text the model saw (stored 12,000-char text; full texts are not stored, stated as a limitation). No cantonal-keyword baseline (choosing keywords now would be post-hoc).
+- CHE also reported **without** the 1,040 affairs of the S4/S6 samples (prompts were revised on dev, test was seen) → the untouched remainder.
+- BE also by language of the affair (DE vs FR, as published by the parliament).
+- Reading rule, fixed now: PolitMonitor is a lower bound for precision (D65: all 4 reviewed model-yes/PM-no affairs were confirmed digital), so model-yes/PM-no counts are reported as "not tagged by PolitMonitor", not as errors.
+- **Result (added after computing; `parltopics eval collection`, `results/metrics.json` → `full_population`, metrics.md section "Whole collections"):**
+
+| Parliament | Method | Affairs | Tagged | TP | FP | FN | Precision | Recall | F1 |
+|---|---|---|---|---|---|---|---|---|---|
+| CHE | Apertus (adhoc_v5, t = 0.9) | 27,465 | 1,396 | 712 | 420 | 684 | **62.9 %** | **51.0 %** | **56.3 %** |
+| CHE | Apertus, without the 1,012 sample affairs | 26,453 | 1,240 | 631 | 411 | 609 | 60.6 % | 50.9 % | 55.3 % |
+| CHE | Curia Vista area "Medien und Kommunikation" | 27,465 | 1,396 | 1,120 | 1,620 | 276 | 40.9 % | 80.2 % | 54.2 % |
+| CHE | Keyword search, core words, full text | 27,465 | 1,396 | 788 | 1,121 | 608 | 41.3 % | 56.4 % | 47.7 % |
+| BE | Apertus | 5,249 | 171 | 116 | 54 | 55 | **68.2 %** | **67.8 %** | **68.0 %** |
+| BE | Keyword search, core words (model text) | 5,249 | 171 | 81 | 167 | 90 | 32.7 % | 47.4 % | 38.7 % |
+| TG | Apertus | 1,447 | 33 | 15 | 15 | 18 | 50.0 % | 45.5 % | 47.6 % |
+| TG | Keyword search, core words (model text) | 1,447 | 33 | 24 | 129 | 9 | 15.7 % | 72.7 % | 25.8 % |
+
+- Reading: (1) The full federal population confirms the S6 test estimate: precision 62.9 % lies inside the pre-registered test CI (53–91 %, point 69.5 %), recall 51.0 % inside 45–64 % (point 54.5 %); the 26,453 affairs never used in any sample give 60.6 % / 50.9 % — no sign that dev work inflated the result. (2) Federal: precision +22 points over both baselines; recall below the Curia Vista area (51 vs 80 %), F1 slightly above it (56.3 vs 54.2 %). (3) Bern: precision and recall both above keyword search (68 / 68 vs 33 / 47); 54 of the 116 found tagged affairs contain no core keyword (federal: 215 of 712). (4) Thurgau: small (33 tagged) — precision 3× keyword search, recall lower. (5) Language: Bern DE P 70.9 % / R 68.2 % (154 tagged) vs FR P 50.0 % / R 64.7 % (17 tagged; R CI 41–83 %) — FR too small to call a difference; together with D63 (94 % agreement on identical federal texts) no evidence of a language bias. (6) All model-yes/PM-no counts (CHE 420, BE 54, TG 15) are "not tagged by PolitMonitor", a lower bound on precision (D65: 4/4 reviewed were digital).
+- The full-text keyword baseline reproduces D46 exactly (41.3 % / 56.4 %) with the refined keyword lists.
