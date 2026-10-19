@@ -50,7 +50,7 @@ async function loadState() {
   renderScopeChip();
   if (!S.pool.length) S.pool = await api("/api/pool");
   S.collections = await api("/api/collections");
-  S.topics = await api("/api/topics");
+  S.topics = await loadTopics();
   renderCollections();
   $("classifyBtn").title = live ? "Classify the demo pool (Enter)" : "Model endpoint unreachable";
   renderPresets();
@@ -102,8 +102,14 @@ function selectCollection(body) {
 }
 
 // ---------- saved topics: every topic that was indexed somewhere, searchable ----------
+// a convenience list: if it cannot be loaded, the page still works and the list says so
+const loadTopics = () => api("/api/topics").catch(() => null);
 function renderTopics() {
   const q = $("topicsSearch").value.trim().toLowerCase();
+  if (S.topics === null) {
+    $("topicsList").innerHTML = `<div class="cap" style="padding:10px 4px">Saved topics could not be loaded. Restart the server and reload the page.</div>`;
+    return;
+  }
   const list = (S.topics || []).filter((t) => !q || `${t.name} ${t.definition}`.toLowerCase().includes(q));
   $("topicsList").innerHTML = list.length ? list.map((t) => {
     const cov = t.collections.map((c) => `<span class="cov${c.body_key === S.collection ? " here" : ""}">${esc(c.body_key)} ${c.done >= c.total
@@ -211,7 +217,7 @@ async function finishJob(j) {
   $("progress").classList.add("hidden"); $("progEta").textContent = "";
   S.job = null;
   S.collections = await api("/api/collections");
-  S.topics = await api("/api/topics");
+  S.topics = await loadTopics();
   renderPresets();
   if (j.body_key !== S.collection) return render();
   await loadCollection(j.target, j.status === "done" ? null : S.jobBody);
