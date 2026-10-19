@@ -21,6 +21,8 @@ Team: Unisono · builder (build) · partner (research & pitch)
 
 Unisono finds every affair about a topic, in German, French and Italian, and shows the sentence that proves it.
 
+**Demo video (2 min):** [youtu.be/QICc2WXZcqA](https://youtu.be/QICc2WXZcqA) · **Technical report:** [`technical_report.md`](technical_report.md)
+
 - **Ad-hoc mode:** type any topic name plus a one-line definition ("digitalisation", "Wolf") — no retraining.
 - **Standard mode:** Année Politique Suisse (chapter → topic) or Curia Vista subject areas.
 - **Evidence, checked by code:** Apertus v1.5 70B answers with a label, a confidence and one sentence copied

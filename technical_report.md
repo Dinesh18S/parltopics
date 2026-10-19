@@ -6,7 +6,7 @@ affair about a topic, in German, French and Italian, and shows the sentence that
 - **Challenge:** OpenParlData: Topic classification for Swiss parliaments with Apertus ([challenge page](https://hackapertus.notion.site/openparldata))
 - **Event:** On-site Liebefeld
 - **Team:** Unisono
-- **Demo:** `link to video`
+- **Demo:** [youtu.be/QICc2WXZcqA](https://youtu.be/QICc2WXZcqA)
 
 ## 1. Summary
 
