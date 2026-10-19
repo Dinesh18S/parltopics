@@ -33,6 +33,7 @@ WEB_DIR = ROOT / "src" / "web"
 TOPICS_DIR = ROOT / "topics"
 RESULTS_DIR = ROOT / "results"
 DEMO_CACHE_DIR = RESULTS_DIR / "demo"
+COLLECTIONS_CACHE_DIR = RESULTS_DIR / "collections"  # compact offline copies of whole collections (D72)
 DEMO_POOL = Path("data/samples/demo_pool.csv")  # relative: the same string is stored as runs.sample_file
 PROMPT_TEMPLATE = "adhoc_v5"
 STANDARD_TEMPLATE = "standard_v1"
@@ -71,6 +72,8 @@ def store() -> Store:
             _State.store = Store(get_settings().db_path)
             for path in sorted(DEMO_CACHE_DIR.glob("*.json")):
                 demo.import_cache(_State.store, path)
+            for path in sorted(COLLECTIONS_CACHE_DIR.glob("*.json.gz")):
+                demo.import_collection(_State.store, path)
         return _State.store
 
 

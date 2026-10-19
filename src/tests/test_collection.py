@@ -153,3 +153,20 @@ def test_custom_ui_topic_maps_to_one_file_so_it_resumes(tmp_path, monkeypatch):
     assert api_collections._custom_target(Topic(**topic.model_dump())) == first
     assert api_collections._custom_target(topic.model_copy(update={"definition": "Wolves."})) != first
     assert load_topic(Path(first)) == topic
+
+
+def test_offline_copy_round_trip_gives_the_same_results(env, tmp_path):
+    from parltopics import demo
+
+    source = _Source([1, 2, 3])
+    collection.ingest(env.settings, env.store, "GE", "2018-01-01", source)
+    out = _index(env, source)
+    target = collection.latest_targets(env.store, "GE")[env.topic]
+    demo.export_collection(env.store, "GE", target, tmp_path / "GE.json.gz")
+    fresh = Store(tmp_path / "fresh.db")
+    assert demo.import_collection(fresh, tmp_path / "GE.json.gz") == 3
+    assert demo.import_collection(fresh, tmp_path / "GE.json.gz") == 0  # idempotent
+    key = lambda rows: sorted((r["affair_id"], r["label"], r["confidence"], r["evidence"]) for r in rows)
+    ref = collection.collection_ref("GE")
+    assert key(fresh.collection_results(ref, out["prompt_version"])) == key(env.store.collection_results(ref, out["prompt_version"]))
+    assert len(fresh.done_affairs(ref, out["prompt_version"])) == 3

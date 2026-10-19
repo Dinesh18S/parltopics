@@ -64,6 +64,7 @@ uv run parltopics runs                      # stored runs (SQLite: data/parltopi
 uv run parltopics partner files             # Excel files for the domain partner → data/gold/for_partner/
 make eval RUN="<dev_run> <test_run>"        # digitalisation like-for-like eval → results/metrics.json + metrics.md
 uv run parltopics demo export               # refresh results/demo/*.json (cached demo results for offline mode)
+uv run parltopics demo export-collections   # refresh results/collections/*.json.gz (offline copies of whole parliaments)
 uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # human review, append-only
 uv run parltopics ingest --body BE --since 2018-01-01    # whole parliament: fetch + assemble every affair once, data-quality report
 uv run parltopics index --body BE --topic topics/digitalisation.yaml   # classify all of it (or --scheme aps); resumable

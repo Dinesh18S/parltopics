@@ -43,7 +43,7 @@ def _name(target: str) -> str:
 
 def _body_meta(body_key: str) -> dict:
     row = _api().store().db.execute(
-        "SELECT a.body_type, COUNT(*) AS n, SUM(c.status = 'ok') AS ok FROM collection_items c "
+        "SELECT MAX(a.body_type) AS body_type, COUNT(*) AS n, SUM(c.status = 'ok') AS ok FROM collection_items c "
         "LEFT JOIN affairs a ON a.id = c.affair_id WHERE c.body_key = ? GROUP BY c.body_key", (body_key,)).fetchone()
     if row is None:
         raise HTTPException(404, f"collection {body_key} not ingested")

@@ -431,6 +431,21 @@ def demo_export(pool: Path = Path("data/samples/demo_pool.csv")) -> None:
         typer.echo(f"scheme {scheme_id}: run {run['id']} ({n} label records) → results/demo/scheme_{scheme_id}.json")
 
 
+@demo_app.command("export-collections")
+def demo_export_collections(out_dir: Path = Path("results/collections")) -> None:
+    """Compact offline copies of every indexed collection's preset ad-hoc topics (committed; < 10 MB each)."""
+    from parltopics import demo
+
+    store = Store(get_settings().db_path)
+    for (body,) in store.db.execute("SELECT DISTINCT body_key FROM collection_items ORDER BY body_key").fetchall():
+        for path, target in collection.latest_targets(store, body).items():
+            if not path.startswith("topics/"):
+                continue  # schemes label nearly every affair (too large) and UI topics are personal
+            info = demo.export_collection(store, body, target, out_dir / f"{body}__{Path(path).stem}.json.gz")
+            typer.echo(f"{body} {path}: {info['affairs']} affairs, {info['predictions']} predictions, "
+                       f"{info['texts']} texts → {info['path']} ({info['bytes'] / 1e6:.1f} MB)")
+
+
 @eval_app.command("curia-vista")
 def eval_curia_vista(
     run_ids: list[str] = typer.Argument(..., help="runs with the same prompt_version (e.g. dev, or dev + test)"),

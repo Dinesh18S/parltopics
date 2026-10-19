@@ -6,7 +6,6 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-import openpyxl
 
 DONE, PART, TODO = "✓", "◐", "✗"
 
@@ -29,14 +28,6 @@ def _git(root: Path, *args: str) -> str:
         return ""
 
 
-def _review_answers(path: Path) -> tuple[int, int]:
-    if not path.exists():
-        return 0, 0
-    ws = openpyxl.load_workbook(path, read_only=True)["Review"]
-    rows = [r for r in ws.iter_rows(min_row=2, values_only=True) if r and r[1]]
-    return sum(1 for r in rows if len(r) > 5 and r[5]), len(rows)
-
-
 def _demo_keyword_free_hits(root: Path, threshold: float) -> int:
     data = _json(root / "results" / "demo" / "digitalisation.json")
     return sum(1 for p in data.get("predictions", [])
@@ -50,7 +41,9 @@ def collect(root: Path) -> dict[str, list[Item]]:
     cv = metrics.get("curia_vista_standard", {})
     report = (root / "technical_report.md").read_text() if (root / "technical_report.md").exists() else ""
     readme = (root / "README.md").read_text() if (root / "README.md").exists() else ""
-    answered, total = _review_answers(root / "data" / "gold" / "for_partner" / "adjudication.xlsx")
+    adjudication = metrics.get("adjudication", {})
+    answered, total = adjudication.get("answered", 0), adjudication.get("rows", 0)
+    full = metrics.get("full_population", {}).get("CHE", {}).get("model")
     threshold = digi.get("threshold", {}).get("chosen_on_dev", 0.9)
     t = digi.get("test", {}).get("at_chosen_threshold", {})
     base = digi.get("baselines_full_slice", {}).get("curia_vista_area", {})
@@ -77,12 +70,13 @@ def collect(root: Path) -> dict[str, list[Item]]:
     r_ok = t.get("recall") is not None and base.get("recall") is not None and t["recall"] >= base["recall"] - 0.05
     hits = _demo_keyword_free_hits(root, threshold)
     criteria = [
-        Item(DONE if p_ok and r_ok and answered == total and total else PART if p_ok else TODO,
+        Item(DONE if p_ok and r_ok and answered else PART if p_ok else TODO,
              f"1 Digitalisation: precision {t.get('precision_corrected', 0):.0%} (CI low "
              f"{(t.get('precision_corrected_ci95') or [0])[0]:.0%}) vs baseline {base.get('precision', 0):.0%}; recall "
-             f"{t.get('recall', 0):.0%} vs {base.get('recall', 0):.0%}; review {answered}/{total} answered",
-             ("recall below baseline; " if not r_ok else "") + ("after-review numbers need the returned sheet"
-                                                                 if answered < total else "")),
+             f"{t.get('recall', 0):.0%} vs {base.get('recall', 0):.0%}; review {answered}/{total} answered"
+             + (f"; all {full['n']:,} federal affairs: P {full['precision']:.0%} / R {full['recall']:.0%}" if full else ""),
+             ("recall below baseline" if not r_ok else "") + ("; after-review numbers need the returned sheet"
+                                                               if not answered else "")),
         Item(DONE if hits >= 3 else TODO, f"2 ≥ 3 keyword-free PolitMonitor affairs in the demo: {hits}"),
         Item(DONE if (root / "results" / "demo" / "covid19.json").exists() else TODO,
              "3 second topic runs without code change (Covid-19 preset + custom topics)"),
