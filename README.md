@@ -1,173 +1,176 @@
-# Hack Apertus Liebefeld — OpenParlData: Topic classification for Swiss parliaments with Apertus — Unisono
+# Hack Apertus Liebefeld — OpenParlData: Themenklassifikation für Schweizer Parlamente mit Apertus — Unisono
 
-Swiss parliaments publish hundreds of thousands of affairs (motions, interpellations, bills) through
-OpenParlData.ch, but their topic labels are coarse and inconsistent across parliaments. Monitors such as
-PolitMonitor tag affairs by hand, and keyword search misses affairs that never use the word. The challenge:
-use Apertus to classify affairs from federal, cantonal and municipal parliaments by topic — in German, French
-and Italian — both into a standard scheme and into ad-hoc topics such as "digitalisation", and measure the
-result against the manual tags.
+Schweizer Parlamente veröffentlichen über OpenParlData.ch Hunderttausende von Geschäften (Motionen, Interpellationen,
+Vorlagen), doch ihre Themen-Labels sind grob und von Parlament zu Parlament uneinheitlich. Monitoring-Dienste wie
+PolitMonitor verschlagworten Geschäfte von Hand, und eine Stichwortsuche übersieht Geschäfte, in denen das Wort nie
+vorkommt. Die Challenge: Mit Apertus sollen Geschäfte aus Bundes-, Kantons- und Gemeindeparlamenten nach Thema
+klassifiziert werden — auf Deutsch, Französisch und Italienisch —, sowohl in ein Standardschema als auch in Ad-hoc-Themen
+wie «Digitalisierung», und das Ergebnis soll an den manuellen Tags gemessen werden.
 
-Submissions must use the v1.5 Apertus model family.
-The submission must comply with the [HackApertus T&C](https://hackapertus.ch/terms-and-conditions).
+Einreichungen müssen die Modellfamilie Apertus v1.5 verwenden.
+Die Einreichung muss den [HackApertus-AGB](https://hackapertus.ch/terms-and-conditions) entsprechen.
 
-## 🎯 The Challenge
+## 🎯 Die Challenge
 
-**OpenParlData: Topic classification for Swiss parliaments with Apertus** —
+**OpenParlData: Themenklassifikation für Schweizer Parlamente mit Apertus** —
 [hackapertus.notion.site/openparldata](https://hackapertus.notion.site/openparldata)
 
-## Unisono — open topic classifier for Swiss parliamentary affairs
+## Unisono — offener Themenklassifikator für Schweizer Parlamentsgeschäfte
 
-Team: Unisono · builder (build) · partner (research & pitch)
+Team: Unisono · Builder (Entwicklung) · Partner (Recherche & Pitch)
 
-Unisono finds every affair about a topic, in German, French and Italian, and shows the sentence that proves it.
+Unisono findet jedes Geschäft zu einem Thema, auf Deutsch, Französisch und Italienisch, und zeigt den Satz, der es belegt.
 
-**Demo video (2 min):** [youtu.be/EpF6-megCrY](https://youtu.be/EpF6-megCrY) · **Technical report:** [`technical_report.md`](technical_report.md)
+**Demo-Video (2 Min.):** [youtu.be/EpF6-megCrY](https://youtu.be/EpF6-megCrY) · **Technischer Bericht:** [`technical_report.md`](technical_report.md)
 
-- **Ad-hoc mode:** type any topic name plus a one-line definition ("digitalisation", "Wolf") — no retraining.
-- **Standard mode:** Année Politique Suisse (chapter → topic) or Curia Vista subject areas.
-- **Evidence, checked by code:** Apertus v1.5 70B answers with a label, a confidence and one sentence copied
-  from the affair. Plain Python verifies the sentence is really in the source; without verified evidence
-  nothing is shown. A human confirms or rejects every suggestion; confirmed affairs export to Excel.
-- **Whole parliaments:** federal (27,465 affairs), Bern (5,249) and Thurgau (1,447) since 2018 are indexed;
-  `update` classifies only new affairs ("What's new").
-- **Sovereign:** one OpenAI-compatible endpoint serving Apertus (local vLLM/Ollama or Swiss-hosted); runs
-  air-gapped with Docker + SQLite. Without an endpoint the app starts in cached mode with pre-computed results.
+- **Ad-hoc-Modus:** einen beliebigen Themennamen plus eine einzeilige Definition eingeben («Digitalisierung», «Wolf») —
+  ohne Neutraining.
+- **Standardmodus:** Année Politique Suisse (Kapitel → Thema) oder Sachbereiche von Curia Vista.
+- **Belege, geprüft durch Code:** Apertus v1.5 70B antwortet mit einem Label, einer Konfidenz und einem Satz, der aus
+  dem Geschäft kopiert ist. Reiner Python-Code prüft, ob der Satz tatsächlich in der Quelle steht; ohne verifizierten
+  Beleg wird nichts angezeigt. Ein Mensch bestätigt oder verwirft jeden Vorschlag; bestätigte Geschäfte lassen sich
+  nach Excel exportieren.
+- **Ganze Parlamente:** Bund (27'465 Geschäfte), Bern (5'249) und Thurgau (1'447) seit 2018 sind indexiert;
+  `update` klassifiziert nur neue Geschäfte («Was ist neu»).
+- **Souverän:** ein OpenAI-kompatibler Endpunkt, der Apertus bereitstellt (lokal mit vLLM/Ollama oder in der Schweiz
+  gehostet); läuft auch ohne Internetverbindung mit Docker + SQLite. Ohne Endpunkt startet die App im Cache-Modus mit
+  vorberechneten Ergebnissen.
 
-**Results (digitalisation, every affair since 2018, against PolitMonitor's manual tags):**
+**Ergebnisse (Digitalisierung, alle Geschäfte seit 2018, verglichen mit den manuellen Tags von PolitMonitor):**
 
-| Parliament | Unisono precision / recall | Keyword search | Curia Vista area |
+| Parlament | Unisono Precision / Recall | Stichwortsuche | Curia-Vista-Sachbereich |
 |---|---|---|---|
-| Federal | **62.9 % / 51.0 %** | 41.3 % / 56.4 % | 40.9 % / 80.2 % |
+| Bund | **62.9 % / 51.0 %** | 41.3 % / 56.4 % | 40.9 % / 80.2 % |
 | Bern | **68.2 % / 67.8 %** | 32.7 % / 47.4 % | — |
 | Thurgau | **50.0 % / 45.5 %** | 15.7 % / 72.7 % | — |
 
-269 tagged affairs were found that contain none of the core keywords; the same affair gets the same answer
-in DE/FR/IT 94 % of the time. Method, limitations and every number: [`technical_report.md`](technical_report.md),
-[`results/metrics.md`](results/metrics.md).
+Es wurden 269 getaggte Geschäfte gefunden, die keines der Kernstichwörter enthalten; dasselbe Geschäft erhält in
+DE/FR/IT in 94 % der Fälle dieselbe Antwort. Methode, Einschränkungen und alle Zahlen:
+[`technical_report.md`](technical_report.md), [`results/metrics.md`](results/metrics.md).
 
-**How it works:** OpenParlData API / bulk files → assemble text (title, submitted text, reasoning, answer,
-documents; cleaned, cut at 12,000 chars) → Apertus (strict JSON) → verify evidence (plain code) → SQLite
-(append-only) → web UI with human review. Builder docs: [`docs/`](docs/); AI coding agents start at
-[`AGENTS.md`](AGENTS.md).
+**So funktioniert es:** OpenParlData-API / Bulk-Dateien → Text zusammenstellen (Titel, eingereichter Text, Begründung,
+Antwort, Dokumente; bereinigt, auf 12'000 Zeichen gekürzt) → Apertus (striktes JSON) → Beleg prüfen (reiner Code) →
+SQLite (nur anhängend) → Web-UI mit menschlicher Prüfung. Entwickler-Dokumentation: [`docs/`](docs/); KI-Coding-Agenten
+beginnen bei [`AGENTS.md`](AGENTS.md).
 
-**Template and AI tools:** started from the Hack Apertus Liebefeld template repository. Claude (Anthropic) was
-used as an AI coding assistant during development (code, tests, docs, under the team's direction); it is not
-part of the pipeline — all classification and translation run on Apertus.
+**Vorlage und KI-Werkzeuge:** Ausgangspunkt war das Vorlage-Repository von Hack Apertus Liebefeld. Claude (Anthropic)
+wurde während der Entwicklung als KI-Coding-Assistent eingesetzt (Code, Tests, Dokumentation, unter Anleitung des Teams);
+es ist nicht Teil der Pipeline — sämtliche Klassifikation und Übersetzung laufen über Apertus.
 
-**Data:** Source: OpenParlData.ch — licensed CC BY 4.0. Challenge files: files.openparldata.ch/hackapertus.
-Reference labels: PolitMonitor digitalisation tags (challenge files). Topic schemes: Curia Vista, Année
-Politique Suisse. `data/` holds only frozen sample IDs, the topic definition and review sheets; raw files are
-downloaded by `make data`.
+**Daten:** Quelle: OpenParlData.ch — lizenziert unter CC BY 4.0. Challenge-Dateien: files.openparldata.ch/hackapertus.
+Referenz-Labels: Digitalisierungs-Tags von PolitMonitor (Challenge-Dateien). Themenschemata: Curia Vista, Année
+Politique Suisse. `data/` enthält nur eingefrorene Stichproben-IDs, die Themendefinition und Prüfblätter; die Rohdateien
+werden mit `make data` heruntergeladen.
 
-## 🔧 Resources & Tools
+## 🔧 Ressourcen & Werkzeuge
 
-Check our resources & tools page for detailed information:
+Ausführliche Informationen findest du auf unserer Seite zu Ressourcen & Werkzeugen:
 [https://hackapertus.notion.site/liebefeld-resources-tools](https://hackapertus.notion.site/liebefeld-resources-tools)
 
-| Models           | URL                                      |
+| Modelle          | URL                                      |
 |------------------|------------------------------------------|
 | Apertus v1.5 8B  | [huggingface.co/swiss-ai/Apertus-v1.5-8B](https://huggingface.co/swiss-ai/Apertus-v1.5-8B)  |
 | Apertus v1.5 70B | [huggingface.co/swiss-ai/Apertus-v1.5-70B](https://huggingface.co/swiss-ai/Apertus-v1.5-70B) |
 
-## The structure
+## Die Struktur
 
-Keep the files and directories as shown below — don't rename or move them.
+Behalte die Dateien und Verzeichnisse wie unten gezeigt bei — nicht umbenennen oder verschieben.
 
-| Path | What it is |
+| Pfad | Was es ist |
 | --- | --- |
-| `README.md` | The challenge description and submission requirements |
-| `technical_report.md` | The deeper write-up: architecture, evaluation, limitations |
+| `README.md` | Die Challenge-Beschreibung und die Einreichungsanforderungen |
+| `technical_report.md` | Die ausführliche Beschreibung: Architektur, Evaluation, Einschränkungen |
 | `LICENSE` | Apache-2.0 |
-| `src/` | Your code |
+| `src/` | Dein Code |
 
-## Environment
+## Umgebung
 
-- Include instructions for running the project in your technical report.
-- Use the following environment variables:
+- Füge die Anleitung zum Ausführen des Projekts in deinen technischen Bericht ein.
+- Verwende die folgenden Umgebungsvariablen:
 ```
-LLM_NAME — name and version of the model
-LLM_BASE_URL — endpoint base URL
-LLM_API_KEY — your API key
+LLM_NAME — Name und Version des Modells
+LLM_BASE_URL — Basis-URL des Endpunkts
+LLM_API_KEY — dein API-Schlüssel
 ```
 
-### Run Unisono
+### Unisono ausführen
 
-Requirements: Docker (or [uv](https://docs.astral.sh/uv/) for `make dev`) and an OpenAI-compatible endpoint
-serving Apertus. Without an endpoint the app still starts, in cached mode.
+Voraussetzungen: Docker (oder [uv](https://docs.astral.sh/uv/) für `make dev`) und ein OpenAI-kompatibler Endpunkt,
+der Apertus bereitstellt. Ohne Endpunkt startet die App trotzdem, im Cache-Modus.
 
 ```bash
-cp .env.example .env   # set LLM_NAME, LLM_BASE_URL, LLM_API_KEY
-make run               # Docker; app on http://localhost:8080, check /health
-make dev               # same without Docker (needs uv)
-make data              # download challenge files to data/raw and check checksums
-make test              # unit tests
-make status            # where we stand: slices, success criteria, submission checklist
-make first-loop        # 20 positives + 20 negatives → table, accuracy, evidence-verified rate
-uv run parltopics data load-bulk            # once: federal bulk texts → data/cache/bulk.db (needed for > ~500 affairs)
-uv run parltopics runs                      # stored runs (SQLite: data/parltopics.db)
-uv run parltopics partner files             # Excel files for the domain partner → data/gold/for_partner/
-make eval RUN="<dev_run> <test_run>"        # digitalisation like-for-like eval → results/metrics.json + metrics.md
-uv run parltopics demo export               # refresh results/demo/*.json (cached demo results for offline mode)
-uv run parltopics demo export-collections   # refresh results/collections/*.json.gz (offline copies of whole parliaments)
-uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # human review, append-only
-uv run parltopics ingest --body BE --since 2018-01-01    # whole parliament: fetch + assemble every affair once, data-quality report
-uv run parltopics index --body BE --topic topics/digitalisation.yaml   # classify all of it (or --scheme aps); resumable
-uv run parltopics update --body BE           # only affairs new since the last ingest → classify → "new" feed (cron)
-uv run parltopics export --body BE --topic topics/digitalisation.yaml  # Excel/CSV with review status → data/exports/
-uv run parltopics fetch 235308 --lang fr   # text the model sees (--lang only for federal affairs)
-uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # one model call
+cp .env.example .env   # LLM_NAME, LLM_BASE_URL, LLM_API_KEY setzen
+make run               # Docker; App auf http://localhost:8080, /health prüfen
+make dev               # dasselbe ohne Docker (benötigt uv)
+make data              # Challenge-Dateien nach data/raw herunterladen und Prüfsummen kontrollieren
+make test              # Unit-Tests
+make status            # Stand der Dinge: Slices, Erfolgskriterien, Einreichungs-Checkliste
+make first-loop        # 20 Positive + 20 Negative → Tabelle, Genauigkeit, Anteil verifizierter Belege
+uv run parltopics data load-bulk            # einmalig: Bundes-Bulk-Texte → data/cache/bulk.db (nötig für > ~500 Geschäfte)
+uv run parltopics runs                      # gespeicherte Läufe (SQLite: data/parltopics.db)
+uv run parltopics partner files             # Excel-Dateien für den Fachpartner → data/gold/for_partner/
+make eval RUN="<dev_run> <test_run>"        # Digitalisierungs-Evaluation (gleiche Bedingungen) → results/metrics.json + metrics.md
+uv run parltopics demo export               # results/demo/*.json aktualisieren (zwischengespeicherte Demo-Ergebnisse für den Offline-Modus)
+uv run parltopics demo export-collections   # results/collections/*.json.gz aktualisieren (Offline-Kopien ganzer Parlamente)
+uv run parltopics review add <prediction_id> confirm|reject|correct [--label …]   # menschliche Prüfung, nur anhängend
+uv run parltopics ingest --body BE --since 2018-01-01    # ganzes Parlament: jedes Geschäft einmal abrufen + zusammenstellen, Datenqualitätsbericht
+uv run parltopics index --body BE --topic topics/digitalisation.yaml   # alles klassifizieren (oder --scheme aps); fortsetzbar
+uv run parltopics update --body BE           # nur Geschäfte seit dem letzten Ingest → klassifizieren → «Neu»-Feed (Cron)
+uv run parltopics export --body BE --topic topics/digitalisation.yaml  # Excel/CSV mit Prüfstatus → data/exports/
+uv run parltopics fetch 235308 --lang fr   # Text, den das Modell sieht (--lang nur für Bundesgeschäfte)
+uv run parltopics classify --affair 235308 --lang de --topic topics/digitalisation.yaml   # ein Modellaufruf
 ```
 
-## 📦 Submission Requirements & Deliverables
+## 📦 Einreichungsanforderungen & Ergebnisse
 
-The submission must:
-1. follow the template repo and include all prerequisite files and definitions
-2. run end-to-end when judges try to run it
+Die Einreichung muss:
+1. der Vorlage-Repo folgen und alle erforderlichen Dateien und Definitionen enthalten
+2. durchgängig laufen, wenn die Jury sie ausprobiert
 
-### Git repo (URL)
-- Create your repo from this template (**Use this template**).
-- Keep the layout as it is: don't rename or move its files.
-- Set the repo to PUBLIC (Settings --> Collaborators --> Manage Visibility)
-- Submit the URL of YOUR Git repo.
+### Git-Repo (URL)
+- Erstelle dein Repo aus dieser Vorlage (**Use this template**).
+- Behalte die Struktur bei: Dateien nicht umbenennen oder verschieben.
+- Setze das Repo auf ÖFFENTLICH (Settings --> Collaborators --> Manage Visibility)
+- Reiche die URL DEINES Git-Repos ein.
 
-### Technical Report (pdf)
-- Update [technical_report.md](technical_report.md) in this repository with all the details for your submission.
-- Upload a pdf of your technical report to the root of the repo, named as `TeamName_Report.pdf`.
-- Format: pdf, max. 6 pages w/o references
-- Submit the pdf of the technical report.
+### Technischer Bericht (PDF)
+- Aktualisiere [technical_report.md](technical_report.md) in diesem Repository mit allen Details zu deiner Einreichung.
+- Lade ein PDF deines technischen Berichts ins Hauptverzeichnis des Repos hoch, benannt als `TeamName_Report.pdf`.
+- Format: PDF, max. 6 Seiten ohne Literaturverzeichnis
+- Reiche das PDF des technischen Berichts ein.
 
-### Demo video (URL)
-- Max. 2 min demo video of your prototype
-- Add the link to the **Demo** field at the top of [technical_report.md](technical_report.md)
-- Submit the URL of the video.
+### Demo-Video (URL)
+- Max. 2 Min. langes Demo-Video deines Prototyps
+- Füge den Link im Feld **Demo** oben in [technical_report.md](technical_report.md) ein
+- Reiche die URL des Videos ein.
 
-## ⚖️ Judging Criteria
+## ⚖️ Bewertungskriterien
 
-Each challenge has its own criteria, listed in its challenge description.
+Jede Challenge hat ihre eigenen Kriterien, die in ihrer Challenge-Beschreibung aufgeführt sind.
 
-The main jury scores every submission on 6 dimensions (relevant for Top 6 teams):
-1. **Purposeful use of AI**
-2. **Technical rigour**
-3. **Value, cost & scalability**
-4. **Sovereign deployability**
-5. **Implementation feasibility**
-6. **Pitch & presentation**
+Die Hauptjury bewertet jede Einreichung in 6 Dimensionen (relevant für die Top-6-Teams):
+1. **Zielgerichteter Einsatz von KI**
+2. **Technische Sorgfalt**
+3. **Nutzen, Kosten & Skalierbarkeit**
+4. **Souveräne Einsetzbarkeit**
+5. **Umsetzbarkeit**
+6. **Pitch & Präsentation**
 
-Each dimension is scored from 0 to 5.
+Jede Dimension wird mit 0 bis 5 Punkten bewertet.
 
-## Getting started
+## Erste Schritte
 
-1. Click **Use this template** to create your own repository.
+1. Klicke auf **Use this template**, um dein eigenes Repository zu erstellen.
 
-## License
+## Lizenz
 
-All Hack Apertus projects are open-sourced. Please check our Terms & Conditions for specific licensing details (6. What you build is open source): https://hackapertus.ch/terms-and-conditions
+Alle Hack-Apertus-Projekte sind Open Source. Die genauen Lizenzbestimmungen findest du in unseren AGB (6. Was du baust, ist Open Source): https://hackapertus.ch/terms-and-conditions
 
 ## Support
 
 ### FAQ
 💡 https://hackapertus.ch/faq
 
-### Contact
+### Kontakt
 
-💬 In case you have questions, join the conversation on Discord. Alternatively, send an email to “hello@hackapertus.ch”.
+💬 Bei Fragen tritt der Diskussion auf Discord bei. Alternativ kannst du eine E-Mail an «hello@hackapertus.ch» senden.
