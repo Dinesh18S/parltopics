@@ -1,5 +1,7 @@
 # Hack Apertus Liebefeld — OpenParlData: Themenklassifikation für Schweizer Parlamente mit Apertus — Unisono
 
+**Team Unisono:** Selvadinesh Sasikumar (Entwicklung, Deployment) · Arivinchsa Thilagarajah (Recherche, Datensatz, Pitch)
+
 Schweizer Parlamente veröffentlichen über OpenParlData.ch Hunderttausende von Geschäften (Motionen, Interpellationen,
 Vorlagen), doch ihre Themen-Labels sind grob und von Parlament zu Parlament uneinheitlich. Monitoring-Dienste wie
 PolitMonitor verschlagworten Geschäfte von Hand, und eine Stichwortsuche übersieht Geschäfte, in denen das Wort nie
@@ -16,8 +18,6 @@ Die Einreichung muss den [HackApertus-AGB](https://hackapertus.ch/terms-and-cond
 [hackapertus.notion.site/openparldata](https://hackapertus.notion.site/openparldata)
 
 ## Unisono — offener Themenklassifikator für Schweizer Parlamentsgeschäfte
-
-Team: Unisono · Builder (Entwicklung) · Partner (Recherche & Pitch)
 
 Unisono findet jedes Geschäft zu einem Thema, auf Deutsch, Französisch und Italienisch, und zeigt den Satz, der es belegt.
 
